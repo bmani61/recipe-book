@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2E6A3A" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1F4A28" media="(prefers-color-scheme: dark)">
+<meta name="description" content="Everyday South Indian recipes for breakfast, lunch and dinner, with servings scaling.">
+<title>Banana Leaf Kitchen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Mukta:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: leaf-green masthead, sticky filter rail, then three meal chapters of full recipe cards (ingredients beside method). */
+:root{
+  --bg:#F5F7F1; --paper:#FFFFFF; --ink:#1C2A21; --muted:#5A6A5E; --line:#DCE3D6;
+  --leaf:#2E6A3A; --leaf-ink:#F3F8EF; --leaf-soft:#E5EFE1;
+  --turmeric:#D99A16; --turmeric-ink:#8A5A00; --chilli:#B4362B;
+  --veg:#2E8A3E; --egg:#C98A0A; --chicken:#C4552B; --mutton:#9C2F3A; --prawn:#D0644F;
+  --display:"Young Serif",Georgia,"Times New Roman",serif;
+  --body:"Mukta","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111813; --paper:#18221B; --ink:#E6ECE2; --muted:#9BAA9E; --line:#2A3830;
+  --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A;
+  --turmeric:#E8B443; --turmeric-ink:#E8B443; --chilli:#E06A5E;
+  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --prawn:#F08F7A;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111813; --paper:#18221B; --ink:#E6ECE2; --muted:#9BAA9E; --line:#2A3830;
+  --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A;
+  --turmeric:#E8B443; --turmeric-ink:#E8B443; --chilli:#E06A5E;
+  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --prawn:#F08F7A;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.15}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--turmeric-ink);outline-offset:2px;border-radius:4px}
+
+/* Masthead */
+.mast{background:var(--leaf);color:var(--leaf-ink);position:relative;overflow:hidden}
+.mast .wrap{padding-block:44px 36px;display:grid;gap:14px;position:relative}
+.mast h1{font-size:clamp(2.2rem,6vw,3.6rem)}
+.mast p{margin:0;max-width:58ch;opacity:.88;font-size:1.05rem}
+.mast .rib{position:absolute;right:-60px;top:-40px;width:320px;height:320px;opacity:.14;pointer-events:none}
+.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:600;opacity:.8}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.92rem;opacity:.9}
+.stats b{font-family:var(--display);font-weight:400;font-size:1.25rem;margin-right:4px}
+
+/* Sticky rail */
+.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.rail .wrap{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding-block:10px}
+.jump{display:flex;gap:4px}
+.jump a{text-decoration:none;font-weight:600;font-size:.92rem;padding:4px 10px;border-radius:999px}
+.jump a:hover{background:var(--leaf-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:3px 11px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.serves{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
+.seg button{font:inherit;font-size:.85rem;border:0;background:transparent;color:var(--ink);padding:3px 11px;cursor:pointer;font-variant-numeric:tabular-nums}
+.seg button[aria-pressed="true"]{background:var(--turmeric);color:#1C1608;font-weight:700}
+/* Phones: two rows, jump links + servings on top, chips swipe sideways below */
+@media (max-width:600px){
+  .rail .wrap{gap:8px 10px;padding-block:8px}
+  .jump,.chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .jump::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}
+  .jump{flex:1;min-width:0;gap:2px}
+  .jump a{padding:4px 6px;flex:none}
+  .chips{order:3;flex:0 0 calc(100% + 32px);margin-inline:-16px;padding-inline:16px}
+  .chip{flex:none}
+}
+
+/* Contents */
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;padding-block:36px 8px}
+.toc h2{font-size:1.25rem;margin-bottom:8px}
+.toc h2 span{display:block;font-family:var(--body);font-size:.8rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.toc ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.toc li{border-bottom:1px solid var(--line)}
+.toc li[hidden]{display:none}
+.toc a{display:flex;align-items:center;gap:10px;padding:7px 2px;text-decoration:none}
+.toc a:hover .n{text-decoration:underline}
+.toc .t{margin-left:auto;color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums;text-align:right}
+
+/* Chapters */
+.chapter{padding-block:40px 8px;scroll-margin-top:70px}
+.chap-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-bottom:20px;border-bottom:3px solid var(--leaf);padding-bottom:10px}
+.chap-head h2{font-size:clamp(1.8rem,4.5vw,2.5rem)}
+.chap-head p{margin:0;color:var(--muted);flex-basis:100%;max-width:62ch}
+.chap-head .local{font-family:var(--display);color:var(--turmeric-ink);font-size:1.2rem}
+.list{display:grid;gap:22px}
+.empty{color:var(--muted);font-style:italic;padding:10px 0}
+
+.recipe{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px clamp(16px,3vw,28px);scroll-margin-top:70px}
+.r-head{display:grid;gap:6px;margin-bottom:16px}
+.r-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.85rem;color:var(--muted);align-items:center}
+.r-meta .tag{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
+.r-head h3{font-size:clamp(1.4rem,3.4vw,1.75rem)}
+.r-head .alt{font-family:var(--display);color:var(--muted);font-size:1rem}
+.r-head .with{font-size:.92rem;margin:0}
+.r-head .with b{font-weight:600}
+.r-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);gap:28px}
+@media (max-width:760px){.r-body{grid-template-columns:minmax(0,1fr);gap:18px}}
+.label{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--muted);margin:0 0 8px}
+.ing{list-style:none;margin:0;padding:0}
+.ing li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:8px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:.95rem}
+.ing li.grp{display:block;border:0;padding:12px 0 2px;font-weight:700;font-size:.82rem;color:var(--leaf);text-transform:uppercase;letter-spacing:.08em}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ing li.grp{color:var(--veg)}}
+:root[data-theme="dark"] .ing li.grp{color:var(--veg)}
+.q{font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.q.tt{font-weight:400;color:var(--muted);font-size:.85rem}
+.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px}
+.steps li::before{content:counter(s);font-family:var(--display);color:var(--leaf-ink);background:var(--leaf);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;margin-top:2px}
+.steps b{font-weight:600}
+.tip{margin-top:18px;padding:10px 14px;border-left:3px solid var(--turmeric);background:color-mix(in srgb,var(--turmeric) 10%,var(--paper));font-size:.93rem;border-radius:0 6px 6px 0}
+.tip b{font-weight:700}
+
+footer{padding-block:40px 56px;color:var(--muted);font-size:.88rem}
+@media (max-width:600px){.chapter,.recipe{scroll-margin-top:100px}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<header class="mast">
+  <svg class="rib" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 180 Q100 100 180 20"/><path d="M40 160 Q60 120 30 90"/><path d="M60 140 Q90 110 70 60"/><path d="M80 120 Q120 95 110 40"/><path d="M100 100 Q150 80 150 20"/><path d="M60 140 Q100 150 130 120"/><path d="M80 120 Q120 140 160 100"/><path d="M100 100 Q140 120 180 80"/></g></svg>
+  <div class="wrap">
+    <span class="eyebrow">A South Indian recipe book</span>
+    <h1>Banana Leaf Kitchen</h1>
+    <p>Everyday dishes from Tamil Nadu, Andhra, Karnataka and Kerala, arranged as a day of eating: tiffin in the morning, a full meals plate at lunch, and something lighter at night.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Filters">
+  <div class="wrap">
+    <div class="jump"><a href="#breakfast">Breakfast</a><a href="#lunch">Lunch</a><a href="#dinner">Dinner</a></div>
+    <div class="chips" id="chips" role="group" aria-label="Filter by type"></div>
+    <div class="serves"><span>Serves</span><div class="seg" id="seg" role="group" aria-label="Servings"></div></div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="toc" id="toc" aria-label="Contents"></section>
+  <div id="chapters"></div>
+  <footer>Quantities use standard measuring cups (240 ml) and spoons. Base recipes serve 4; the servings switch scales every ingredient. "Whistles" refer to a standard 3–5 litre pressure cooker on medium heat.</footer>
+</main>
+
+<script>
+const MEALS = [
+  {id:"breakfast", name:"Breakfast", local:"Tiffin", intro:"Steamed, griddled and fermented: the morning plates that come with chutney and a ladle of sambar."},
+  {id:"lunch", name:"Lunch", local:"Meals · Saapadu", intro:"Build a full banana-leaf meal by mixing a dal dish, a tangy rasam, a curry and a vegetable side with rice."},
+  {id:"dinner", name:"Dinner", local:"Iravu", intro:"Lighter grains, quick dry fries and gravies, and curd rice to settle the day."}
+];
+const TYPES = {veg:"Veg", egg:"Egg", chicken:"Chicken", mutton:"Mutton", prawn:"Prawn"};
+
+// ingredient: [qty|null, unit, name]  ·  "# Heading" starts a group
+const R = [
+/* ---------- BREAKFAST ---------- */
+{id:"idli", meal:"breakfast", name:"Idli with Coconut Chutney", alt:"Idli · Thengai chutney", region:"Tamil Nadu", type:"veg", time:"30 min + soak & ferment",
+ with:"Sambar, gunpowder (idli podi) with sesame oil",
+ ing:["# Batter",[2,"cup","idli rice (parboiled)"],[0.5,"cup","whole urad dal"],[0.5,"tsp","fenugreek seeds"],[1.5,"tsp","salt"],
+      "# Chutney",[1,"cup","fresh grated coconut"],[2,"tbsp","roasted chana dal (pottukadalai)"],[2,"","green chillies"],[1,"inch","ginger"],[1,"tsp","mustard seeds"],[1,"sprig","curry leaves"],[1,"tsp","oil"],[null,"","salt to taste"]],
+ steps:["Soak rice and urad dal separately for 5–6 hours, adding the fenugreek to the dal.",
+  "Grind the urad dal with ice-cold water until light and fluffy (about 15 min in a wet grinder). Grind the rice to a slightly coarse, semolina-like texture.",
+  "Mix both batters with the salt by hand, cover and ferment 8–12 hours until doubled. In Hyderabad's warmth, 8 hours is usually enough.",
+  "Grease idli plates, fill each mould three-quarters full and steam for 10–12 minutes. Rest 2 minutes before unmoulding with a wet spoon.",
+  "For the chutney, grind coconut, roasted chana dal, chillies, ginger and salt with a little water. Temper mustard and curry leaves in oil and pour over."],
+ tip:"Keep extra batter in the fridge for 3–4 days; it turns sour and becomes the dosa batter for the egg dosa below."},
+
+{id:"pesarattu", meal:"breakfast", name:"Pesarattu with Ginger Chutney", alt:"Pesarattu · Allam pachadi", region:"Andhra Pradesh", type:"veg", time:"25 min + 6 hr soak",
+ with:"Upma folded inside (MLA pesarattu), allam pachadi",
+ ing:["# Dosa",[1,"cup","whole green moong"],[2,"tbsp","raw rice"],[3,"","green chillies"],[1,"inch","ginger"],[1,"tsp","cumin seeds"],[1,"tsp","salt"],[1,"","onion, finely chopped"],[2,"tbsp","oil"],
+      "# Allam pachadi",[0.25,"cup","ginger, peeled and chopped"],[10,"g","tamarind"],[1,"tbsp","jaggery"],[4,"","dry red chillies"],[1,"tbsp","urad dal"],[1,"tbsp","chana dal"],[1,"tsp","oil"],[null,"","salt to taste"]],
+ steps:["Soak moong and rice together for 6 hours or overnight.",
+  "Grind with chillies, ginger, half the cumin and salt into a smooth, pourable batter. No fermentation needed.",
+  "Heat a cast-iron tawa, pour a ladle and spread thin in circles. Sprinkle onion and the remaining cumin, drizzle oil around the edges.",
+  "Cook on medium until the underside is crisp and golden, then fold. Flipping is optional.",
+  "For the chutney, fry the dals and red chillies in oil until golden, add ginger and sauté 2 minutes. Cool and grind with tamarind, jaggery and salt."],
+ tip:"High in protein and filling. Use a non-stick pan and brush the oil instead of drizzling to make it lighter."},
+
+{id:"pongal", meal:"breakfast", name:"Ven Pongal", alt:"Khara pongal", region:"Tamil Nadu", type:"veg", time:"30 min",
+ with:"Sambar and coconut chutney, or gothsu",
+ ing:[[1,"cup","raw rice"],[0.5,"cup","yellow moong dal"],[5,"cup","water"],[1.25,"tsp","salt"],
+      "# Tempering",[3,"tbsp","ghee"],[1,"tsp","whole black pepper"],[1,"tsp","cumin seeds"],[1,"tbsp","ginger, finely chopped"],[10,"","cashews"],[1,"sprig","curry leaves"],[0.25,"tsp","asafoetida"]],
+ steps:["Dry-roast the moong dal on low heat for 3–4 minutes until it smells nutty.",
+  "Wash the dal with the rice, then pressure cook with the water and salt for 4–5 whistles.",
+  "Open once the pressure drops and mash well with a ladle. It should be soft and porridge-like.",
+  "Heat ghee, add pepper and cumin, then cashews, ginger, curry leaves and asafoetida. Fry until the cashews turn golden.",
+  "Pour the tempering into the pongal and mix. Loosen with hot water if it has thickened."],
+ tip:"Pongal stiffens as it sits, so keep it a little looser than you want to eat it."},
+
+{id:"upma", meal:"breakfast", name:"Rava Upma", alt:"Uppittu", region:"Karnataka", type:"veg", time:"20 min",
+ with:"Coconut chutney, a spoon of sugar on the side (Karnataka style)",
+ ing:[[1,"cup","Bombay rava (sooji)"],[2.5,"cup","water"],[2,"tbsp","oil or ghee"],[1,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"tsp","chana dal"],[1,"","onion, chopped"],[2,"","green chillies, slit"],[1,"tsp","ginger, grated"],[0.5,"cup","carrot and peas"],[1,"sprig","curry leaves"],[1,"tsp","salt"],[0.5,"","lemon, juiced"],[2,"tbsp","coriander leaves"]],
+ steps:["Dry-roast the rava on low heat until it smells toasty but stays pale. Set aside.",
+  "Heat oil, splutter mustard, then fry urad and chana dal until golden. Add curry leaves, chillies and ginger.",
+  "Sauté the onion until soft, add carrot and peas, and cook 2 minutes.",
+  "Pour in the water with salt and bring to a rolling boil.",
+  "Lower the heat and add the rava in a thin stream, stirring constantly so no lumps form. Cover and cook 2–3 minutes.",
+  "Finish with lemon juice and coriander."],
+ tip:"Swap half the rava for broken wheat or oats for more fibre."},
+
+{id:"muttai-dosa", meal:"breakfast", name:"Muttai Dosa", alt:"Egg dosa", region:"Tamil Nadu street", type:"egg", time:"15 min",
+ with:"Kara chutney or a bowl of salna",
+ ing:[[2,"cup","fermented dosa batter"],[4,"","eggs"],[1,"","small onion, finely chopped"],[1,"","green chilli, finely chopped"],[0.5,"tsp","black pepper, crushed"],[2,"tbsp","coriander leaves"],[4,"tsp","oil"],[null,"","salt to taste"],[null,"","idli podi (optional)"]],
+ steps:["Heat a tawa until a sprinkle of water sizzles. Spread a ladle of batter into a medium-thick dosa.",
+  "Crack an egg onto the centre and spread it over the dosa with the back of the ladle.",
+  "Scatter onion, chilli, pepper, salt and coriander. Dust with idli podi if you like.",
+  "Drizzle oil around the edge, cover and cook 1 minute until the egg sets.",
+  "Flip for 20 seconds to sear the top, then fold and serve hot."],
+ tip:"One of the most protein-dense tiffins here. Use egg whites only on some dosas if you're keeping it lean."},
+
+/* ---------- LUNCH ---------- */
+{id:"sambar", meal:"lunch", name:"Tamil Nadu Sambar", alt:"Arachuvitta sambar", region:"Tamil Nadu", type:"veg", time:"45 min",
+ with:"Rice and ghee, idli, dosa, vada",
+ ing:[[0.5,"cup","toor dal"],[0.25,"tsp","turmeric"],[15,"g","tamarind"],[12,"","small onions (shallots)"],[1,"","drumstick, cut in pieces"],[1,"cup","brinjal or pumpkin, cubed"],[1,"","tomato, chopped"],[1.5,"tsp","salt"],[1.5,"cup","water (for the dal)"],[1,"cup","hot water (for the tamarind)"],[1,"cup","water (for the vegetables)"],
+      "# Fresh masala",[1.5,"tbsp","coriander seeds"],[1,"tbsp","chana dal"],[5,"","dry red chillies"],[0.25,"tsp","fenugreek seeds"],[3,"tbsp","grated coconut"],
+      "# Tempering",[1,"tbsp","gingelly (sesame) oil"],[1,"tsp","mustard seeds"],[0.25,"tsp","asafoetida"],[2,"sprig","curry leaves"],[2,"tbsp","coriander leaves"]],
+ steps:["Pressure cook the toor dal with turmeric and its water for 4–5 whistles. Mash well.",
+  "Soak tamarind in the hot water for 10 minutes and squeeze out the pulp.",
+  "Roast the masala spices in a little oil until the chana dal is golden, add coconut for 1 minute, then grind to a smooth paste.",
+  "Sauté shallots, add drumstick, brinjal, tomato, salt and the vegetable water. Cook until the vegetables are almost tender.",
+  "Add tamarind water and boil until the raw smell goes. Stir in the masala paste and dal, and simmer gently until frothy.",
+  "Temper mustard, curry leaves and asafoetida in sesame oil, pour over and finish with coriander."],
+ tip:"For a quicker version, replace the fresh masala with 2 tbsp good sambar powder."},
+
+{id:"rasam", meal:"lunch", name:"Milagu Rasam", alt:"Pepper-garlic rasam", region:"Tamil Nadu", type:"veg", time:"20 min",
+ with:"Hot rice and a poriyal, or drunk from a tumbler",
+ ing:[[15,"g","tamarind"],[2,"","tomatoes, crushed"],[1,"tsp","black pepper"],[1,"tsp","cumin seeds"],[4,"clove","garlic"],[0.25,"tsp","turmeric"],[2,"tbsp","cooked toor dal (optional)"],[1,"cup","warm water (for the tamarind)"],[2,"cup","water"],[1,"tsp","salt"],
+      "# Tempering",[1,"tsp","ghee"],[0.5,"tsp","mustard seeds"],[0.25,"tsp","asafoetida"],[1,"sprig","curry leaves"],[2,"tbsp","coriander leaves"]],
+ steps:["Coarsely crush pepper, cumin and garlic in a mortar.",
+  "Extract the tamarind in the warm water. Add the crushed tomatoes, turmeric and salt.",
+  "Boil 8 minutes until the raw tamarind smell is gone.",
+  "Add the rest of the water, the crushed spices and the dal. Heat until it rises and froths, then switch off. Do not let it boil hard.",
+  "Temper mustard, asafoetida and curry leaves in ghee, pour over and add coriander."],
+ tip:"Boiling after the spices go in makes rasam bitter. Take it off the heat as soon as the froth rises."},
+
+{id:"kodi-kura", meal:"lunch", name:"Andhra Chicken Curry", alt:"Kodi kura", region:"Andhra Pradesh", type:"chicken", time:"50 min + 30 min marinate",
+ with:"Rice, jonna rotte or chapati",
+ ing:[[750,"g","bone-in chicken"],[3,"tbsp","curd"],[0.5,"tsp","turmeric"],[2,"tsp","red chilli powder"],[1.5,"tsp","salt"],
+      "# Gravy",[3,"tbsp","oil"],[2,"","onions, finely sliced"],[3,"","green chillies, slit"],[1,"sprig","curry leaves"],[1.5,"tbsp","ginger-garlic paste"],[2,"","tomatoes, chopped"],[2,"tsp","coriander powder"],[1,"tsp","garam masala"],[0.75,"cup","water"],[3,"tbsp","coriander leaves"]],
+ steps:["Marinate the chicken with curd, turmeric, chilli powder and salt for at least 30 minutes.",
+  "Heat oil and fry onions with green chillies and curry leaves until deep golden.",
+  "Add ginger-garlic paste and cook 1 minute, then tomatoes. Cook until they break down and oil separates.",
+  "Add coriander powder, then the chicken. Sear on high for 5 minutes.",
+  "Add water, cover and cook on low for 20–25 minutes until tender.",
+  "Stir in garam masala and coriander, and simmer uncovered to the thickness you like."],
+ tip:"Use skinless chicken and cut the oil to 2 tbsp for a lighter curry; the marinade carries most of the flavour."},
+
+{id:"mutton-kuzhambu", meal:"lunch", name:"Chettinad Mutton Kuzhambu", alt:"Kari kuzhambu", region:"Chettinad", type:"mutton", time:"1 hr 15 min",
+ with:"Rice, idiyappam or dosa",
+ ing:[[500,"g","mutton, curry cut"],[0.5,"tsp","turmeric"],[1,"tbsp","ginger-garlic paste"],[1,"tsp","salt"],[1.5,"cup","water"],
+      "# Chettinad masala",[6,"","dry red chillies"],[2,"tbsp","coriander seeds"],[1,"tsp","black pepper"],[1,"tsp","fennel seeds"],[1,"tsp","cumin seeds"],[1,"inch","cinnamon"],[3,"","cloves"],[1,"","star anise"],[1,"tsp","poppy seeds"],[0.25,"cup","grated coconut"],
+      "# Kuzhambu",[3,"tbsp","gingelly (sesame) oil"],[15,"","small onions, sliced"],[2,"","tomatoes, chopped"],[2,"sprig","curry leaves"],[2,"tbsp","coriander leaves"]],
+ steps:["Pressure cook mutton with turmeric, ginger-garlic paste, salt and water for 5–6 whistles until tender. Keep the stock.",
+  "Dry-roast the masala spices on low heat until fragrant, add coconut and roast 2 minutes more. Cool and grind to a fine paste.",
+  "Heat sesame oil, add curry leaves and shallots, and fry until golden. Add tomatoes and cook until mushy.",
+  "Add the masala paste and fry 5 minutes, stirring, until oil separates.",
+  "Add the mutton with its stock and simmer 10–15 minutes until the gravy coats a spoon. Finish with coriander."],
+ tip:"The kuzhambu tastes better the next day. Skim the fat off the chilled gravy before reheating."},
+
+{id:"lemon-rice", meal:"lunch", name:"Lemon Rice", alt:"Elumichai sadam · Pulihora style", region:"Tamil Nadu", type:"veg", time:"15 min",
+ with:"Potato fry, appalam, or carried in a tiffin box",
+ ing:[[3,"cup","cooked rice, cooled"],[1.5,"","lemons, juiced"],[0.5,"tsp","turmeric"],[2,"tbsp","oil"],[1,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"tbsp","chana dal"],[3,"tbsp","peanuts"],[2,"","green chillies, slit"],[1,"tsp","ginger, chopped"],[0.25,"tsp","asafoetida"],[1,"sprig","curry leaves"],[1,"tsp","salt"]],
+ steps:["Spread the rice on a plate so the grains stay separate and cool.",
+  "Heat oil, fry peanuts until crunchy, then add mustard, urad dal and chana dal.",
+  "Add chillies, ginger, curry leaves and asafoetida. Switch off the heat and stir in turmeric.",
+  "Add lemon juice and salt to the pan, then fold in the rice gently with a fork."],
+ tip:"Add the lemon juice off the heat. Cooking it makes it bitter."},
+
+{id:"avial", meal:"lunch", name:"Avial", alt:"Mixed vegetables in coconut and curd", region:"Kerala", type:"veg", time:"35 min",
+ with:"Rice with sambar, or adai",
+ ing:[[4,"cup","mixed vegetables in batons (drumstick, raw banana, carrot, beans, yam, ash gourd)"],[0.25,"tsp","turmeric"],[0.5,"cup","water"],[1,"tsp","salt"],
+      "# Paste",[1,"cup","grated coconut"],[3,"","green chillies"],[1,"tsp","cumin seeds"],
+      "# Finish",[0.5,"cup","thick curd, whisked"],[2,"tbsp","coconut oil"],[2,"sprig","curry leaves"]],
+ steps:["Cook the vegetables with turmeric, salt and water, covered, until just tender. Add soft ones like ash gourd later.",
+  "Coarsely grind coconut, chillies and cumin with a splash of water. It should not be smooth.",
+  "Add the paste to the vegetables and cook 3–4 minutes, stirring gently.",
+  "Switch off the heat and fold in the curd.",
+  "Pour raw coconut oil over the top, add curry leaves, and cover for 5 minutes so the aroma sets in."],
+ tip:"No tempering here. The raw coconut oil and curry leaves at the end are what make it avial."},
+
+{id:"poriyal", meal:"lunch", name:"Beans Poriyal", alt:"Beans thoran style", region:"Tamil Nadu", type:"veg", time:"20 min",
+ with:"Any rice-and-kuzhambu meal",
+ ing:[[300,"g","french beans, finely chopped"],[1,"tbsp","oil"],[1,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"","dry red chilli"],[1,"sprig","curry leaves"],[0.25,"tsp","asafoetida"],[0.75,"tsp","salt"],[3,"tbsp","grated coconut"]],
+ steps:["Heat oil and splutter mustard. Add urad dal, red chilli, curry leaves and asafoetida.",
+  "Add beans and salt with a sprinkle of water. Cover and cook on low for 8–10 minutes until tender with a bite.",
+  "Uncover, stir in coconut and cook 1 minute."],
+ tip:"Works the same way with cabbage, carrot or cluster beans."},
+
+/* ---------- DINNER ---------- */
+{id:"ragi-dosa", meal:"dinner", name:"Instant Ragi Dosa", alt:"Ragi dose", region:"Karnataka", type:"veg", time:"25 min",
+ with:"Peanut or tomato chutney",
+ ing:[[1,"cup","ragi (finger millet) flour"],[0.25,"cup","rice flour"],[0.25,"cup","fine rava"],[0.25,"cup","curd"],[2,"cup","water"],[1,"","onion, finely chopped"],[2,"","green chillies, chopped"],[1,"tsp","cumin seeds"],[1,"sprig","curry leaves, chopped"],[1,"tsp","salt"],[1,"tbsp","oil"]],
+ steps:["Whisk flours, rava, curd, salt and water into a thin, watery batter. Rest 15 minutes.",
+  "Stir in onion, chillies, cumin and curry leaves.",
+  "Heat the tawa well. Pour batter from a height starting at the edges, filling gaps. Do not spread it.",
+  "Drizzle a few drops of oil, cook on medium until crisp, and serve without flipping."],
+ tip:"A filling, high-fibre dinner. Stir the batter before every dosa because the flour settles."},
+
+{id:"egg-curry", meal:"dinner", name:"Andhra Egg Curry", alt:"Kodiguddu kura", region:"Andhra Pradesh", type:"egg", time:"30 min",
+ with:"Rice, chapati or ragi dosa",
+ ing:[[6,"","eggs, boiled and peeled"],[2,"tbsp","oil"],[0.5,"tsp","turmeric"],[1.5,"tsp","red chilli powder"],[2,"","onions, finely chopped"],[1,"sprig","curry leaves"],[1,"tbsp","ginger-garlic paste"],[2,"","tomatoes, puréed"],[1.5,"tsp","coriander powder"],[0.5,"tsp","garam masala"],[1,"cup","water"],[1,"tsp","salt"],[2,"tbsp","coriander leaves"]],
+ steps:["Make shallow slits on the eggs. Fry them in the oil with a pinch of turmeric and chilli powder until the skin blisters. Lift out.",
+  "In the same oil fry onions and curry leaves until golden, add ginger-garlic paste.",
+  "Add tomato purée, the rest of the turmeric and chilli, coriander powder and salt. Cook until oil separates.",
+  "Add water, bring to a simmer and slide in the eggs. Cook 8 minutes.",
+  "Finish with garam masala and coriander."],
+ tip:"Halve some eggs and drop the yolks if you want more protein with less fat."},
+
+{id:"royyala-iguru", meal:"dinner", name:"Prawn Iguru", alt:"Royyala iguru", region:"Andhra coast", type:"prawn", time:"30 min",
+ with:"Rice and rasam, or as a side with dosa",
+ ing:[[500,"g","prawns, cleaned and deveined"],[0.5,"tsp","turmeric"],[1,"tsp","salt"],[1,"tsp","red chilli powder"],
+      "# Masala",[2,"tbsp","oil"],[2,"","onions, finely chopped"],[2,"","green chillies, slit"],[1,"sprig","curry leaves"],[1,"tbsp","ginger-garlic paste"],[1,"","tomato, chopped"],[1,"tsp","red chilli powder"],[1,"tsp","coriander powder"],[0.5,"tsp","garam masala"],[2,"tbsp","coriander leaves"]],
+ steps:["Toss prawns with turmeric, salt and chilli powder. Rest 15 minutes.",
+  "Fry onions, chillies and curry leaves in oil until golden brown.",
+  "Add ginger-garlic paste, then tomato. Cook until soft and the oil starts to separate.",
+  "Add chilli and coriander powders with a splash of water and cook 2 minutes.",
+  "Add prawns and cook on medium-high for 5–6 minutes, stirring, until they curl and the masala clings. Do not overcook.",
+  "Sprinkle garam masala and coriander."],
+ tip:"Prawns turn rubbery fast. Pull them off the heat as soon as they form a loose C shape."},
+
+{id:"pepper-chicken", meal:"dinner", name:"Chettinad Pepper Chicken", alt:"Milagu kozhi varuval", region:"Chettinad", type:"chicken", time:"40 min",
+ with:"Rasam rice, or on its own as a high-protein plate",
+ ing:[[500,"g","chicken, small pieces"],[0.5,"tsp","turmeric"],[1,"tsp","salt"],
+      "# Pepper masala",[1.5,"tbsp","black pepper"],[1,"tsp","fennel seeds"],[1,"tsp","cumin seeds"],
+      "# Fry",[2,"tbsp","gingelly (sesame) oil"],[15,"","small onions, sliced"],[2,"sprig","curry leaves"],[1,"tbsp","ginger-garlic paste"],[1,"","tomato, chopped"],[0.5,"","lemon, juiced"]],
+ steps:["Dry-roast pepper, fennel and cumin for 1 minute and grind coarsely.",
+  "Heat oil, add curry leaves and shallots and fry until golden.",
+  "Add ginger-garlic paste, then tomato, and cook until soft.",
+  "Add chicken, turmeric and salt. Cover and cook in its own juices on low for 15 minutes.",
+  "Uncover, add the pepper masala and fry on high, stirring, until dry and dark. Finish with lemon juice."],
+ tip:"Grind the pepper fresh just before cooking. Pre-ground pepper loses the sharp heat this dish depends on."},
+
+{id:"curd-rice", meal:"dinner", name:"Curd Rice", alt:"Thayir sadam", region:"Tamil Nadu", type:"veg", time:"15 min",
+ with:"Mango pickle, or after any spicy curry",
+ ing:[[2,"cup","cooked rice, soft"],[1.5,"cup","curd"],[0.25,"cup","milk"],[1,"tsp","salt"],[0.5,"","cucumber, grated"],[1,"tsp","oil"],[0.5,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"","green chilli, chopped"],[1,"tsp","ginger, grated"],[1,"sprig","curry leaves"],[0.25,"tsp","asafoetida"],[2,"tbsp","coriander leaves"]],
+ steps:["Mash the warm rice lightly and let it cool to room temperature.",
+  "Mix in curd, milk and salt, then the cucumber.",
+  "Temper mustard, urad dal, chilli, ginger, curry leaves and asafoetida in oil and pour over.",
+  "Stir and add coriander. Serve at room temperature."],
+ tip:"The milk keeps it from turning sour if you pack it or eat it a few hours later."}
+];
+
+/* ---------- rendering ---------- */
+let filter = "all", serves = 4;
+const FR = {0.25:"¼",0.5:"½",0.75:"¾"};
+// Scaled quantity with its unit: "1½ cups", "1.1 kg", "pinch".
+function qty(q, unit){
+  if(unit==="g"){ const g = Math.round(q/5)*5; return g>=1000 ? +(g/1000).toFixed(1)+" kg" : g+" g"; }
+  if(unit==="tsp" && q<0.25) return "pinch";
+  const step = (unit===""||unit==="clove"||unit==="sprig") ? 0.5 : 0.25;
+  const r = Math.max(step, Math.round(q/step)*step);
+  const w = Math.floor(r), n = (w||"") + (FR[r-w]||"");
+  return unit ? n+" "+unitLabel(unit,r) : n;
+}
+function unitLabel(u,q){
+  if(!u) return "";
+  if(u==="cup"||u==="clove"||u==="sprig") return q>1 ? u+"s" : u;
+  if(u==="inch") return q>1 ? "inches" : "inch";
+  return u;
+}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+
+function recipeHTML(r){
+  const k = serves/4;
+  const ing = r.ing.map(i=>{
+    if(typeof i==="string") return `<li class="grp">${esc(i.slice(2))}</li>`;
+    const [q,u,n]=i;
+    if(q===null) return `<li><span class="q tt">—</span><span>${esc(n)}</span></li>`;
+    return `<li><span class="q">${qty(q*k,u)}</span><span>${esc(n)}</span></li>`;
+  }).join("");
+  const steps = r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("");
+  return `<article class="recipe" id="${r.id}" data-type="${r.type}">
+    <div class="r-head">
+      <div class="r-meta"><span class="tag"><span class="dot" style="background:var(--${r.type})"></span>${TYPES[r.type]}</span><span>${esc(r.region)}</span><span>${esc(r.time)}</span></div>
+      <h3>${esc(r.name)}</h3>
+      <div class="alt">${esc(r.alt)}</div>
+      <p class="with"><b>Serve with:</b> ${esc(r.with)}</p>
+    </div>
+    <div class="r-body">
+      <div><p class="label">Ingredients · serves ${serves}</p><ul class="ing">${ing}</ul></div>
+      <div><p class="label">Method</p><ol class="steps">${steps}</ol></div>
+    </div>
+    <div class="tip"><b>Tip.</b> ${esc(r.tip)}</div>
+  </article>`;
+}
+
+function render(){
+  const show = r => filter==="all" || r.type===filter;
+  document.getElementById("toc").innerHTML = MEALS.map(m=>{
+    const items = R.filter(r=>r.meal===m.id).map(r=>`<li ${show(r)?"":"hidden"}><a href="#${r.id}"><span class="dot" style="background:var(--${r.type})"></span><span class="n">${esc(r.name)}</span><span class="t">${esc(r.time)}</span></a></li>`).join("");
+    return `<div><h2>${m.name}<span>${m.local}</span></h2><ol>${items}</ol></div>`;
+  }).join("");
+  document.getElementById("chapters").innerHTML = MEALS.map(m=>{
+    const list = R.filter(r=>r.meal===m.id && show(r));
+    return `<section class="chapter" id="${m.id}">
+      <div class="chap-head"><h2>${m.name}</h2><span class="local">${m.local}</span><p>${m.intro}</p></div>
+      <div class="list">${list.length ? list.map(recipeHTML).join("") : `<p class="empty">No ${TYPES[filter].toLowerCase()} dishes in this chapter.</p>`}</div>
+    </section>`;
+  }).join("");
+}
+
+function buildControls(){
+  const counts = {}; R.forEach(r=>counts[r.type]=(counts[r.type]||0)+1);
+  const chips = document.getElementById("chips");
+  const opts = [["all","All"]].concat(Object.entries(TYPES));
+  chips.innerHTML = opts.map(([k,v])=>`<button class="chip" id="f-${k}" data-f="${k}" aria-pressed="${k==="all"}">${k!=="all"?`<span class="dot" style="background:var(--${k})"></span>`:""}${v}</button>`).join("");
+  chips.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    filter=b.dataset.f;
+    chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    render();
+  });
+  const seg=document.getElementById("seg");
+  seg.innerHTML=[2,4,6].map(n=>`<button id="s-${n}" data-s="${n}" aria-pressed="${n===4}">${n}</button>`).join("");
+  seg.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    serves=+b.dataset.s;
+    seg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+    render();
+  });
+  const n = m => R.filter(r=>r.meal===m).length;
+  const nonveg = R.filter(r=>r.type!=="veg").length;
+  document.getElementById("stats").innerHTML =
+    `<span><b>${R.length}</b>recipes</span><span><b>${n("breakfast")}</b>breakfast</span><span><b>${n("lunch")}</b>lunch</span><span><b>${n("dinner")}</b>dinner</span><span><b>${nonveg}</b>with egg, chicken, mutton or prawn</span>`;
+}
+buildControls(); render();
+</script>
