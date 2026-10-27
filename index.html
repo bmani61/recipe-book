@@ -159,7 +159,7 @@ footer p{margin:0;max-width:72ch}
 <header class="mast">
   <svg class="rib" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 180 Q100 100 180 20"/><path d="M40 160 Q60 120 30 90"/><path d="M60 140 Q90 110 70 60"/><path d="M80 120 Q120 95 110 40"/><path d="M100 100 Q150 80 150 20"/><path d="M60 140 Q100 150 130 120"/><path d="M80 120 Q120 140 160 100"/><path d="M100 100 Q140 120 180 80"/></g></svg>
   <div class="wrap">
-    <span class="eyebrow">An Andhra &amp; Telangana recipe book</span>
+    <span class="eyebrow">An Andhra, Rayalaseema &amp; Telangana recipe book</span>
     <h1>Banana Leaf Kitchen</h1>
     <p>Everyday Telugu home cooking arranged around a working day: a healthy tiffin before you leave, a lunch box that travels well, and a lighter dinner. Every recipe links to the trusted source it is adapted from.</p>
     <div class="stats" id="stats"></div>
@@ -200,7 +200,7 @@ const TAGS = {quick:"Quick", healthy:"Healthy", "high-protein":"High protein", "
 const R = [
 /* ---------- BREAKFAST ---------- */
 {id:"idli", meal:"breakfast", name:"Idli", alt:"Steamed rice cakes", region:"South Indian", type:"veg", time:"30 min + soak & ferment", serves:4,
- tags:["plan-ahead","healthy"], sides:["coconut-chutney","peanut-chutney","tomato-pachadi","karam-podi"], with:"Sambar, or any chutney below",
+ tags:["plan-ahead","healthy"], sides:["coconut-chutney","peanut-chutney","tomato-pachadi","karam-podi","chitlam-podi"], with:"Sambar, or any chutney below",
  ing:["# Batter",[0.5,"cup","urad dal (skinned)"],[1.5,"cup","idli rice (parboiled)"],[0.5,"tsp","fenugreek seeds"],[2,"tbsp","thick poha"],[0.5,"tsp","non-iodized salt"],[0.5,"cup","chilled water (for the dal)"],[0.75,"cup","water (for the rice)"]],
  steps:["Wash the rice and dal separately and soak each for at least 6 hours. Soak the poha in a little water for 30 minutes.",
   "Grind the dal with the fenugreek, poha, salt and chilled water into a thick, frothy batter. Don't let it warm up.",
@@ -247,7 +247,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/upma-recipe-how-to-make-upma/"]},
 
 {id:"egg-dosa", meal:"breakfast", name:"Egg Dosa", alt:"Guddu dosa · Muttai dosa", region:"South Indian", type:"egg", time:"15 min", serves:2,
- tags:["quick","high-protein"], sides:["tomato-pachadi","karam-podi"], with:"Coconut chutney or a spoon of karam podi",
+ tags:["quick","high-protein"], sides:["tomato-pachadi","karam-podi","chitlam-podi"], with:"Coconut chutney or a spoon of karam podi",
  ing:[[1,"cup","dosa batter, at room temperature"],[2,"","eggs"],[1,"","small onion, finely chopped"],[2,"","green chillies, chopped"],[2,"tbsp","coriander leaves"],[2,"tbsp","carrot, grated (optional)"],[1.5,"tbsp","chutney or podi"],[1.5,"tbsp","oil or butter"],[null,"","salt to taste"]],
  steps:["Mix the onion, chillies and coriander. Thin the batter with a little water if it's very thick.",
   "Heat a lightly greased tawa to medium. Spread a ladle of batter, keeping the edges thick so the egg stays in.",
@@ -256,6 +256,20 @@ const R = [
   "Cook until the base is firm, flip and press gently to cook the egg, then flip back and serve hot."],
  tip:"One egg per dosa. For a leaner version, use one whole egg and one white across two dosas.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/egg-dosa-recipe/"]},
+
+{id:"karam-dosa", meal:"breakfast", name:"Kadapa Karam Dosa", alt:"Erra karam dosa · Red chilli dosa", region:"Rayalaseema", type:"veg", time:"40 min + soak & ferment", serves:25,
+ tags:["plan-ahead"], sides:["chitlam-podi","coconut-chutney"], with:"Coconut chutney or a pickle",
+ ing:["# Batter",[3,"cup","rice"],[1,"cup","urad dal (black gram)"],[1,"tsp","fenugreek seeds"],[null,"","salt to taste"],
+      "# Red chilli paste",[22,"","dry red chillies, soaked in hot water"],[2,"","onions"],[1,"tsp","cumin seeds"],[null,"","salt to taste"],
+      "# Gram powder",[0.5,"cup","roasted chana dal (putnalu)"],[6,"clove","garlic"],[null,"","salt to taste"],
+      "# To roast",[null,"","oil (about 1½ tbsp a dosa) and ghee"]],
+ steps:["Soak the rice, urad dal and fenugreek for 4 hours, grind to a smooth batter and ferment about 12 hours until slightly sour. Adjust salt and water.",
+  "Soak the red chillies in hot water for 15 minutes, then grind with the onions, cumin and salt to a soft paste.",
+  "Grind the garlic and roasted chana dal with a little salt to a fine powder.",
+  "Spread a ladle of batter about ¼ inch thick on a hot tawa. Pour oil round the edge and ghee on top and roast patiently until crisp underneath.",
+  "Spread about a tablespoon of the chilli paste over the dosa, sprinkle the gram powder, fold in half and serve hot."],
+ tip:"The batter makes about 25 dosas, so keep the rest in the fridge for the week. A thicker dosa roasted slowly is the Kadapa style; don't spread it thin like a plain dosa.",
+ src:["Vismai Food","https://vismaifood.com/en/kadapa-karam-dosa-spicy-dosa-perfect-red-chilli-dosa"]},
 
 {id:"atukula-upma", meal:"breakfast", name:"Atukula Upma", alt:"Poha upma · Aval upma", region:"Andhra Pradesh", type:"veg", time:"25 min", serves:3,
  tags:["quick","healthy"], with:"A cup of filter coffee or buttermilk",
@@ -270,17 +284,17 @@ const R = [
  tip:"Use medium or thick poha. Thin poha turns mushy as soon as it's rinsed.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/aval-upma-poha-upma/"]},
 
-{id:"uggani", meal:"breakfast", name:"Uggani", alt:"Borugula upma · Puffed rice upma", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:3,
- tags:["quick"], with:"Mirchi bajji, or a bowl of curd",
- ing:[[250,"g","puffed rice (borugulu)"],[1,"","large onion, chopped"],[1,"","large tomato, chopped"],[3,"tbsp","fried gram (putnalu)"],[2,"tbsp","lemon juice"],[2,"tbsp","coriander leaves"],[null,"","salt to taste"],
-      "# Tempering",[2.5,"tbsp","oil"],[3,"","green chillies, slit"],[1,"sprig","curry leaves"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[3,"tbsp","peanuts"],[1,"tbsp","chana dal"],[1,"tbsp","urad dal"],[null,"","turmeric, a pinch"]],
- steps:["Grind the fried gram to a fine powder. Rinse the puffed rice in plenty of water (drain at once if it's the light, airy kind) and squeeze gently.",
-  "Heat the oil and fry mustard, cumin, dals and peanuts until the peanuts are golden. Add chillies and curry leaves for a minute.",
-  "Add the onion for 2–3 minutes, then tomato, turmeric and salt. Cook until mushy and the oil separates.",
-  "On the lowest heat, mix in the puffed rice, cover and warm through without overcooking.",
-  "Off the heat, stir in two-thirds of the fried gram powder and the coriander, then the lemon juice. Add more powder to taste."],
- tip:"The fried gram powder soaks up excess moisture and keeps uggani from turning soggy.",
- src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/puffed-rice-upma-uggani-recipe/"]},
+{id:"uggani", meal:"breakfast", name:"Uggani", alt:"Borugula upma · Kurnool puffed rice", region:"Rayalaseema", type:"veg", time:"15 min", serves:3,
+ tags:["quick"], with:"Mirchi bajji (green chilli fritters), the Kurnool way",
+ ing:[[200,"g","puffed rice (borugulu)"],[1,"","large onion, chopped"],[0.5,"cup","tomato, chopped"],[5,"","green chillies"],[2,"sprig","curry leaves"],[2.5,"tbsp","oil"],[1,"tsp","mustard seeds"],[1,"tsp","cumin seeds"],[2,"","dry red chillies"],[null,"","turmeric, a pinch"],[0.5,"tsp","red chilli powder"],[null,"","salt to taste"],[null,"","coriander leaves, a small bunch"],
+      "# Uggani powder",[0.5,"cup","roasted chana dal (putnalu)"],[2,"","dry red chillies"],[2,"tbsp","desiccated coconut"]],
+ steps:["Soak the puffed rice in water for 3 minutes, squeeze it well, add salt and mix.",
+  "Crush the green chillies with the curry leaves. Grind the roasted chana dal, red chillies and coconut to a fine powder.",
+  "Heat the oil and temper mustard, cumin, red chillies and the crushed chilli-curry leaf mix.",
+  "Sauté the onion 2 minutes, then add tomato, turmeric and chilli powder and fry until fragrant.",
+  "Add the puffed rice, the uggani powder and coriander, toss on high heat and serve hot."],
+ tip:"Squeeze the puffed rice firmly; any extra water makes uggani soggy. The roasted chana powder is what gives it the Kurnool taste.",
+ src:["Vismai Food","https://vismaifood.com/en/uggani-rayalaseema-kurnool-special-uggani-vaggani-tossed-puff-rice"]},
 
 {id:"godhuma-upma", meal:"breakfast", name:"Godhuma Rava Upma", alt:"Broken wheat upma · Dalia", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:2,
  tags:["quick","healthy"], sides:["coconut-chutney"], with:"Coconut chutney or curd",
@@ -340,7 +354,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/tomato-rice-recipe/"]},
 
 {id:"bagara-rice", meal:"lunch", name:"Bagara Rice", alt:"Bagara annam · Bagara khana", region:"Telangana", type:"veg", time:"45 min", serves:2,
- tags:[], sides:["cucumber-raita","masala-onions"], with:"Kodi kura, gutti vankaya or an egg curry",
+ tags:[], sides:["cucumber-raita","masala-onions"], with:"Kodi kura or an egg curry",
  ing:[[1,"cup","basmati rice"],[2,"tbsp","ghee"],[1,"","small onion, thinly sliced"],[2,"","green chillies, slit"],[1,"tsp","ginger-garlic paste"],[3,"tbsp","mint leaves, chopped"],[3,"tbsp","coriander leaves, chopped"],[0.5,"tsp","salt"],[1.75,"cup","water (pressure cooker; 2 cups in a pot)"],
       "# Whole spices",[1,"","bay leaf"],[1,"inch","cinnamon"],[0.5,"tsp","shahi jeera"],[3,"","cloves"],[3,"","green cardamoms"],[1,"","black cardamom"],
       "# Ground spice",[0.5,"inch","cinnamon"],[2,"","cloves"],[3,"","green cardamoms (seeds only)"]],
@@ -363,29 +377,6 @@ const R = [
  tip:"Dal thickens as it cools, so pack it a little thinner than you'd eat it hot.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/tomato-pappu-recipe/"]},
 
-{id:"palakura-pappu", meal:"lunch", name:"Palakura Pappu", alt:"Spinach dal", region:"Andhra & Telangana", type:"veg", time:"20 min", serves:3,
- tags:["quick","healthy","high-protein","chapati"], with:"Rice and ghee, or chapati",
- ing:[[0.5,"cup","toor or moong dal"],[1.25,"cup","water"],[100,"g","spinach, chopped"],[2,"","green chillies, slit"],[2,"tbsp","onion, chopped (optional)"],[0.25,"cup","tomato, chopped (optional)"],[1,"clove","garlic"],[2,"tsp","tamarind, soaked in ¼ cup hot water"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"],
-      "# Tempering",[1.5,"tbsp","oil or ghee"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"","dry red chilli, broken"],[1,"clove","garlic, crushed"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"]],
- steps:["Rinse the dal well. Put it in the cooker with the water, onion, tomato, chillies, garlic, tamarind water, salt, turmeric and spinach.",
-  "Pressure cook for 4 whistles. When the pressure drops, mash lightly and adjust salt and sourness.",
-  "Heat the oil and add mustard, cumin, red chilli and garlic. When they splutter, add curry leaves and asafoetida and switch off.",
-  "Pour the tempering over the dal, mix and rest 5 minutes before serving."],
- tip:"Swap spinach for gongura or menthi (fenugreek) leaves for other classic Andhra pappus.",
- src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/palakura-pesarapappu-spinach-moong-dal-curry/"]},
-
-{id:"dosakaya-pappu", meal:"lunch", name:"Dosakaya Pappu", alt:"Yellow cucumber dal", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:4,
- tags:["quick","healthy","high-protein","chapati"], with:"Rice and ghee, or chapati",
- ing:[[0.75,"cup","toor or moong dal"],[2.25,"cup","water"],[1.75,"cup","dosakaya (yellow cucumber), peeled and chopped"],[1,"","small onion, sliced (optional)"],[1,"","tomato, chopped (optional)"],[2,"","green chillies"],[null,"","salt to taste"],
-      "# Tempering",[1.5,"tbsp","ghee or oil"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"","dry red chilli, broken"],[2,"clove","garlic, crushed"],[1,"sprig","curry leaves"],[0.5,"tsp","red chilli powder (optional)"],[null,"","turmeric, a pinch"],[null,"","asafoetida, a pinch"]],
- steps:["Rinse the dal until the water runs clear. Peel and deseed the cucumber and chop it.",
-  "Pressure cook the dal, water, cucumber, onion, tomato and chillies for 1–3 whistles, depending on your cooker.",
-  "When the pressure drops, add salt and mash.",
-  "Heat the ghee, crackle red chilli, mustard and cumin, then fry garlic and curry leaves until crisp. Lower the heat and add asafoetida, chilli powder and turmeric.",
-  "Pour the tempering into the dal and simmer briefly until the raw chilli smell goes."],
- tip:"Taste a slice of the cucumber first. A bitter one will spoil the whole pot.",
- src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/dosakaya-pappu-recipe-dosakaya-tomato-pappu/"]},
-
 {id:"bendakaya-vepudu", meal:"lunch", name:"Bendakaya Vepudu", alt:"Okra fry with peanuts", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:3,
  tags:["quick","healthy"], with:"Pappu and rice, or chapati",
  ing:[[250,"g","okra (bendakaya), dried and cut in ½-inch rounds"],[2,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"tsp","urad dal"],[1,"tsp","chana dal"],[2,"clove","garlic, crushed (optional)"],[1,"sprig","curry leaves"],[1,"","green chilli, slit"],[1,"","onion, sliced (optional)"],[1,"tbsp","lemon juice"],[0.25,"cup","fresh grated coconut"],[0.25,"cup","roasted peanuts (optional)"],[0.25,"tsp","red chilli powder"],[0.5,"tsp","coriander powder"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"]],
@@ -396,15 +387,17 @@ const R = [
  tip:"Keep the pan uncovered until the slime is gone. Covering too early traps steam and makes it sticky.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/bendakaya-palli-vepudu-ladies-finger-stir-fry/"]},
 
-{id:"dondakaya-vepudu", meal:"lunch", name:"Dondakaya Vepudu", alt:"Ivy gourd fry · Tindora fry", region:"Andhra Pradesh", type:"veg", time:"20 min", serves:3,
- tags:["quick","healthy"], with:"Rice with ghee, or as a side to pappu",
- ing:[[250,"g","ivy gourd (dondakaya), thinly sliced"],[2,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"tsp","chana dal"],[1,"tsp","urad dal"],[2,"clove","garlic, crushed"],[1,"","dry red chilli, broken"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"],[0.25,"tsp","red chilli powder"],[3,"tbsp","fresh grated coconut"],[2,"tbsp","roasted peanuts (optional)"]],
- steps:["Rinse and dry the gourd, trim both ends and slice thinly (a few pulses in a food processor works too).",
-  "Heat the oil and temper mustard, cumin, both dals, garlic, red chilli and curry leaves until the dals are golden. Add asafoetida.",
-  "Add the gourd, salt and turmeric and stir-fry on medium-high for 3 minutes. Cover and cook on low until tender, stirring now and then.",
-  "Stir in the coconut for 2 minutes, then the chilli powder and peanuts for 2 more."],
- tip:"The source also gives a roasted dal-sesame podi to use in place of coconut. It keeps longer in a lunch box.",
- src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/dondakaya-vepudu-recipe/"]},
+{id:"bendakaya-bajji", meal:"lunch", name:"Bendakaya Bajji", alt:"Pulla koora · Sour okra curry", region:"Rayalaseema", type:"veg", time:"25 min", serves:5,
+ tags:["quick","healthy","chapati"], with:"Rice, jonna rotte or ragi sankati",
+ ing:[[300,"g","okra, in 1-inch pieces"],[3,"tbsp","oil"],[10,"clove","garlic"],[2,"","onions, chopped"],[2,"","tomatoes, chopped"],[0.5,"tsp","turmeric"],[8,"","green chillies"],[50,"g","tamarind, soaked"],[1.25,"cup","water"],[null,"","salt to taste"],
+      "# Tempering",[1,"tbsp","oil"],[1,"tsp","mustard seeds"],[4,"","dry red chillies"],[2,"sprig","curry leaves"]],
+ steps:["Heat the oil and fry the garlic and onions for about a minute.",
+  "Add tomatoes, turmeric and salt and cook until the tomatoes soften.",
+  "Add the okra and fry on high heat until it's no longer sticky.",
+  "Add the green chillies, tamarind pulp and water and simmer on medium until the okra is soft.",
+  "Take off the heat and mash coarsely. Pour over a tempering of mustard, red chillies and curry leaves."],
+ tip:"Despite the name this isn't a fritter; Rayalaseema 'bajji' is a mashed, tangy curry. It's traditionally cooked in a clay pot.",
+ src:["Vismai Food","https://vismaifood.com/en/rayalaseema-village-special-bendkaya-bajji-okra-curry-bendakaya-pullagura-vendakkai-recipe"]},
 
 {id:"beans-poriyal", meal:"lunch", name:"Beans Poriyal", alt:"Beans kura · Green beans stir-fry", region:"South Indian", type:"veg", time:"25 min", serves:3,
  tags:["quick","healthy"], with:"Any pappu or rasam with rice",
@@ -415,18 +408,6 @@ const R = [
   "Mix in the chilli powder and coconut, sauté 1 minute and switch off."],
  tip:"Works the same way with cabbage, carrot or cluster beans (goru chikkudu).",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/beans-poriyal-recipe-beans-stir-fry/"]},
-
-{id:"gutti-vankaya", meal:"lunch", name:"Gutti Vankaya Kura", alt:"Stuffed brinjal curry", region:"Andhra & Telangana", type:"veg", time:"40 min", serves:2,
- tags:[], with:"Rice, bagara rice or jonna rotte",
- ing:[[5,"","small brinjals"],[2.5,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"","small onion, sliced"],[2,"","green chillies, slit"],[1,"tsp","ginger-garlic paste"],[1,"","small tomato, chopped"],[null,"","turmeric, a pinch"],[0.25,"tsp","salt"],[0.75,"cup","water"],[1,"tbsp","lemon juice or tamarind paste"],[2,"tbsp","coriander leaves"],
-      "# Stuffing masala",[5,"","dry red chillies"],[0.25,"cup","peanuts"],[2,"tbsp","grated coconut"],[1.5,"tbsp","white sesame seeds"],[1,"tbsp","coriander seeds"],[0.75,"tsp","cumin seeds"],[1,"inch","cinnamon"],[3,"","cloves"],[2,"","green cardamoms"],[0.5,"tsp","salt"]],
- steps:["Dry-roast peanuts and red chillies until crunchy. Toast coriander, cumin, cloves, cardamom and cinnamon until fragrant, then the coconut for 2 minutes and the sesame until it splutters. Cool and grind with the salt.",
-  "Slit the brinjals into quarters, keeping the stalk on, and soak in salted water. Stuff each with as much masala as it holds.",
-  "Heat the oil and temper mustard, cumin and curry leaves. Sauté onion and chillies until golden, add ginger-garlic paste for a minute, then tomato, turmeric and salt until mushy.",
-  "Add the brinjals and sauté 2–3 minutes. Add the water and leftover masala, cover and cook on low-medium until tender.",
-  "Adjust salt, add lemon or tamarind and finish with coriander."],
- tip:"Use small, glossy, light brinjals. Heavy ones are seedy and can taste bitter.",
- src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/gutti-vankaya-kura-enne-badanekai-recipe/"]},
 
 {id:"kodi-vepudu", meal:"lunch", name:"Kodi Vepudu", alt:"Andhra chicken fry", region:"Andhra Pradesh", type:"chicken", time:"40 min", serves:4,
  tags:["high-protein","chapati"], sides:["masala-onions"], with:"Rice and rasam, or chapati",
@@ -517,7 +498,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/daddojanam/"]},
 /* ---------- DINNER ---------- */
 {id:"jonna-rotte", meal:"dinner", name:"Jonna Rotte", alt:"Jowar roti · Jolada rotti", region:"Telangana", type:"veg", time:"30 min", serves:3,
- tags:["quick","healthy","millet"], sides:["tomato-pachadi"], with:"Gongura pachadi, gutti vankaya or any kura",
+ tags:["quick","healthy","millet"], sides:["tomato-pachadi"], with:"Gongura pachadi or any kura",
  ing:[[1,"cup","jowar (jonna) flour"],[0.75,"cup","hot water, as needed"],[0.5,"cup","jowar flour, for dusting"]],
  steps:["Make a well in the flour, pour in the hot water and knead to a smooth, soft dough.",
   "Divide into small balls. Keep them covered so they don't dry out.",
@@ -538,6 +519,31 @@ const R = [
   "Turn onto a greased or wet plate, knead briefly and shape into 2–3 balls with wet hands."],
  tip:"Pinch off small pieces and swallow them with the curry rather than chewing. That's how sankati is eaten.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/ragi-mudde-ragi-sankati/"]},
+
+{id:"pulagam", meal:"dinner", name:"Rayalaseema Pulagam", alt:"Rice and green gram one-pot", region:"Rayalaseema", type:"veg", time:"30 min + 1 hr soak", serves:6,
+ tags:["healthy","high-protein"], sides:["peanut-chutney"], with:"Palli (peanut) chutney",
+ ing:[[1,"cup","rice"],[0.5,"cup","green gram (or black-eyed beans)"],[3,"cup","water"],[null,"","oil, as needed"],[1,"tsp","mustard seeds"],[1,"tsp","cumin seeds"],[0.5,"tsp","black pepper"],[1,"","onion, chopped"],[2,"sprig","curry leaves"],[4,"","green chillies"],[1,"tbsp","ginger-garlic paste"],[2,"","tomatoes, chopped"],[0.25,"tsp","turmeric"],[null,"","salt to taste"]],
+ steps:["Soak the rice and green gram for an hour and drain.",
+  "Heat oil in a pressure cooker, splutter mustard and cumin, then fry the pepper.",
+  "Fry the onion, curry leaves, chillies, salt and turmeric until the onion is cooked. Add ginger-garlic paste, then tomatoes for 2–3 minutes.",
+  "Add the rice and gram and fry until the moisture dries off.",
+  "Add the water and pressure cook for 1 whistle on high or 2 on medium. Rest 20 minutes before opening, then mix gently."],
+ tip:"In Rayalaseema homes it's often made with black-eyed beans (alasandalu) in place of green gram.",
+ src:["Vismai Food","https://vismaifood.com/en/rayalaseema-pulagam-palli-chutney"]},
+
+{id:"natu-kodi-pulusu", meal:"dinner", name:"Natu Kodi Pulusu", alt:"Country chicken curry", region:"Andhra & Telangana", type:"chicken", time:"1 hr + 3 hr marinade", serves:6,
+ tags:["plan-ahead","high-protein"], with:"Ragi sankati, hot rice or garelu",
+ ing:["# Marinade",[1000,"g","country chicken (natu kodi), curry cut"],[0.5,"tbsp","turmeric"],[2,"tbsp","oil"],[1,"tbsp","ginger-garlic paste"],[null,"","salt to taste"],
+      "# Roasted masala",[2,"tbsp","coriander seeds"],[8,"","cloves"],[5,"","green cardamoms"],[1,"inch","cinnamon"],[0.25,"cup","dry coconut (copra)"],[1,"tbsp","poppy seeds (khus khus)"],[1,"","bay leaf (optional)"],
+      "# Curry",[6,"tbsp","oil"],[2,"","green chillies, slit"],[2,"","onions, diced"],[2,"sprig","curry leaves"],[0.5,"tbsp","ginger-garlic paste"],[2,"","tomatoes, diced"],[2.5,"tbsp","red chilli powder"],[3,"cup","hot water"],[1,"","lemon, juiced"],[null,"","coriander leaves"]],
+ steps:["Rub the chicken with turmeric, oil, ginger-garlic paste and salt and marinate at least 3 hours (overnight in the fridge works).",
+  "Roast the masala spices until aromatic, adding the poppy seeds last. Cool and grind fine.",
+  "Fry the chillies, curry leaves, onions and a pinch of salt in the oil until golden, then the ginger-garlic paste.",
+  "Add tomatoes and cook until pulpy and the oil floats. Stir in the chilli powder with a splash of water.",
+  "Add the chicken and fry on high until golden. Pour in the hot water, cover and simmer on medium 35–40 minutes.",
+  "When it's about 80% cooked, add the masala powder and coriander and cook until oil floats on top. Finish with lemon juice."],
+ tip:"Country chicken is tougher than broiler; in a pressure cooker use less water and 4 whistles before adding the masala powder.",
+ src:["Vismai Food","https://vismaifood.com/en/naatukodi-pulusu-country-chicken-sour-curry"]},
 
 {id:"chapati", meal:"dinner", name:"Soft Chapati", alt:"Phulka · Roti", region:"Pan-Indian", type:"veg", time:"40 min", serves:4,
  tags:["chapati","healthy"], with:"Any gravy below: kodi kura, chicken curry, chana masala, egg bhurji",
@@ -817,6 +823,15 @@ const R = [
   "Sprinkle cumin, pepper and chaat masala on top and serve, or chill a few hours."],
  tip:"Chop the cucumber rather than grating it; grated cucumber makes raita runny unless you use Greek yogurt.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/cucumber-raita-recipe/"]},
+{id:"chitlam-podi", meal:"sides", name:"Chitlam Podi", alt:"Rayalaseema dal and chilli powder", region:"Rayalaseema", type:"veg", time:"15 min", serves:25,
+ tags:["plan-ahead"], with:"",
+ ing:[[0.25,"cup","urad dal (black gram)"],[0.25,"cup","chana dal (raw)"],[0.25,"cup","toor dal"],[25,"","dry red chillies"],[1,"tbsp","black peppercorns"],[1,"tbsp","cumin seeds"],[null,"","tamarind, gooseberry-sized"],[null,"","salt to taste"],[null,"","garlic, asafoetida or jaggery (optional)"]],
+ steps:["Roast the three dals slowly on low heat until fragrant and spread out to cool.",
+  "Roast the red chillies on low and cool separately. Roast pepper and cumin until the cumin splutters, then the tamarind briefly.",
+  "Grind the chillies, salt and tamarind to a fine powder, then add the dals, pepper and cumin and grind again.",
+  "Stir in garlic if you like and store airtight."],
+ tip:"Keeps at least two months in an airtight jar. Eat with idli, dosa, or hot rice and ghee.",
+ src:["Vismai Food","https://vismaifood.com/en/rayalaseema-special-chitlam-podi"]},
 ];
 
 /* ---------- quantities ---------- */
@@ -829,6 +844,9 @@ function unitLabel(u,q){
 // Scaled quantity with its unit: "1½ cups", "1.1 kg", "pinch", "13".
 function qty(q, unit){
   if(unit==="g"){ const g = Math.round(q/5)*5; return g>=1000 ? +(g/1000).toFixed(1)+" kg" : g+" g"; }
+  // small amounts drop to a smaller spoon instead of rounding up to ¼ cup
+  if(unit==="cup" && q<0.25) return qty(q*16, "tbsp");
+  if(unit==="tbsp" && q<0.25) return qty(q*3, "tsp");
   if(unit==="tsp" && q<0.25) return "pinch";
   let r, n;
   if(unit===""||unit==="clove"||unit==="sprig"){
@@ -852,6 +870,7 @@ const sel = {meal:null, type:null, tag:null};
 let terms = [];
 const servings = Object.fromEntries(R.map(r=>[r.id, r.serves]));
 const MAX_SERVES = 12;
+const maxServes = r => Math.max(MAX_SERVES, r.serves);
 const open = new Set();   // recipe ids currently expanded
 const done = {};          // recipe id -> Set of ticked "i3" / "s1" keys
 const mealName = id => MEALS.find(m=>m.id===id).name;
@@ -888,7 +907,7 @@ function fullHTML(r){
     <div class="cookbar">${"wakeLock" in navigator ? `<button type="button" class="wake" aria-pressed="${wantAwake}">Keep screen on</button>` : ""}<span>Tap ingredients and steps to tick them off.</span></div>
     <div class="r-body">
       <div><div class="ing-head"><p class="label">Ingredients</p>
-        <span class="serves">Serves <span class="stepper" role="group" aria-label="Servings for ${esc(r.name)}"><button type="button" data-d="-1" aria-label="Fewer servings"${s<=1?" disabled":""}>−</button><output aria-live="polite">${s}</output><button type="button" data-d="1" aria-label="More servings"${s>=MAX_SERVES?" disabled":""}>+</button></span></span></div>
+        <span class="serves">Serves <span class="stepper" role="group" aria-label="Servings for ${esc(r.name)}"><button type="button" data-d="-1" aria-label="Fewer servings"${s<=1?" disabled":""}>−</button><output aria-live="polite">${s}</output><button type="button" data-d="1" aria-label="More servings"${s>=maxServes(r)?" disabled":""}>+</button></span></span></div>
         <ul class="ing">${ingHTML(r)}</ul></div>
       <div><p class="label">Method</p><ol class="steps">${r.steps.map((t,n)=>tick(r.id, "s"+n, `<span>${esc(t)}</span>`)).join("")}</ol></div>
     </div>
@@ -1048,11 +1067,11 @@ results.addEventListener("click", e=>{
   const step = t.closest(".stepper button");
   if(step){
     const card = step.closest(".recipe"), r = byId[card.id];
-    const s = servings[r.id] = Math.min(MAX_SERVES, Math.max(1, servings[r.id] + +step.dataset.d));
+    const s = servings[r.id] = Math.min(maxServes(r), Math.max(1, servings[r.id] + +step.dataset.d));
     card.querySelector(".ing").innerHTML = ingHTML(r);
     card.querySelector(".stepper output").textContent = s;
     const [minus, plus] = card.querySelectorAll(".stepper button");
-    minus.disabled = s<=1; plus.disabled = s>=MAX_SERVES;
+    minus.disabled = s<=1; plus.disabled = s>=maxServes(r);
     return;
   }
   if(t.closest(".wake")){ setAwake(!wantAwake); return; }
@@ -1081,7 +1100,7 @@ addEventListener("popstate", e=>{
 new ResizeObserver(()=>document.documentElement.style.setProperty("--rail", rail.offsetHeight+"px")).observe(rail);
 document.documentElement.style.setProperty("--rail", rail.offsetHeight+"px");
 const n = m => R.filter(r=>r.meal===m).length;
-const telugu = R.filter(r=>/Andhra|Telangana/.test(r.region)).length;
+const telugu = R.filter(r=>/Andhra|Telangana|Rayalaseema/.test(r.region)).length;
 document.getElementById("stats").innerHTML =
   `<span><b>${R.length}</b>recipes</span><span><b>${telugu}</b>Andhra &amp; Telangana</span>` + MEALS.map(m=>`<span><b>${n(m.id)}</b>${m.name.toLowerCase()}</span>`).join("");
 
