@@ -2,6 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#2E6A3A" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1F4A28" media="(prefers-color-scheme: dark)">
 <meta name="description" content="Andhra and Telangana home recipes for a healthy breakfast, an office lunch box and dinner, each linked to its source.">
@@ -53,7 +54,7 @@ a{color:inherit}
 .stats b{font-family:var(--display);font-weight:400;font-size:1.25rem;margin-right:4px}
 
 /* Sticky rail: search, then filter chips */
-.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
 .rail .wrap{display:grid;gap:8px;padding-block:10px}
 .search{display:flex;align-items:center;gap:8px;max-width:560px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:0 14px}
 .search:focus-within{border-color:var(--leaf-text);box-shadow:0 0 0 3px color-mix(in srgb,var(--leaf-text) 22%,transparent)}
@@ -167,11 +168,11 @@ footer p{margin:0;max-width:72ch}
 <script>
 const MEALS = [
   {id:"breakfast", name:"Breakfast", local:"Tiffin", intro:"Steamed, griddled and millet-based plates that keep you going until lunch. Pesarattu, the upmas and ragi dosa are the lighter picks."},
-  {id:"lunch", name:"Lunch box", local:"Office carrier", intro:"Dishes that survive a morning in a lunch bag: variety rices that taste better at room temperature, pappus, dry vepudus and curd rice. Pack one rice or pappu with one fry."},
-  {id:"dinner", name:"Dinner", local:"Raatri bhojanam", intro:"Lighter grains like jonna rotte and ragi sankati, tangy charu and pulusu, and a few non-veg curries for the weekend."}
+  {id:"lunch", name:"Lunch box", local:"Office carrier", intro:"Dishes that survive a morning in a lunch bag: variety rices that taste better at room temperature, pappus, dry vepudus, chicken marinated overnight and air fried in the morning, and curd rice. Pack one rice or pappu with one fry."},
+  {id:"dinner", name:"Dinner", local:"Raatri bhojanam", intro:"Lighter grains like jonna rotte and ragi sankati, tangy charu and pulusu, and easy chicken gravies and protein-rich curries for chapati."}
 ];
 const TYPES = {veg:"Veg", egg:"Egg", chicken:"Chicken", mutton:"Mutton", fish:"Fish", prawn:"Prawn"};
-const TAGS = {quick:"Quick", healthy:"Healthy", "high-protein":"High protein", millet:"Millet", "plan-ahead":"Plan ahead"};
+const TAGS = {quick:"Quick", healthy:"Healthy", "high-protein":"High protein", "air-fryer":"Air fryer", chapati:"With chapati", millet:"Millet", "plan-ahead":"Plan ahead"};
 
 // ingredient: [qty|null, unit, name]  ·  "# Heading" starts a group  ·  serves: what the source recipe is written for
 const R = [
@@ -343,7 +344,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/tomato-pappu-recipe/"]},
 
 {id:"palakura-pappu", meal:"lunch", name:"Palakura Pappu", alt:"Spinach dal", region:"Andhra & Telangana", type:"veg", time:"20 min", serves:3,
- tags:["quick","healthy","high-protein"], with:"Rice and ghee, or chapati",
+ tags:["quick","healthy","high-protein","chapati"], with:"Rice and ghee, or chapati",
  ing:[[0.5,"cup","toor or moong dal"],[1.25,"cup","water"],[100,"g","spinach, chopped"],[2,"","green chillies, slit"],[2,"tbsp","onion, chopped (optional)"],[0.25,"cup","tomato, chopped (optional)"],[1,"clove","garlic"],[2,"tsp","tamarind, soaked in ¼ cup hot water"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"],
       "# Tempering",[1.5,"tbsp","oil or ghee"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"","dry red chilli, broken"],[1,"clove","garlic, crushed"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"]],
  steps:["Rinse the dal well. Put it in the cooker with the water, onion, tomato, chillies, garlic, tamarind water, salt, turmeric and spinach.",
@@ -354,7 +355,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/palakura-pesarapappu-spinach-moong-dal-curry/"]},
 
 {id:"dosakaya-pappu", meal:"lunch", name:"Dosakaya Pappu", alt:"Yellow cucumber dal", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:4,
- tags:["quick","healthy","high-protein"], with:"Rice and ghee, or chapati",
+ tags:["quick","healthy","high-protein","chapati"], with:"Rice and ghee, or chapati",
  ing:[[0.75,"cup","toor or moong dal"],[2.25,"cup","water"],[1.75,"cup","dosakaya (yellow cucumber), peeled and chopped"],[1,"","small onion, sliced (optional)"],[1,"","tomato, chopped (optional)"],[2,"","green chillies"],[null,"","salt to taste"],
       "# Tempering",[1.5,"tbsp","ghee or oil"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"","dry red chilli, broken"],[2,"clove","garlic, crushed"],[1,"sprig","curry leaves"],[0.5,"tsp","red chilli powder (optional)"],[null,"","turmeric, a pinch"],[null,"","asafoetida, a pinch"]],
  steps:["Rinse the dal until the water runs clear. Peel and deseed the cucumber and chop it.",
@@ -408,7 +409,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/gutti-vankaya-kura-enne-badanekai-recipe/"]},
 
 {id:"kodi-vepudu", meal:"lunch", name:"Kodi Vepudu", alt:"Andhra chicken fry", region:"Andhra Pradesh", type:"chicken", time:"40 min", serves:4,
- tags:["high-protein"], with:"Rice and rasam, or chapati",
+ tags:["high-protein","chapati"], with:"Rice and rasam, or chapati",
  ing:[[500,"g","chicken, bone-in or boneless"],[1,"","large onion, coarsely ground"],[1,"tbsp","ginger-garlic paste"],[1,"tbsp","red chilli powder"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[1,"tbsp","ghee"],[1.5,"tbsp","lemon juice"],
       "# Fry masala (roast & grind)",[2,"tbsp","coriander seeds"],[2,"inch","cinnamon"],[6,"","cloves"],[4,"","green cardamoms"],[0.5,"tsp","cumin seeds"],[0.5,"tsp","fennel seeds (optional)"],
       "# To finish",[1.5,"tbsp","oil or ghee"],[2,"sprig","curry leaves"],[3,"","green chillies, slit"],[12,"","cashews, finely powdered"],[0.5,"tsp","black pepper powder"],[1,"tbsp","coriander leaves"]],
@@ -421,7 +422,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chicken-fry/"]},
 
 {id:"kodi-kura", meal:"lunch", name:"Kodi Kura", alt:"Andhra chicken curry", region:"Andhra Pradesh", type:"chicken", time:"45 min", serves:3,
- tags:["high-protein"], with:"Rice, bagara rice or chapati",
+ tags:["high-protein","chapati"], with:"Rice, bagara rice or chapati",
  ing:["# Marinade",[500,"g","chicken"],[2,"tbsp","lemon juice or curd"],[1,"tsp","ginger-garlic paste"],[null,"","turmeric, a pinch"],[0.75,"tbsp","red chilli powder"],[0.33,"tsp","salt"],
       "# Curry",[3.5,"tbsp","oil"],[1,"","bay leaf"],[3,"","cloves"],[2,"","green cardamoms"],[1,"inch","cinnamon"],[3,"","onions, finely chopped"],[2,"","green chillies, slit"],[1,"sprig","curry leaves"],[1,"tsp","ginger-garlic paste"],[0.25,"tbsp","red chilli powder"],[1,"","small tomato, chopped (optional)"],[0.25,"cup","mint leaves, chopped"],[1.25,"tsp","garam masala"],[0.75,"cup","hot water"],
       "# Paste",[3,"tbsp","white poppy seeds (or 10 cashews)"],[2,"tbsp","fresh coconut (optional)"]],
@@ -433,6 +434,55 @@ const R = [
   "Stir in the poppy seed paste and cook 3–5 minutes, stirring, to the consistency you like."],
  tip:"Browning the onions slowly is what gives Andhra kodi kura its deep colour. Don't rush it on high heat.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/andhra-chicken-curry-recipe-kodi-kura-with-step-by-step-pictures/"]},
+
+{id:"af-chicken-tikka", meal:"lunch", name:"Air Fryer Chicken Tikka", alt:"Tandoori tikka kebab", region:"North Indian", type:"chicken", time:"20 min + overnight marinade", serves:4,
+ tags:["air-fryer","plan-ahead","high-protein"], with:"Chapati with onion rings and lemon, or lemon rice",
+ ing:[[500,"g","boneless chicken, 1½-inch cubes"],[1,"","onion, cubed (optional)"],[200,"g","bell peppers, cubed (optional)"],
+      "# Marinade (night before)",[0.5,"cup","Greek yogurt (hung curd)"],[1.5,"tbsp","ginger-garlic paste"],[1,"tsp","Kashmiri chilli powder"],[1,"tsp","salt"],[0.25,"tsp","turmeric"],[0.75,"tsp","roasted cumin powder"],[2,"tsp","coriander powder"],[1,"tsp","garam masala"],[1,"tsp","chaat masala"],[0.5,"tsp","black pepper, crushed"],[1,"tbsp","kasuri methi"],[1,"tbsp","lemon juice"],[1,"tbsp","oil (mustard oil if you have it)"],
+      "# To finish",[1.5,"tbsp","butter, for brushing"]],
+ steps:["Night before: mix the yogurt, ginger-garlic paste, spices, kasuri methi, lemon juice and oil. Coat the chicken (and onion and peppers, if using), cover and refrigerate for 8–48 hours.",
+  "Morning: thread onto skewers that fit your basket, or lay the pieces in a single layer.",
+  "Air fry at 200 °C (400 °F) for 6 minutes, turn, and air fry 6 minutes more.",
+  "Brush with butter or leftover marinade and air fry 2 more minutes. Brush with butter again and pack."],
+ tip:"Use thick Greek-style yogurt; thin curd runs off and the tikka won't char. Cut into the thickest piece to check it's cooked through (75 °C / 165 °F).",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chicken-tikka-in-oven/"]},
+
+{id:"af-tandoori-chicken", meal:"lunch", name:"Air Fryer Tandoori Chicken", alt:"Tandoori legs and thighs", region:"North Indian", type:"chicken", time:"25 min + overnight marinade", serves:4,
+ tags:["air-fryer","plan-ahead","high-protein"], with:"Chapati, onion salad and green chutney",
+ ing:[[750,"g","skinless bone-in chicken legs or thighs"],
+      "# Marinade (night before)",[0.5,"cup","Greek yogurt (hung curd)"],[1,"tbsp","ginger-garlic paste"],[1.5,"tsp","Kashmiri chilli powder"],[1,"tsp","garam masala"],[1.5,"tsp","coriander powder"],[0.5,"tsp","cumin powder"],[0.25,"tsp","black pepper, crushed"],[0.5,"tsp","salt"],[0.25,"tsp","turmeric (optional)"],[1,"tsp","kasuri methi"],[1.5,"tbsp","oil"],[1,"tbsp","lemon juice"],
+      "# To finish",[1,"tbsp","melted butter (or chilli oil)"],[1,"tbsp","coriander leaves"]],
+ steps:["Night before: mix all the marinade ingredients, coat the chicken well, cover with cling wrap and refrigerate for 6–36 hours.",
+  "Morning: preheat the air fryer to 200 °C (390 °F) and grease the basket.",
+  "Air fry about 20 minutes, turning after 10–12 minutes, until cooked through (75 °C / 165 °F at the thickest part).",
+  "Brush with chilli oil if you like and air fry 2 minutes more. Brush with butter and scatter coriander."],
+ tip:"Bone-in pieces need the full time; smaller drumsticks may finish sooner. Air fryers vary, so check early the first time.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/tandoori-chicken-recipe/"]},
+
+{id:"af-chicken-65", meal:"lunch", name:"Air Fryer Chicken 65", alt:"Crispy chicken 65 without deep frying", region:"South Indian", type:"chicken", time:"20 min + overnight marinade", serves:4,
+ tags:["air-fryer","plan-ahead","high-protein"], with:"Chapati, curd rice or pappu charu",
+ ing:["# Marinade (night before)",[600,"g","boneless chicken, bite-size pieces"],[1,"tbsp","ginger-garlic paste"],[0.33,"tsp","salt"],[1.5,"tsp","Kashmiri chilli powder"],[0.25,"tsp","turmeric"],[1,"tsp","garam masala"],[2,"sprig","curry leaves, finely chopped"],[4,"tbsp","curd"],[1,"tsp","lemon juice"],
+      "# Coating (morning)",[4,"tbsp","cornstarch"],[2,"tbsp","rice flour"],[1,"","egg white"],
+      "# In the basket",[2,"sprig","curry leaves"],[5,"","green chillies, slit"]],
+ steps:["Night before: mix the chicken with the marinade ingredients, cover and refrigerate (anywhere from 1 to 36 hours).",
+  "Morning: stir in the cornstarch, rice flour and egg white so every piece has a thick coating.",
+  "Lay the pieces on perforated parchment in the basket and air fry at 180 °C (375 °F) for 8 minutes.",
+  "Flip and air fry 3–4 minutes more, depending on how crisp you like it.",
+  "Add the curry leaves and chillies to the basket and air fry 2 more minutes."],
+ tip:"Keep the coating on the thicker side for the air fryer; a thin batter drips through the basket.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chicken-65-recipe-no-egg-restaurant-style-chicken-recipes/"]},
+
+{id:"af-paneer-tikka", meal:"lunch", name:"Air Fryer Paneer Tikka", alt:"Veg high-protein tikka", region:"North Indian", type:"veg", time:"20 min + 1–2 hr marinade", serves:3,
+ tags:["air-fryer","high-protein"], with:"Chapati or a wrap with onion and green chutney",
+ ing:[[200,"g","paneer, in 9 cubes"],[1,"","large onion, cubed, layers separated"],[1,"","red capsicum, cubed"],[1,"","green capsicum, cubed"],
+      "# Marinade",[6,"tbsp","Greek yogurt (hung curd)"],[1.5,"tbsp","oil (mustard oil if you have it)"],[1.25,"tsp","ginger-garlic paste"],[1,"tsp","red chilli powder (mild)"],[0.5,"tsp","salt"],[0.25,"tsp","turmeric"],[1,"tsp","garam masala"],[1,"tsp","coriander powder"],[1,"tsp","chaat masala"],[1,"tsp","kasuri methi"],
+      "# To finish",[1,"tbsp","butter or mustard oil, for brushing"]],
+ steps:["Mix the marinade, add the paneer and vegetables and coat gently. Cover and refrigerate 1–2 hours.",
+  "Thread onto skewers that fit your basket.",
+  "Air fry at 200 °C (390 °F) for 5 minutes.",
+  "Brush with leftover marinade and air fry 2 minutes more. Brush with butter before packing."],
+ tip:"Don't marinate overnight; the paneer can break. Start it when you wake up and it's ready to air fry before you leave. Over-grilling makes paneer hard.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/paneer-tikka-on-stove-top/"]},
 
 {id:"daddojanam", meal:"lunch", name:"Daddojanam", alt:"Curd rice", region:"Andhra Pradesh", type:"veg", time:"40 min", serves:2,
  tags:["healthy"], with:"Avakaya or any pickle",
@@ -468,6 +518,18 @@ const R = [
   "Turn onto a greased or wet plate, knead briefly and shape into 2–3 balls with wet hands."],
  tip:"Pinch off small pieces and swallow them with the curry rather than chewing. That's how sankati is eaten.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/ragi-mudde-ragi-sankati/"]},
+
+{id:"chapati", meal:"dinner", name:"Soft Chapati", alt:"Phulka · Roti", region:"Everyday Indian", type:"veg", time:"40 min", serves:4,
+ tags:["chapati","healthy"], with:"Any gravy below: kodi kura, chicken curry, chana masala, egg bhurji",
+ ing:[[2,"cup","chakki atta (whole wheat flour)"],[0.75,"cup","warm water, plus 2–4 tbsp if needed"],[0.25,"tsp","salt (optional)"],[1,"tbsp","oil (optional)"],[2,"tbsp","ghee or oil, for cooking"]],
+ steps:["Make a well in the atta, add the oil and salt, then the warm water. Mix with a spoon, then knead 1–2 minutes into a soft, non-sticky dough. Warm water softens the bran.",
+  "Smear the dough with a little water, cover and rest at least 30 minutes (up to 2 hours).",
+  "Knead again until pliable and divide into 8 balls (or 6 for layered chapati). Keep them covered.",
+  "Roll each one evenly, dusting with flour only as needed.",
+  "Cook on a medium-high tawa (hot, not smoking). Flip when bubbles appear, add a little ghee, flip again and press gently so it puffs.",
+  "Stack them hot, fold while warm and cover loosely so they stay soft."],
+ tip:"Makes 6–8 chapati. Too high a heat burns them; too low makes them hard and dry.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chapati/"]},
 
 {id:"pappu-charu", meal:"dinner", name:"Pappu Charu", alt:"Andhra dal rasam", region:"Andhra Pradesh", type:"veg", time:"35 min", serves:4,
  tags:["healthy","high-protein"], with:"Hot rice, ghee and appadam, with a vepudu on the side",
@@ -518,7 +580,7 @@ const R = [
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/gongura-pachadi-red-sorrel-leaves-chutney/"]},
 
 {id:"egg-curry", meal:"dinner", name:"Kodiguddu Kura", alt:"Andhra egg curry", region:"Andhra Pradesh", type:"egg", time:"40 min", serves:2,
- tags:["high-protein"], with:"Rice, chapati or dosa",
+ tags:["high-protein","chapati"], with:"Rice, chapati or dosa",
  ing:[[4,"","eggs, hard-boiled and peeled"],[2,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.75,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"cup","onions, finely chopped"],[1,"","green chilli, chopped"],[1.25,"tsp","ginger-garlic paste"],[2,"","tomatoes, finely chopped or puréed"],[8,"","cashews (optional)"],[null,"","turmeric, a pinch"],[0.75,"tsp","red chilli powder"],[0.75,"tsp","garam masala"],[1,"tsp","coriander powder"],[0.5,"tsp","salt"],[0.75,"cup","water"],[3,"tbsp","coriander leaves"]],
  steps:["Make 3–4 shallow slits in each egg. Blend the tomatoes with the cashews if using.",
   "Heat the oil and splutter cumin, mustard and curry leaves. Sauté onions and chilli until golden, add ginger-garlic paste for a minute, then the tomatoes until they break down.",
@@ -553,7 +615,7 @@ const R = [
  src:["Vismai Food","https://vismaifood.com/en/andhra-style-gongura-mutton-mutton-curry-how-to-make-gongura-mutton"]},
 
 {id:"royyala-iguru", meal:"dinner", name:"Royyala Iguru", alt:"Andhra prawn fry-curry", region:"Andhra coast", type:"prawn", time:"20 min", serves:3,
- tags:["quick","high-protein"], with:"Rice and pappu charu, or chapati",
+ tags:["quick","high-protein","chapati"], with:"Rice and pappu charu, or chapati",
  ing:["# Marinade",[250,"g","prawns, cleaned"],[0.5,"tsp","ginger-garlic paste"],[0.25,"tsp","red chilli powder"],[1,"tbsp","lemon juice"],[null,"","salt, a pinch"],
       "# Iguru",[1.5,"tbsp","oil"],[0.25,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"","green chilli, slit"],[2,"","onions, finely chopped"],[0.5,"tsp","ginger-garlic paste"],[0.25,"tsp","red chilli powder"],[null,"","turmeric, a pinch"],[1,"tsp","garam masala"],[null,"","salt to taste"],[1,"tbsp","coriander leaves"]],
  steps:["Marinate the prawns with ginger-garlic paste, chilli powder, lemon juice and a pinch of salt.",
@@ -563,10 +625,93 @@ const R = [
   "Sprinkle about 90 ml water, cover and cook on medium until the prawns curl and turn pink. Uncover to dry off extra liquid and add coriander."],
  tip:"Prawns turn rubbery fast. Take them off as soon as they form a loose C shape.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/royyala-iguru-easy-andhra-prawns-curry/"]},
+/* ---------- CHAPATI GRAVIES ---------- */
+{id:"chicken-curry", meal:"dinner", name:"Simple Chicken Curry", alt:"Everyday chicken gravy", region:"Everyday Indian", type:"chicken", time:"50 min", serves:3,
+ tags:["high-protein","chapati"], with:"Chapati, paratha or rice",
+ ing:[[500,"g","chicken, bone-in preferred"],[2.5,"tbsp","oil"],[1,"","bay leaf"],[4,"","cloves"],[2,"inch","cinnamon"],[3,"","green cardamoms"],[1,"cup","onions, finely chopped"],[2,"","green chillies, slit"],[1,"tbsp","ginger-garlic paste"],[0.5,"cup","tomatoes, puréed or finely chopped"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[0.25,"cup","yogurt (or 12 cashews, puréed)"],[1,"tsp","Kashmiri chilli powder"],[1,"tsp","garam masala"],[1,"tsp","coriander powder"],[2,"tbsp","coriander or mint leaves"],[0.75,"cup","hot water"]],
+ steps:["Heat the oil, fry the whole spices, then the onions and chillies for 7–8 minutes until deep golden.",
+  "Add the ginger-garlic paste for a minute, then tomatoes, turmeric and salt until mushy.",
+  "Lower the heat and stir in the yogurt, chilli powder, garam masala and coriander powder until aromatic.",
+  "Add the chicken and herbs and fry on medium about 3 minutes until pale. Cover and cook on low 3–4 minutes.",
+  "Add hot water for a thick gravy, cover and simmer on medium until the chicken is tender. Adjust salt."],
+ tip:"Always add hot water, not cold. Cold water makes the chicken tough.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chicken-curry/"]},
+
+{id:"butter-chicken", meal:"dinner", name:"Butter Chicken", alt:"Chicken makhani", region:"North Indian", type:"chicken", time:"55 min + overnight marinade", serves:4,
+ tags:["plan-ahead","high-protein","chapati"], with:"Chapati, naan or jeera rice",
+ ing:["# Marinade (night before)",[500,"g","boneless chicken, 1-inch pieces"],[0.75,"tsp","Kashmiri chilli powder"],[0.33,"tsp","salt"],[1,"tbsp","lemon juice"],[0.33,"cup","Greek yogurt"],[0.75,"tbsp","ginger-garlic paste"],[1,"tsp","garam masala"],[1,"tsp","coriander powder"],[1,"tsp","kasuri methi"],[1,"tbsp","oil"],
+      "# Gravy",[2.5,"tbsp","butter or ghee"],[2,"inch","cinnamon"],[3,"","green cardamoms"],[3,"","cloves"],[600,"g","tomatoes"],[0.33,"cup","cashews, soaked in hot water"],[0.5,"cup","water, for blending"],[0.75,"tbsp","ginger-garlic paste"],[1,"","green chilli"],[1.5,"tsp","Kashmiri chilli powder"],[1.25,"tsp","garam masala"],[0.5,"tsp","salt"],[1,"tsp","sugar"],[0.5,"tbsp","kasuri methi"],[1,"cup","hot water"],[0.33,"cup","cream"],[2,"tbsp","coriander leaves"]],
+ steps:["Night before: rub the chicken with lemon juice, chilli powder and salt for 20 minutes, then mix in the rest of the marinade. Cover and refrigerate overnight.",
+  "Blend the tomatoes, soaked cashews and water to a smooth purée.",
+  "Melt the butter, fry the whole spices, then the ginger-garlic paste and chilli on low for 1–2 minutes. Off the heat, stir in the ground spices, then add the purée.",
+  "Boil on medium-high, then stir on medium until thick. Add the hot water and simmer about 10 minutes until butter shows on top.",
+  "Sear the chicken in a greased pan in batches, about 2 minutes a side, until just cooked. Add to the gravy and simmer 5–7 minutes.",
+  "Stir in sugar, kasuri methi and salt, switch off the heat and stir in the cream."],
+ tip:"It's meant to be mild; adding extra spice changes the flavour. Ripe red tomatoes give the best colour.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/butter-chicken/"]},
+
+{id:"kadai-chicken", meal:"dinner", name:"Kadai Chicken", alt:"Chicken karahi", region:"North Indian", type:"chicken", time:"50 min", serves:4,
+ tags:["high-protein","chapati"], with:"Chapati, paratha or naan",
+ ing:[[500,"g","boneless chicken, 1-inch pieces"],[2.5,"tbsp","oil or ghee"],[1,"","Kashmiri dry red chilli, broken"],[0.5,"tsp","cumin seeds"],[0.75,"cup","onions, finely chopped"],[0.75,"tbsp","ginger-garlic paste"],[0.25,"tsp","turmeric"],[0.5,"tsp","Kashmiri chilli powder"],[0.5,"tsp","salt"],[1.25,"cup","tomato purée (2 tomatoes)"],[1,"tsp","kasuri methi"],[0.75,"tsp","garam masala"],[3,"tbsp","cream or thick yogurt"],[2,"tbsp","coriander leaves"],
+      "# Kadai masala",[1.5,"tbsp","coriander seeds"],[1,"","Kashmiri dry red chilli"],[1,"tsp","fennel seeds"],[2,"","cloves"],[0.5,"inch","cinnamon"],[3,"","green cardamoms"],[3,"","black peppercorns"],
+      "# Stir-fry (optional)",[1,"tbsp","butter or ghee"],[0.5,"cup","onion, cubed"],[0.5,"cup","capsicum, cubed"]],
+ steps:["Dry-roast the coriander seeds and chilli, then the other kadai-masala spices, until fragrant. Cool and grind fine.",
+  "Heat the oil, add cumin and red chilli, then fry the onions 4–5 minutes until golden. Add ginger-garlic paste for 30–60 seconds.",
+  "Add the chicken and stir-fry 3–4 minutes until pale. Lower the heat and stir in turmeric, chilli powder, salt and the kadai masala.",
+  "Add the tomato purée and cook on medium 3–4 minutes until it thickens and smells cooked. Partly cover and simmer until the chicken is tender.",
+  "Stir-fry the onion and capsicum in butter on high for 2–3 minutes and add with kasuri methi, garam masala and cream. Simmer 2 minutes."],
+ tip:"Store-bought kadai or chicken masala works if you skip grinding your own.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/kadai-chicken/"]},
+
+{id:"chicken-keema", meal:"dinner", name:"Chicken Keema", alt:"Minced chicken curry", region:"Everyday Indian", type:"chicken", time:"30 min", serves:3,
+ tags:["quick","high-protein","chapati"], with:"Chapati, or stuffed in a roll",
+ ing:[[250,"g","chicken mince (keema)"],[2,"tbsp","oil"],[1,"","bay leaf"],[0.5,"tsp","cumin seeds"],[1,"inch","cinnamon"],[2,"","green cardamoms"],[4,"","cloves"],[0.75,"cup","onions, chopped"],[1,"","green chilli, chopped"],[1,"tbsp","ginger-garlic paste"],[1,"cup","tomato, finely chopped"],[1.5,"tsp","garam masala or meat masala"],[0.5,"tsp","red chilli powder"],[8,"","mint leaves, chopped"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[0.25,"cup","green peas (optional)"],[2,"tbsp","coriander leaves"]],
+ steps:["Heat the oil on low-medium and let the whole spices sizzle. Fry the onion and chilli until golden, then the ginger-garlic paste until the raw smell goes.",
+  "Add the tomato until soft, then chilli powder, masala and mint until the raw smell goes. Tip this onto a plate.",
+  "In the same pan, cook the keema with turmeric and salt, covered on low, in its own moisture until soft.",
+  "Stir the onion-tomato masala back in, cover and cook on low until blended.",
+  "Cook uncovered for a dry keema, or add a little coconut or cashew milk for gravy. Finish with coriander."],
+ tip:"Cooking the mince separately in its own juices keeps it soft and stops it clumping.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chicken-keema-recipe/"]},
+
+{id:"egg-bhurji", meal:"dinner", name:"Egg Bhurji", alt:"Kodiguddu porutu · Andhra egg scramble", region:"Andhra Pradesh", type:"egg", time:"20 min", serves:2,
+ tags:["quick","high-protein","chapati"], with:"Chapati, or with rice and pappu",
+ ing:[[4,"","eggs"],[0.25,"tsp","salt"],[null,"","turmeric, a pinch"],[2,"tbsp","oil"],[0.5,"tsp","cumin seeds"],[0.5,"cup","onion, finely chopped"],[1,"","green chilli, chopped"],[0.75,"tsp","ginger-garlic paste"],[1,"","small tomato, finely chopped (optional)"],[0.75,"tsp","garam masala"],[0.5,"tsp","red chilli powder"],[2,"tbsp","coriander leaves"]],
+ steps:["Beat the eggs with the salt and turmeric until frothy.",
+  "Heat the oil and splutter the cumin. Sauté the onion and chilli until golden.",
+  "Add the ginger-garlic paste for a minute, then the tomato until soft and mushy.",
+  "Pour in the eggs and scramble gently until just set.",
+  "Sprinkle garam masala and chilli powder, stir 1–2 minutes, adjust salt and add coriander."],
+ tip:"Take it off the heat while the eggs are still soft; they keep cooking in the pan.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/egg-bhurji-andhra-egg-porutu/"]},
+
+{id:"chana-masala", meal:"dinner", name:"Chana Masala", alt:"Chickpea curry", region:"North Indian", type:"veg", time:"50 min + overnight soak", serves:4,
+ tags:["plan-ahead","healthy","high-protein","chapati"], with:"Chapati, rice or poori",
+ ing:[[1,"cup","dried chickpeas (kabuli chana)"],[1.5,"cup","water, to pressure cook"],[2,"tbsp","oil"],[1,"","bay leaf (optional)"],[1,"inch","cinnamon"],[2,"","cloves"],[2,"","green cardamoms"],[1.5,"cup","onions, finely chopped"],[1,"","green chilli, slit"],[0.75,"tbsp","ginger-garlic paste"],[1.5,"cup","tomatoes, finely chopped"],[0.75,"tsp","salt"],[0.25,"tsp","turmeric"],[1.5,"tsp","Kashmiri chilli powder"],[1,"tsp","garam masala"],[2,"tsp","coriander powder"],[0.5,"tsp","cumin powder"],[1,"tsp","kasuri methi"],[0.25,"tsp","amchur (optional)"],[2,"tbsp","coriander leaves"]],
+ steps:["Night before: rinse the chickpeas three times and soak in 3½–4 cups water for at least 8 hours. Drain and rinse.",
+  "Pressure cook with 1½ cups water for 5–6 whistles and let the pressure drop. They should mash easily between your fingers.",
+  "Heat the oil, add the whole spices, then the onions and chilli until light golden. Add ginger-garlic paste for a minute.",
+  "Add tomatoes and salt and cook until thick, then the ground spices for 3–4 minutes.",
+  "Add the chickpeas with about 1¼ cups of their cooking water plus ¾ cup more water. Cover and simmer 15 minutes.",
+  "Crush in the kasuri methi, add amchur and coriander."],
+ tip:"Check the chickpeas mash easily before they go in. They barely soften further once they're in the tomato masala.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chana-masala/"]},
+
+{id:"soya-curry", meal:"dinner", name:"Soya Chunks Curry", alt:"Meal maker curry", region:"Everyday Indian", type:"veg", time:"25 min", serves:3,
+ tags:["quick","high-protein","chapati"], with:"Chapati, rice or pulao",
+ ing:[[1.25,"cup","soya chunks (meal maker)"],[1.5,"tbsp","oil"],[0.5,"tsp","cumin seeds"],[1,"sprig","curry leaves or a bay leaf"],[1,"cup","onions, finely chopped"],[1,"","green chilli, slit"],[1.5,"tsp","ginger-garlic paste"],[0.75,"tsp","red chilli powder"],[0.75,"tsp","garam masala or chicken masala"],[0.75,"tsp","coriander powder"],[0.5,"tsp","salt"],[1.25,"cup","hot water"],[2,"tbsp","coriander leaves"],
+      "# Purée",[1.5,"cup","tomatoes"],[0.25,"cup","fresh coconut (or 10 cashews)"]],
+ steps:["Soak the soya chunks in boiling water off the heat until soft. Squeeze, rinse twice and squeeze again. Blend the tomatoes and coconut smooth.",
+  "Heat the oil and splutter the cumin. Add curry leaves, onions and chilli until golden, then ginger-garlic paste for a minute.",
+  "Add the tomato-coconut purée and cook until thick and it leaves the sides of the pan.",
+  "Stir in the spice powders and salt for 3 minutes, then the soya chunks for 3 minutes.",
+  "Add the hot water, boil, then simmer on low 5–8 minutes until oil floats on top. Add coriander."],
+ tip:"Rest it an hour before serving so the chunks soak up the gravy. Rinsing twice removes the raw soya smell.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/soya-chunks-curry-meal-maker-curry/"]},
 ];
 
 /* ---------- quantities ---------- */
-const FR = {0.25:"¼",0.5:"½",0.75:"¾"};
+const FRACS = [[0,""],[1/4,"¼"],[1/3,"⅓"],[1/2,"½"],[2/3,"⅔"],[3/4,"¾"],[1,""]];
 function unitLabel(u,q){
   if(u==="cup"||u==="clove"||u==="sprig") return q>1 ? u+"s" : u;
   if(u==="inch") return q>1 ? "inches" : "inch";
@@ -576,10 +721,18 @@ function unitLabel(u,q){
 function qty(q, unit){
   if(unit==="g"){ const g = Math.round(q/5)*5; return g>=1000 ? +(g/1000).toFixed(1)+" kg" : g+" g"; }
   if(unit==="tsp" && q<0.25) return "pinch";
-  const count = unit===""||unit==="clove"||unit==="sprig";
-  const step = count ? (q>=3 ? 1 : 0.5) : 0.25;
-  const r = Math.max(step, Math.round(q/step)*step);
-  const w = Math.floor(r), n = (w||"") + (FR[r-w]||"");
+  let r, n;
+  if(unit===""||unit==="clove"||unit==="sprig"){
+    // counts: halves below 3, whole numbers above
+    const per = q>=3 ? 1 : 2;
+    r = Math.max(0.5, Math.round(q*per)/per);
+    n = (Math.floor(r)||"") + (r%1 ? "½" : "");
+  } else {
+    // spoons and cups: nearest whole + ¼ ⅓ ½ ⅔ ¾, never below ¼
+    const w = Math.floor(q), [f,s] = FRACS.reduce((a,b)=>Math.abs(q-w-b[0]) < Math.abs(q-w-a[0]) ? b : a);
+    r = Math.max(0.25, w+f);
+    n = w+f < 0.25 ? "¼" : f===1 ? String(w+1) : (w||"") + s;
+  }
   return unit ? n+" "+unitLabel(unit,r) : n;
 }
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
