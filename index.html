@@ -8,15 +8,18 @@
 <meta name="description" content="Andhra and Telangana home recipes for a healthy breakfast, an office lunch box and dinner, each linked to its source.">
 <title>Banana Leaf Kitchen</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Mukta:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: leaf-green masthead, sticky search + filter chips, collapsible contents, then three meal chapters of recipe cards (ingredients beside method). */
+/* Layout: leaf-green masthead, sticky search + filter chips with counts, then meal chapters of compact recipe rows that open in place (ingredients beside method). */
 :root{
   --bg:#F5F7F1; --paper:#FFFFFF; --ink:#1C2A21; --muted:#5A6A5E; --line:#DCE3D6;
   --leaf:#2E6A3A; --leaf-ink:#F3F8EF; --leaf-soft:#E5EFE1; --leaf-text:#2E6A3A;
   --turmeric:#D99A16; --turmeric-ink:#8A5A00; --chilli:#B4362B;
-  --veg:#2E8A3E; --egg:#C98A0A; --chicken:#C4552B; --mutton:#9C2F3A; --fish:#2F6F8F; --prawn:#D0644F;
+  --veg:#2E8A3E; --egg:#C98A0A; --chicken:#C4552B; --mutton:#9C2F3A; --seafood:#2F6F8F;
   --display:"Young Serif",Georgia,"Times New Roman",serif;
   --body:"Mukta","Segoe UI",system-ui,sans-serif;
 }
@@ -24,13 +27,13 @@
   --bg:#111813; --paper:#18221B; --ink:#E6ECE2; --muted:#9BAA9E; --line:#2A3830;
   --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A; --leaf-text:#6CC27A;
   --turmeric:#E8B443; --turmeric-ink:#E8B443; --chilli:#E06A5E;
-  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --fish:#7FB6D4; --prawn:#F08F7A;
+  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --seafood:#7FB6D4;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111813; --paper:#18221B; --ink:#E6ECE2; --muted:#9BAA9E; --line:#2A3830;
   --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A; --leaf-text:#6CC27A;
   --turmeric:#E8B443; --turmeric-ink:#E8B443; --chilli:#E06A5E;
-  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --fish:#7FB6D4; --prawn:#F08F7A;
+  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --seafood:#7FB6D4;
   color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -52,8 +55,14 @@ a{color:inherit}
 .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:600;opacity:.8}
 .stats{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.92rem;opacity:.9}
 .stats b{font-family:var(--display);font-weight:400;font-size:1.25rem;margin-right:4px}
+@media (max-width:600px){
+  .mast .wrap{padding-block:18px 16px;gap:2px}
+  .mast h1{font-size:1.9rem}
+  .mast p,.stats{display:none}
+  .mast .rib{width:180px;height:180px;right:-40px;top:-50px}
+}
 
-/* Sticky rail: search, then filter chips */
+/* Sticky rail: search, then filter chips with live counts */
 .rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
 .rail .wrap{display:grid;gap:8px;padding-block:10px}
 .search{display:flex;align-items:center;gap:8px;max-width:560px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:0 14px}
@@ -61,53 +70,59 @@ a{color:inherit}
 .search svg{flex:none;color:var(--muted)}
 .search input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:16px;padding:8px 0;outline:none}
 .search input::placeholder{color:var(--muted)}
-.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:3px 11px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;position:relative}
+.chip{font:inherit;font-size:.85rem;min-height:34px;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:4px 12px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip .ct{font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed="true"] .ct{color:inherit;opacity:.75}
+.chip:disabled{opacity:.4;cursor:default}
 .sep{width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
-@media (max-width:600px){
-  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+@media (max-width:900px){
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
   .chips::-webkit-scrollbar{display:none}
   .chip{flex:none}
 }
 
-/* Status + contents */
-.status{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:20px 0 0;color:var(--muted);font-size:.95rem}
+/* Status: result count plus each active filter as a removable pill */
+.status{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 0;color:var(--muted);font-size:.95rem}
 .status b{color:var(--ink)}
-.linkbtn{font:inherit;color:var(--leaf-text);background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;font-weight:600}
-.toc-wrap{margin-top:28px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
-.toc-wrap>summary{cursor:pointer;padding:12px 16px;font-weight:600}
-.toc-wrap>summary span{color:var(--muted);font-weight:400}
-.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px 24px;padding:0 16px 16px}
-.toc h2{font-size:1.2rem;margin-bottom:8px}
-.toc ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-.toc li{border-bottom:1px solid var(--line)}
-.toc a{display:flex;align-items:center;gap:10px;padding:7px 2px;text-decoration:none}
-.toc a:hover .n{text-decoration:underline}
-.toc .t{margin-left:auto;color:var(--muted);font-size:.82rem;font-variant-numeric:tabular-nums;text-align:right}
+.pill{font:inherit;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 10px 3px 12px;border-radius:999px;border:0;background:var(--ink);color:var(--bg);cursor:pointer}
+.pill span{font-size:1.1rem;line-height:1;opacity:.75}
+.linkbtn{font:inherit;color:var(--leaf-text);background:none;border:0;padding:6px 2px;text-decoration:underline;cursor:pointer;font-weight:600}
 
-/* Chapters */
+/* Chapters + compact recipe rows */
 .chapter,.recipe,main{scroll-margin-top:calc(var(--rail,110px) + 12px)}
-.chapter{padding-block:40px 8px}
-.chap-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-bottom:20px;border-bottom:3px solid var(--leaf);padding-bottom:10px}
-.chap-head h2{font-size:clamp(1.8rem,4.5vw,2.5rem)}
-.chap-head p{margin:0;color:var(--muted);flex-basis:100%;max-width:64ch}
-.chap-head .local{font-family:var(--display);color:var(--turmeric-ink);font-size:1.2rem}
-.list{display:grid;gap:22px}
+.chapter{padding-block:32px 4px}
+.chap-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin-bottom:14px;border-bottom:3px solid var(--leaf);padding-bottom:8px}
+.chap-head h2{font-size:clamp(1.7rem,4.5vw,2.4rem)}
+.chap-head p{margin:0;color:var(--muted);flex-basis:100%;max-width:64ch;font-size:.95rem}
+.chap-head .local{font-family:var(--display);color:var(--turmeric-ink);font-size:1.15rem}
+.list{display:grid;gap:10px}
 
-.recipe{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px clamp(16px,3vw,28px)}
-.r-head{display:grid;gap:6px;margin-bottom:16px}
-.r-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.85rem;color:var(--muted);align-items:center}
+.recipe{background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.recipe>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;padding:12px clamp(14px,3vw,24px)}
+.recipe>summary::-webkit-details-marker{display:none}
+.recipe>summary h3{font-size:1.25rem}
+.recipe>summary .alt{grid-column:1;font-family:var(--display);color:var(--muted);font-size:.95rem}
+.chev{grid-column:2;grid-row:1 / span 3;align-self:center;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--leaf-soft);color:var(--leaf-text);transition:transform .2s}
+.recipe[open] .chev{transform:rotate(180deg)}
+.recipe[open]>summary{border-bottom:1px solid var(--line)}
+.r-meta{grid-column:1;display:flex;flex-wrap:wrap;gap:2px 12px;font-size:.82rem;color:var(--muted);align-items:center;margin-top:4px}
 .r-meta .kind{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
-.r-head h3{font-size:clamp(1.4rem,3.4vw,1.75rem)}
-.r-head .alt{font-family:var(--display);color:var(--muted);font-size:1rem}
-.r-head .with{font-size:.92rem;margin:0}
-.r-head .with b{font-weight:600}
-.xref{color:var(--leaf-text);font-weight:600;text-underline-offset:2px}
-.r-tags{display:flex;flex-wrap:wrap;gap:6px}
-.tg{font:inherit;font-size:.78rem;font-weight:600;color:var(--leaf-text);background:var(--leaf-soft);border:0;border-radius:999px;padding:2px 10px;cursor:pointer}
-.tg:hover{text-decoration:underline}
+.badge{font-size:.75rem;font-weight:600;color:var(--leaf-text);background:var(--leaf-soft);border-radius:999px;padding:0 8px}
+
+.r-full{padding:16px clamp(16px,3vw,28px) 22px;display:grid;gap:16px}
+.with{font-size:.92rem;margin:0}
+.with b{font-weight:600}
+.xrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.85rem}
+.xrow .lbl{font-weight:600;margin-right:2px}
+.xref,.tg{font:inherit;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;min-height:32px;padding:3px 12px;border-radius:999px;border:0;background:var(--leaf-soft);color:var(--leaf-text);text-decoration:none;cursor:pointer}
+.xref:hover,.tg:hover{text-decoration:underline}
+.cookbar{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:.85rem;color:var(--muted)}
+.wake{font:inherit;font-size:.85rem;font-weight:600;min-height:32px;padding:3px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.wake[aria-pressed="true"]{background:var(--turmeric);border-color:var(--turmeric);color:#1C1608}
 .r-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);gap:28px}
 @media (max-width:760px){.r-body{grid-template-columns:minmax(0,1fr);gap:18px}}
 .label{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--muted);margin:0 0 8px}
@@ -115,25 +130,30 @@ a{color:inherit}
 .ing-head .label{margin:0}
 .serves{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
 .stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
-.stepper button{font:inherit;font-size:1.15rem;line-height:1;width:32px;height:32px;border:0;background:transparent;color:var(--ink);cursor:pointer;border-radius:999px}
+.stepper button{font:inherit;font-size:1.15rem;line-height:1;width:36px;height:36px;border:0;background:transparent;color:var(--ink);cursor:pointer;border-radius:999px}
 .stepper button:disabled{opacity:.35;cursor:default}
 .stepper output{min-width:1.6em;text-align:center;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 .ing{list-style:none;margin:0;padding:0}
-.ing li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:8px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:.95rem}
+.ing li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:.95rem}
 .ing li.grp{display:block;border:0;padding:12px 0 2px;font-weight:700;font-size:.82rem;color:var(--leaf-text);text-transform:uppercase;letter-spacing:.08em}
 .q{font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
 .q.tt{font-weight:400;color:var(--muted);font-size:.85rem}
 .steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px}
 .steps li{counter-increment:s;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px}
 .steps li::before{content:counter(s);font-family:var(--display);color:var(--leaf-ink);background:var(--leaf);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;margin-top:2px}
-.tip{margin-top:18px;padding:10px 14px;border-left:3px solid var(--turmeric);background:color-mix(in srgb,var(--turmeric) 10%,var(--paper));font-size:.93rem;border-radius:0 6px 6px 0}
+[role="checkbox"]{cursor:pointer;border-radius:4px}
+[role="checkbox"][aria-checked="true"]>span{text-decoration:line-through;opacity:.5}
+.steps li[aria-checked="true"]::before{content:"✓"}
+.tip{padding:10px 14px;border-left:3px solid var(--turmeric);background:color-mix(in srgb,var(--turmeric) 10%,var(--paper));font-size:.93rem;border-radius:0 6px 6px 0}
 .tip b{font-weight:700}
-.src{margin:12px 0 0;font-size:.85rem;color:var(--muted)}
+.r-foot{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.src{margin:0;font-size:.85rem;color:var(--muted)}
 .src a{color:var(--leaf-text);font-weight:600}
 
 footer{padding-block:40px 56px;color:var(--muted);font-size:.88rem;display:grid;gap:8px}
 footer p{margin:0;max-width:72ch}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
 </style>
 
 <header class="mast">
@@ -158,11 +178,11 @@ footer p{margin:0;max-width:72ch}
 
 <main class="wrap" id="results">
   <p class="status" id="status" aria-live="polite" hidden></p>
-  <details class="toc-wrap" id="tocwrap"><summary>Contents <span id="toc-count"></span></summary><section class="toc" id="toc" aria-label="Contents"></section></details>
   <div id="chapters"></div>
   <footer>
     <p>Each recipe is adapted from the linked page, mostly <a href="https://www.indianhealthyrecipes.com/">Swasthi's Recipes</a> (Swasthi Shreekanth's Andhra-rooted, tested recipes), plus <a href="https://vismaifood.com/en">Vismai Food</a> and <a href="https://hebbarskitchen.com/">Hebbar's Kitchen</a>. Ingredients and servings follow the source; the method is shortened. Open the source for photos, variations and full notes.</p>
-    <p>Quantities use standard cups (240 ml) and spoons. Each card opens at the servings its source was written for; use − and + to scale. "Whistles" assume a 3–5 litre pressure cooker on medium heat.</p>
+    <p>Quantities use standard cups (240 ml) and spoons. Each recipe opens at the servings its source was written for; use − and + to scale, and tap ingredients and steps to tick them off while you cook. "Whistles" assume a 3–5 litre pressure cooker on medium heat.</p>
+    <p>Add this page to your home screen to open it like an app; recipes you've already loaded stay available offline.</p>
   </footer>
 </main>
 
@@ -173,7 +193,7 @@ const MEALS = [
   {id:"dinner", name:"Dinner", local:"Raatri bhojanam", intro:"Lighter grains like jonna rotte and ragi sankati, tangy charu and pulusu, and easy chicken gravies and protein-rich curries for chapati."},
   {id:"sides", name:"Sides", local:"Pachadi · Podi · Raita", intro:"Chutneys, podi, onions and raita. Each card lists the dishes it goes with, and every dish links back here."}
 ];
-const TYPES = {veg:"Veg", egg:"Egg", chicken:"Chicken", mutton:"Mutton", fish:"Fish", prawn:"Prawn"};
+const TYPES = {veg:"Veg", egg:"Egg", chicken:"Chicken", mutton:"Mutton", seafood:"Seafood"};
 const TAGS = {quick:"Quick", healthy:"Healthy", "high-protein":"High protein", "air-fryer":"Air fryer", chapati:"With chapati", millet:"Millet", "plan-ahead":"Plan ahead"};
 
 // ingredient: [qty|null, unit, name]  ·  "# Heading" starts a group  ·  serves: what the source recipe is written for
@@ -226,7 +246,7 @@ const R = [
  tip:"Use 2¾ cups water instead of 3 if you like it drier for packing.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/upma-recipe-how-to-make-upma/"]},
 
-{id:"egg-dosa", meal:"breakfast", name:"Egg Dosa", alt:"Guddu dosa · Muttai dosa", region:"South Indian street", type:"egg", time:"15 min", serves:2,
+{id:"egg-dosa", meal:"breakfast", name:"Egg Dosa", alt:"Guddu dosa · Muttai dosa", region:"South Indian", type:"egg", time:"15 min", serves:2,
  tags:["quick","high-protein"], sides:["tomato-pachadi","karam-podi"], with:"Coconut chutney or a spoon of karam podi",
  ing:[[1,"cup","dosa batter, at room temperature"],[2,"","eggs"],[1,"","small onion, finely chopped"],[2,"","green chillies, chopped"],[2,"tbsp","coriander leaves"],[2,"tbsp","carrot, grated (optional)"],[1.5,"tbsp","chutney or podi"],[1.5,"tbsp","oil or butter"],[null,"","salt to taste"]],
  steps:["Mix the onion, chillies and coriander. Thin the batter with a little water if it's very thick.",
@@ -258,7 +278,7 @@ const R = [
   "Heat the oil and fry mustard, cumin, dals and peanuts until the peanuts are golden. Add chillies and curry leaves for a minute.",
   "Add the onion for 2–3 minutes, then tomato, turmeric and salt. Cook until mushy and the oil separates.",
   "On the lowest heat, mix in the puffed rice, cover and warm through without overcooking.",
-  "Off the heat, stir in 2 tbsp of the fried gram powder and the coriander, then the lemon juice. Add more powder to taste."],
+  "Off the heat, stir in two-thirds of the fried gram powder and the coriander, then the lemon juice. Add more powder to taste."],
  tip:"The fried gram powder soaks up excess moisture and keeps uggani from turning soggy.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/puffed-rice-upma-uggani-recipe/"]},
 
@@ -286,9 +306,9 @@ const R = [
 /* ---------- LUNCH BOX ---------- */
 {id:"pulihora", meal:"lunch", name:"Pulihora", alt:"Chintapandu pulihora · Tamarind rice", region:"Andhra Pradesh", type:"veg", time:"30 min + cooling", serves:3,
  tags:[], with:"Curd, appadam or a vepudu",
- ing:[[1.5,"cup","aged rice"],[1,"tbsp","sesame oil"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[4,"tbsp","thick tamarind pulp"],[0.75,"tsp","jaggery (optional)"],[0.5,"tsp","roasted mustard powder (optional)"],
+ ing:[[1.5,"cup","aged rice"],[3,"cup","water, to cook the rice"],[1,"tbsp","sesame oil"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[4,"tbsp","thick tamarind pulp"],[0.75,"tsp","jaggery (optional)"],[0.5,"tsp","roasted mustard powder (optional)"],
       "# Tempering",[2,"tbsp","oil"],[0.5,"tsp","mustard seeds"],[1,"tbsp","urad dal"],[1,"tbsp","chana dal"],[0.25,"cup","peanuts"],[2,"","dry red chillies, broken"],[2,"","green chillies, slit"],[0.5,"tsp","ginger, finely chopped"],[2,"sprig","curry leaves"],[null,"","asafoetida, a pinch"]],
- steps:["Wash the rice and pressure cook with 3 cups water for 2–3 whistles on medium. Spread on a wide plate without mashing.",
+ steps:["Wash the rice and pressure cook with the water for 2–3 whistles on medium. Spread on a wide plate without mashing.",
   "Sprinkle salt and turmeric over the rice, drizzle the sesame oil and mix gently. Let it cool completely.",
   "Fry mustard, peanuts and both dals in the oil until the peanuts turn golden. Add curry leaves, both chillies and ginger until the red chillies crisp, then the asafoetida.",
   "Add the tamarind pulp, jaggery and a little salt. Cook until thick and the oil separates at the edges.",
@@ -496,7 +516,7 @@ const R = [
  tip:"Mixing milk into the hot rice keeps it from turning sour by lunchtime, so it's a reliable lunch box dish even in summer.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/daddojanam/"]},
 /* ---------- DINNER ---------- */
-{id:"jonna-rotte", meal:"dinner", name:"Jonna Rotte", alt:"Jowar roti · Jolada rotti", region:"Telangana & North Karnataka", type:"veg", time:"30 min", serves:3,
+{id:"jonna-rotte", meal:"dinner", name:"Jonna Rotte", alt:"Jowar roti · Jolada rotti", region:"Telangana", type:"veg", time:"30 min", serves:3,
  tags:["quick","healthy","millet"], sides:["tomato-pachadi"], with:"Gongura pachadi, gutti vankaya or any kura",
  ing:[[1,"cup","jowar (jonna) flour"],[0.75,"cup","hot water, as needed"],[0.5,"cup","jowar flour, for dusting"]],
  steps:["Make a well in the flour, pour in the hot water and knead to a smooth, soft dough.",
@@ -512,14 +532,14 @@ const R = [
  ing:[[1,"cup","ragi flour"],[2,"cup","water"],[0.33,"tsp","salt (optional)"],[1.5,"tsp","ghee"],
       "# Slurry",[1,"tbsp","ragi flour"],[3,"tbsp","water"]],
  steps:["Whisk the slurry flour and water until smooth.",
-  "Boil the 2 cups water with salt and ghee, stir in the slurry and bring back to a boil on medium.",
+  "Boil the water with salt and ghee, stir in the slurry and bring back to a boil on medium.",
   "Turn the heat to the lowest, add the remaining flour in one go and stir with a wooden stick until no lumps remain.",
   "Cover and cook on the lowest heat for 5 minutes, stir, then switch off and leave covered 5 more minutes.",
   "Turn onto a greased or wet plate, knead briefly and shape into 2–3 balls with wet hands."],
  tip:"Pinch off small pieces and swallow them with the curry rather than chewing. That's how sankati is eaten.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/ragi-mudde-ragi-sankati/"]},
 
-{id:"chapati", meal:"dinner", name:"Soft Chapati", alt:"Phulka · Roti", region:"Everyday Indian", type:"veg", time:"40 min", serves:4,
+{id:"chapati", meal:"dinner", name:"Soft Chapati", alt:"Phulka · Roti", region:"Pan-Indian", type:"veg", time:"40 min", serves:4,
  tags:["chapati","healthy"], with:"Any gravy below: kodi kura, chicken curry, chana masala, egg bhurji",
  ing:[[2,"cup","chakki atta (whole wheat flour)"],[0.75,"cup","warm water, plus 2–4 tbsp if needed"],[0.25,"tsp","salt (optional)"],[1,"tbsp","oil (optional)"],[2,"tbsp","ghee or oil, for cooking"]],
  steps:["Make a well in the atta, add the oil and salt, then the warm water. Mix with a spoon, then knead 1–2 minutes into a soft, non-sticky dough. Warm water softens the bran.",
@@ -590,7 +610,7 @@ const R = [
  tip:"Slitting the eggs lets the masala soak into the whites.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/spicy-andhra-egg-curry-south-indian-egg-recipes/"]},
 
-{id:"chepala-pulusu", meal:"dinner", name:"Chepala Pulusu", alt:"Andhra fish curry", region:"Andhra Pradesh", type:"fish", time:"40 min", serves:4,
+{id:"chepala-pulusu", meal:"dinner", name:"Chepala Pulusu", alt:"Andhra fish curry", region:"Andhra Pradesh", type:"seafood", time:"40 min", serves:4,
  tags:["high-protein"], with:"Hot rice",
  ing:["# Marinade",[1000,"g","firm fish, thick pieces"],[0.5,"tsp","red chilli powder"],[0.25,"tsp","turmeric"],[0.33,"tsp","salt"],[1,"tbsp","lemon juice"],
       "# Pulusu",[4.5,"tbsp","oil"],[1,"","bay leaf"],[4,"","cloves"],[1,"inch","cinnamon"],[0.5,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"cup","onions, finely chopped"],[3,"","green chillies, slit"],[1,"tbsp","ginger-garlic paste"],[0.75,"tsp","red chilli powder"],[2,"tsp","garam masala"],[0.5,"tsp","salt"],[2.5,"tbsp","tamarind, soaked in ¾ cup hot water"],[10,"","cashews, ground to a paste"],[8,"","coriander stalks with leaves"]],
@@ -614,7 +634,7 @@ const R = [
  tip:"Use bone-in, medium pieces; small pieces turn stringy over the long cook. Use only the leaves, not the stems.",
  src:["Vismai Food","https://vismaifood.com/en/andhra-style-gongura-mutton-mutton-curry-how-to-make-gongura-mutton"]},
 
-{id:"royyala-iguru", meal:"dinner", name:"Royyala Iguru", alt:"Andhra prawn fry-curry", region:"Andhra coast", type:"prawn", time:"20 min", serves:3,
+{id:"royyala-iguru", meal:"dinner", name:"Royyala Iguru", alt:"Andhra prawn fry-curry", region:"Andhra Pradesh", type:"seafood", time:"20 min", serves:3,
  tags:["quick","high-protein","chapati"], with:"Rice and pappu charu, or chapati",
  ing:["# Marinade",[250,"g","prawns, cleaned"],[0.5,"tsp","ginger-garlic paste"],[0.25,"tsp","red chilli powder"],[1,"tbsp","lemon juice"],[null,"","salt, a pinch"],
       "# Iguru",[1.5,"tbsp","oil"],[0.25,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"","green chilli, slit"],[2,"","onions, finely chopped"],[0.5,"tsp","ginger-garlic paste"],[0.25,"tsp","red chilli powder"],[null,"","turmeric, a pinch"],[1,"tsp","garam masala"],[null,"","salt to taste"],[1,"tbsp","coriander leaves"]],
@@ -626,7 +646,7 @@ const R = [
  tip:"Prawns turn rubbery fast. Take them off as soon as they form a loose C shape.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/royyala-iguru-easy-andhra-prawns-curry/"]},
 /* ---------- CHAPATI GRAVIES ---------- */
-{id:"chicken-curry", meal:"dinner", name:"Simple Chicken Curry", alt:"Everyday chicken gravy", region:"Everyday Indian", type:"chicken", time:"50 min", serves:3,
+{id:"chicken-curry", meal:"dinner", name:"Simple Chicken Curry", alt:"Everyday chicken gravy", region:"Pan-Indian", type:"chicken", time:"50 min", serves:3,
  tags:["high-protein","chapati"], sides:["masala-onions","cucumber-raita"], with:"Chapati, paratha or rice",
  ing:[[500,"g","chicken, bone-in preferred"],[2.5,"tbsp","oil"],[1,"","bay leaf"],[4,"","cloves"],[2,"inch","cinnamon"],[3,"","green cardamoms"],[1,"cup","onions, finely chopped"],[2,"","green chillies, slit"],[1,"tbsp","ginger-garlic paste"],[0.5,"cup","tomatoes, puréed or finely chopped"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[0.25,"cup","yogurt (or 12 cashews, puréed)"],[1,"tsp","Kashmiri chilli powder"],[1,"tsp","garam masala"],[1,"tsp","coriander powder"],[2,"tbsp","coriander or mint leaves"],[0.75,"cup","hot water"]],
  steps:["Heat the oil, fry the whole spices, then the onions and chillies for 7–8 minutes until deep golden.",
@@ -663,7 +683,7 @@ const R = [
  tip:"Store-bought kadai or chicken masala works if you skip grinding your own.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/kadai-chicken/"]},
 
-{id:"chicken-keema", meal:"dinner", name:"Chicken Keema", alt:"Minced chicken curry", region:"Everyday Indian", type:"chicken", time:"30 min", serves:3,
+{id:"chicken-keema", meal:"dinner", name:"Chicken Keema", alt:"Minced chicken curry", region:"Pan-Indian", type:"chicken", time:"30 min", serves:3,
  tags:["quick","high-protein","chapati"], sides:["green-chutney","masala-onions"], with:"Chapati, or stuffed in a roll",
  ing:[[250,"g","chicken mince (keema)"],[2,"tbsp","oil"],[1,"","bay leaf"],[0.5,"tsp","cumin seeds"],[1,"inch","cinnamon"],[2,"","green cardamoms"],[4,"","cloves"],[0.75,"cup","onions, chopped"],[1,"","green chilli, chopped"],[1,"tbsp","ginger-garlic paste"],[1,"cup","tomato, finely chopped"],[1.5,"tsp","garam masala or meat masala"],[0.5,"tsp","red chilli powder"],[8,"","mint leaves, chopped"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[0.25,"cup","green peas (optional)"],[2,"tbsp","coriander leaves"]],
  steps:["Heat the oil on low-medium and let the whole spices sizzle. Fry the onion and chilli until golden, then the ginger-garlic paste until the raw smell goes.",
@@ -687,17 +707,17 @@ const R = [
 
 {id:"chana-masala", meal:"dinner", name:"Chana Masala", alt:"Chickpea curry", region:"North Indian", type:"veg", time:"50 min + overnight soak", serves:4,
  tags:["plan-ahead","healthy","high-protein","chapati"], sides:["masala-onions","sirka-pyaz"], with:"Chapati, rice or poori",
- ing:[[1,"cup","dried chickpeas (kabuli chana)"],[1.5,"cup","water, to pressure cook"],[2,"tbsp","oil"],[1,"","bay leaf (optional)"],[1,"inch","cinnamon"],[2,"","cloves"],[2,"","green cardamoms"],[1.5,"cup","onions, finely chopped"],[1,"","green chilli, slit"],[0.75,"tbsp","ginger-garlic paste"],[1.5,"cup","tomatoes, finely chopped"],[0.75,"tsp","salt"],[0.25,"tsp","turmeric"],[1.5,"tsp","Kashmiri chilli powder"],[1,"tsp","garam masala"],[2,"tsp","coriander powder"],[0.5,"tsp","cumin powder"],[1,"tsp","kasuri methi"],[0.25,"tsp","amchur (optional)"],[2,"tbsp","coriander leaves"]],
- steps:["Night before: rinse the chickpeas three times and soak in 3½–4 cups water for at least 8 hours. Drain and rinse.",
-  "Pressure cook with 1½ cups water for 5–6 whistles and let the pressure drop. They should mash easily between your fingers.",
+ ing:[[1,"cup","dried chickpeas (kabuli chana)"],[1.5,"cup","water, to pressure cook"],[0.75,"cup","water, for the gravy"],[2,"tbsp","oil"],[1,"","bay leaf (optional)"],[1,"inch","cinnamon"],[2,"","cloves"],[2,"","green cardamoms"],[1.5,"cup","onions, finely chopped"],[1,"","green chilli, slit"],[0.75,"tbsp","ginger-garlic paste"],[1.5,"cup","tomatoes, finely chopped"],[0.75,"tsp","salt"],[0.25,"tsp","turmeric"],[1.5,"tsp","Kashmiri chilli powder"],[1,"tsp","garam masala"],[2,"tsp","coriander powder"],[0.5,"tsp","cumin powder"],[1,"tsp","kasuri methi"],[0.25,"tsp","amchur (optional)"],[2,"tbsp","coriander leaves"]],
+ steps:["Night before: rinse the chickpeas three times and soak in plenty of water (about 4 times their volume) for at least 8 hours. Drain and rinse.",
+  "Pressure cook with the cooking water for 5–6 whistles and let the pressure drop. They should mash easily between your fingers.",
   "Heat the oil, add the whole spices, then the onions and chilli until light golden. Add ginger-garlic paste for a minute.",
   "Add tomatoes and salt and cook until thick, then the ground spices for 3–4 minutes.",
-  "Add the chickpeas with about 1¼ cups of their cooking water plus ¾ cup more water. Cover and simmer 15 minutes.",
+  "Add the chickpeas with most of their cooking liquid and the gravy water. Cover and simmer 15 minutes.",
   "Crush in the kasuri methi, add amchur and coriander."],
  tip:"Check the chickpeas mash easily before they go in. They barely soften further once they're in the tomato masala.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chana-masala/"]},
 
-{id:"soya-curry", meal:"dinner", name:"Soya Chunks Curry", alt:"Meal maker curry", region:"Everyday Indian", type:"veg", time:"25 min", serves:3,
+{id:"soya-curry", meal:"dinner", name:"Soya Chunks Curry", alt:"Meal maker curry", region:"Pan-Indian", type:"veg", time:"25 min", serves:3,
  tags:["quick","high-protein","chapati"], sides:["cucumber-raita"], with:"Chapati, rice or pulao",
  ing:[[1.25,"cup","soya chunks (meal maker)"],[1.5,"tbsp","oil"],[0.5,"tsp","cumin seeds"],[1,"sprig","curry leaves or a bay leaf"],[1,"cup","onions, finely chopped"],[1,"","green chilli, slit"],[1.5,"tsp","ginger-garlic paste"],[0.75,"tsp","red chilli powder"],[0.75,"tsp","garam masala or chicken masala"],[0.75,"tsp","coriander powder"],[0.5,"tsp","salt"],[1.25,"cup","hot water"],[2,"tbsp","coriander leaves"],
       "# Purée",[1.5,"cup","tomatoes"],[0.25,"cup","fresh coconut (or 10 cashews)"]],
@@ -761,7 +781,7 @@ const R = [
  tip:"Keeps a couple of months in a dry, airtight jar. Mix a spoon with ghee or sesame oil for idli and dosa.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/idli-podi-recipe-idli-podi/"]},
 
-{id:"green-chutney", meal:"sides", name:"Green Chutney", alt:"Mint-coriander chutney · Hari chutney", region:"Everyday Indian", type:"veg", time:"20 min", serves:4,
+{id:"green-chutney", meal:"sides", name:"Green Chutney", alt:"Mint-coriander chutney · Hari chutney", region:"Pan-Indian", type:"veg", time:"20 min", serves:4,
  tags:["quick","healthy"], with:"",
  ing:[[2,"cup","coriander leaves"],[1,"cup","mint leaves"],[1,"tsp","roasted cumin seeds"],[3,"","green chillies"],[2,"clove","garlic (optional)"],[0.33,"inch","ginger"],[1.25,"tbsp","lemon juice"],[0.33,"tsp","salt"],[1.5,"tbsp","roasted peanuts or fried gram (optional)"]],
  steps:["Trim the roots and thick stalks from the coriander and pick the mint leaves. Rinse and drain.",
@@ -770,7 +790,7 @@ const R = [
  tip:"Keeps about a week in the fridge but tastes best within 2–3 days. Leave out mint stalks; they make it bitter.",
  src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/green-chutney-recipe/"]},
 
-{id:"masala-onions", meal:"sides", name:"Masala Onions", alt:"Laccha pyaz · Onion salad", region:"Everyday Indian", type:"veg", time:"20 min", serves:4,
+{id:"masala-onions", meal:"sides", name:"Masala Onions", alt:"Laccha pyaz · Onion salad", region:"Pan-Indian", type:"veg", time:"20 min", serves:4,
  tags:["quick","healthy"], with:"",
  ing:[[2,"","onions, thinly sliced into rings"],[3,"tbsp","lemon juice"],[0.5,"tsp","salt"],[0.5,"tsp","red chilli powder"],[0.67,"tsp","chaat masala"],[0.25,"tsp","black pepper, crushed (optional)"],[1,"","green chilli, deseeded and chopped (optional)"],[2,"sprig","coriander leaves, chopped"]],
  steps:["Separate the onion rings and soak them in very cold water for about 10 minutes. Drain and shake dry.",
@@ -789,7 +809,7 @@ const R = [
  tip:"Makes one jar. Keep refrigerated and use within 2 months; the brine can be reused for a second batch with a little more salt.",
  src:["Hebbar's Kitchen","https://hebbarskitchen.com/sirka-pyaz-recipe-pickled-onions/"]},
 
-{id:"cucumber-raita", meal:"sides", name:"Cucumber Raita", alt:"Kheera raita", region:"Everyday Indian", type:"veg", time:"10 min", serves:2,
+{id:"cucumber-raita", meal:"sides", name:"Cucumber Raita", alt:"Kheera raita", region:"Pan-Indian", type:"veg", time:"10 min", serves:2,
  tags:["quick","healthy"], with:"",
  ing:[[1,"cup","cucumber, finely chopped"],[1.5,"cup","thick yogurt, chilled"],[0.25,"tsp","salt"],[0.5,"tsp","roasted cumin powder"],[0.25,"tsp","black pepper"],[2,"tbsp","coriander leaves"],[5,"","mint leaves, chopped (optional)"],[1,"","green chilli, seeded and chopped (optional)"],[0.5,"tsp","chaat masala (optional)"]],
  steps:["Whisk the chilled yogurt until smooth.",
@@ -824,86 +844,158 @@ function qty(q, unit){
   }
   return unit ? n+" "+unitLabel(unit,r) : n;
 }
-function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 
 /* ---------- state ---------- */
+const GROUPS = ["meal","type","tag"];
 const sel = {meal:null, type:null, tag:null};
 let terms = [];
 const servings = Object.fromEntries(R.map(r=>[r.id, r.serves]));
 const MAX_SERVES = 12;
+const open = new Set();   // recipe ids currently expanded
+const done = {};          // recipe id -> Set of ticked "i3" / "s1" keys
 const mealName = id => MEALS.find(m=>m.id===id).name;
+const LABEL = {meal: mealName, type: v=>TYPES[v], tag: v=>TAGS[v]};
+const VALID = {meal: v=>MEALS.some(m=>m.id===v), type: v=>v in TYPES, tag: v=>v in TAGS};
 const byId = Object.fromEntries(R.map(r=>[r.id, r]));
 const usedIn = {};  // side id -> dishes that list it
 R.forEach(r=>(r.sides||[]).forEach(id=>(usedIn[id] ||= []).push(r.id)));
-const links = ids => ids.map(id=>`<a class="xref" href="#${id}">${esc(byId[id].name)}</a>`).join(", ");
 const HAY = Object.fromEntries(R.map(r=>[r.id,
   [r.name, r.alt, r.region, TYPES[r.type], mealName(r.meal), ...r.tags.map(t=>TAGS[t]), ...r.ing.filter(Array.isArray).map(i=>i[2])].join(" ").toLowerCase()]));
-const match = r => (!sel.meal || r.meal===sel.meal) && (!sel.type || r.type===sel.type) && (!sel.tag || r.tags.includes(sel.tag)) && terms.every(t=>HAY[r.id].includes(t));
-const isFiltered = () => terms.length || sel.meal || sel.type || sel.tag;
+const matches = (r, s=sel) => (!s.meal || r.meal===s.meal) && (!s.type || r.type===s.type) && (!s.tag || r.tags.includes(s.tag)) && terms.every(t=>HAY[r.id].includes(t));
+const isFiltered = () => terms.length || GROUPS.some(g=>sel[g]);
+const parseTerms = s => s.toLowerCase().split(/\s+/).filter(Boolean);
 
 /* ---------- rendering ---------- */
+const isDone = (id, key) => done[id]?.has(key);
+const tick = (id, key, inner) => `<li role="checkbox" tabindex="0" data-k="${key}" aria-checked="${!!isDone(id,key)}">${inner}</li>`;
 function ingHTML(r){
   const k = servings[r.id]/r.serves;
-  return r.ing.map(i=>{
+  return r.ing.map((i,n)=>{
     if(typeof i==="string") return `<li class="grp">${esc(i.slice(2))}</li>`;
-    const [q,u,n]=i;
-    if(q===null) return `<li><span class="q tt">—</span><span>${esc(n)}</span></li>`;
-    return `<li><span class="q">${qty(q*k,u)}</span><span>${esc(n)}</span></li>`;
+    const [q,u,name] = i;
+    const amount = q===null ? `<span class="q tt">—</span>` : `<span class="q">${qty(q*k,u)}</span>`;
+    return tick(r.id, "i"+n, `${amount}<span>${esc(name)}</span>`);
   }).join("");
 }
-function stepperHTML(r){
+const links = (label, ids) => `<div class="xrow"><span class="lbl">${label}</span>${ids.map(id=>`<a class="xref" href="#${id}">${esc(byId[id].name)}</a>`).join("")}</div>`;
+function fullHTML(r){
   const s = servings[r.id];
-  return `<span class="serves">Serves <span class="stepper" role="group" aria-label="Servings for ${esc(r.name)}"><button type="button" data-d="-1" aria-label="Fewer servings"${s<=1?" disabled":""}>−</button><output aria-live="polite">${s}</output><button type="button" data-d="1" aria-label="More servings"${s>=MAX_SERVES?" disabled":""}>+</button></span></span>`;
-}
-function recipeHTML(r){
-  const tags = r.tags.map(t=>`<button type="button" class="tg" data-tag="${t}">${TAGS[t]}</button>`).join("");
-  return `<article class="recipe" id="${r.id}">
-    <div class="r-head">
-      <div class="r-meta"><span class="kind"><span class="dot" style="background:var(--${r.type})"></span>${TYPES[r.type]}</span><span>${esc(r.region)}</span><span>${esc(r.time)}</span></div>
-      <h3>${esc(r.name)}</h3>
-      <div class="alt">${esc(r.alt)}</div>
-      ${r.with ? `<p class="with"><b>Serve with:</b> ${esc(r.with)}</p>` : ""}
-      ${r.sides ? `<p class="with"><b>Sides:</b> ${links(r.sides)}</p>` : ""}
-      ${usedIn[r.id] ? `<p class="with"><b>Goes with:</b> ${links(usedIn[r.id])}</p>` : ""}
-      ${tags?`<div class="r-tags">${tags}</div>`:""}
-    </div>
+  return `<div class="r-full">
+    ${r.with ? `<p class="with"><b>Serve with:</b> ${esc(r.with)}</p>` : ""}
+    ${r.sides ? links("Sides", r.sides) : ""}
+    ${usedIn[r.id] ? links("Goes with", usedIn[r.id]) : ""}
+    <div class="cookbar">${"wakeLock" in navigator ? `<button type="button" class="wake" aria-pressed="${wantAwake}">Keep screen on</button>` : ""}<span>Tap ingredients and steps to tick them off.</span></div>
     <div class="r-body">
-      <div><div class="ing-head"><p class="label">Ingredients</p>${stepperHTML(r)}</div><ul class="ing">${ingHTML(r)}</ul></div>
-      <div><p class="label">Method</p><ol class="steps">${r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol></div>
+      <div><div class="ing-head"><p class="label">Ingredients</p>
+        <span class="serves">Serves <span class="stepper" role="group" aria-label="Servings for ${esc(r.name)}"><button type="button" data-d="-1" aria-label="Fewer servings"${s<=1?" disabled":""}>−</button><output aria-live="polite">${s}</output><button type="button" data-d="1" aria-label="More servings"${s>=MAX_SERVES?" disabled":""}>+</button></span></span></div>
+        <ul class="ing">${ingHTML(r)}</ul></div>
+      <div><p class="label">Method</p><ol class="steps">${r.steps.map((t,n)=>tick(r.id, "s"+n, `<span>${esc(t)}</span>`)).join("")}</ol></div>
     </div>
     <div class="tip"><b>Tip.</b> ${esc(r.tip)}</div>
-    <p class="src">Adapted from <a href="${r.src[1]}" target="_blank" rel="noopener">${esc(r.src[0])} ↗</a></p>
-  </article>`;
+    <div class="r-foot"><p class="src">Adapted from <a href="${r.src[1]}" target="_blank" rel="noopener">${esc(r.src[0])} ↗</a></p>
+      ${r.tags.length ? `<div class="xrow"><span class="lbl">More like this</span>${r.tags.map(t=>`<button type="button" class="tg" data-tag="${t}">${TAGS[t]}</button>`).join("")}</div>` : ""}</div>
+  </div>`;
+}
+// Collapsed row; the full card is built only when opened (see the toggle listener).
+function rowHTML(r){
+  const isOpen = open.has(r.id);
+  return `<details class="recipe" id="${r.id}"${isOpen?" open":""}>
+    <summary>
+      <h3>${esc(r.name)}</h3>
+      <span class="chev" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      <span class="alt">${esc(r.alt)}</span>
+      <span class="r-meta"><span class="kind"><span class="dot" style="background:var(--${r.type})"></span>${TYPES[r.type]}</span><span>${esc(r.time)}</span><span>${esc(r.region)}</span>${r.tags.map(t=>`<span class="badge">${TAGS[t]}</span>`).join("")}</span>
+    </summary>
+    ${isOpen ? fullHTML(r) : ""}
+  </details>`;
+}
+
+function statusHTML(list){
+  const text = q.value.trim();
+  const pills = (text ? [`<button type="button" class="pill" data-clear="q" aria-label="Remove search ${esc(text)}">“${esc(text)}” <span aria-hidden="true">×</span></button>`] : [])
+    .concat(GROUPS.filter(g=>sel[g]).map(g=>`<button type="button" class="pill" data-clear="${g}" aria-label="Remove filter ${esc(LABEL[g](sel[g]))}">${esc(LABEL[g](sel[g]))} <span aria-hidden="true">×</span></button>`));
+  const count = list.length ? `<span><b>${list.length}</b> of ${R.length}</span>` : `<span>No recipes match.</span>`;
+  return count + pills.join("") + `<button type="button" class="linkbtn" id="clear">Clear all</button>`;
 }
 
 function render(){
-  const list = R.filter(match), filtered = isFiltered();
-  const byMeal = m => list.filter(r=>r.meal===m.id);
+  const list = R.filter(r=>matches(r));
+  if(list.length===1) open.add(list[0].id);   // a single hit opens straight away
   const status = document.getElementById("status");
-  status.hidden = !filtered;
-  status.innerHTML = (list.length ? `<span><b>${list.length}</b> of ${R.length} recipes</span>` : `<span>No recipes match. Try a shorter search or fewer filters.</span>`) + `<button type="button" class="linkbtn" id="clear">Clear all</button>`;
-  document.getElementById("tocwrap").hidden = filtered;
-  document.getElementById("toc").innerHTML = MEALS.map(m=>`<div><h2>${m.name}</h2><ol>${byMeal(m).map(r=>`<li><a href="#${r.id}"><span class="dot" style="background:var(--${r.type})"></span><span class="n">${esc(r.name)}</span><span class="t">${esc(r.time)}</span></a></li>`).join("")}</ol></div>`).join("");
+  status.hidden = !isFiltered();
+  status.innerHTML = statusHTML(list);
   document.getElementById("chapters").innerHTML = MEALS.map(m=>{
-    const items = byMeal(m);
+    const items = list.filter(r=>r.meal===m.id);
     return items.length ? `<section class="chapter" id="${m.id}">
       <div class="chap-head"><h2>${m.name}</h2><span class="local">${m.local}</span><p>${m.intro}</p></div>
-      <div class="list">${items.map(recipeHTML).join("")}</div>
+      <div class="list">${items.map(rowHTML).join("")}</div>
     </section>` : "";
   }).join("");
+  syncChips();
+  history.replaceState(history.state, "", url(location.hash.slice(1)));
 }
+
+// Each chip shows how many recipes you'd get by picking it; dead ends are disabled.
+function syncChips(){
+  document.querySelectorAll("#chips .chip").forEach(b=>{
+    const {g, v} = b.dataset, on = sel[g]===v;
+    const count = R.filter(r=>matches(r, {...sel, [g]:v})).length;
+    b.setAttribute("aria-pressed", on);
+    b.disabled = !on && count===0;
+    b.querySelector(".ct").textContent = count;
+  });
+}
+function centerChip(b){ chips.scrollTo({left: b.offsetLeft - (chips.clientWidth - b.offsetWidth)/2, behavior:"smooth"}); }
 
 // Keep the top of the results in view after a filter change, below the sticky rail.
 function showResults(){
   const main = document.getElementById("results");
-  if(main.getBoundingClientRect().top < document.querySelector(".rail").offsetHeight) main.scrollIntoView({block:"start"});
-}
-function syncChips(){
-  document.querySelectorAll("#chips .chip").forEach(b=>b.setAttribute("aria-pressed", sel[b.dataset.g]===b.dataset.v));
+  if(main.getBoundingClientRect().top < rail.offsetHeight) main.scrollIntoView({block:"start"});
 }
 
+/* ---------- URL state: ?meal=lunch&tag=air-fryer&q=chicken#recipe-id ---------- */
+function url(hash){
+  const p = new URLSearchParams();
+  GROUPS.forEach(g=>{ if(sel[g]) p.set(g, sel[g]); });
+  if(q.value.trim()) p.set("q", q.value.trim());
+  const s = p.toString();
+  return location.pathname + (s ? "?"+s : "") + (hash && byId[hash] ? "#"+hash : "");
+}
+function fromURL(){
+  const p = new URLSearchParams(location.search);
+  GROUPS.forEach(g=>{ const v = p.get(g); sel[g] = v && VALID[g](v) ? v : null; });
+  q.value = p.get("q") || ""; terms = parseTerms(q.value);
+}
+// Open a recipe and bring it into view, clearing filters if they hide it.
+function reveal(id){
+  if(!byId[id]) return;
+  open.add(id);
+  if(!document.getElementById(id)) clearAll();
+  const d = document.getElementById(id);
+  d.open = true;
+  d.scrollIntoView({block:"start"});
+  d.querySelector("summary").focus({preventScroll:true});
+}
+
+/* ---------- cook mode: keep the screen awake ---------- */
+let wake = null, wantAwake = false;
+async function setAwake(on){
+  wantAwake = on;
+  try{
+    if(on && !wake){ wake = await navigator.wakeLock.request("screen"); wake.addEventListener("release", ()=>{ wake = null; }); }
+    if(!on && wake){ await wake.release(); wake = null; }
+  }catch(err){
+    wantAwake = false;
+    console.warn("Screen wake lock unavailable:", err.message);
+  }
+  document.querySelectorAll(".wake").forEach(b=>b.setAttribute("aria-pressed", wantAwake));
+}
+// The browser drops the lock when the tab is hidden; take it back on return.
+document.addEventListener("visibilitychange", ()=>{ if(wantAwake && document.visibilityState==="visible") setAwake(true); });
+
 /* ---------- controls ---------- */
-const group = (g, obj) => Object.entries(obj).map(([v,l])=>`<button type="button" class="chip" data-g="${g}" data-v="${v}" aria-pressed="false">${g==="type"?`<span class="dot" style="background:var(--${v})"></span>`:""}${l}</button>`).join("");
+const group = (g, obj) => Object.entries(obj).map(([v,l])=>`<button type="button" class="chip" data-g="${g}" data-v="${v}" aria-pressed="false">${g==="type"?`<span class="dot" style="background:var(--${v})"></span>`:""}${l} <span class="ct"></span></button>`).join("");
 const SEP = `<span class="sep" aria-hidden="true"></span>`;
 const chips = document.getElementById("chips");
 chips.innerHTML = group("meal", Object.fromEntries(MEALS.map(m=>[m.id,m.name]))) + SEP + group("type", TYPES) + SEP + group("tag", TAGS);
@@ -911,50 +1003,89 @@ chips.addEventListener("click", e=>{
   const b = e.target.closest(".chip"); if(!b) return;
   const {g, v} = b.dataset;
   sel[g] = sel[g]===v ? null : v;
-  syncChips(); render(); showResults();
+  render(); showResults(); centerChip(b);
 });
 
 const q = document.getElementById("q");
+const rail = document.querySelector(".rail");
 function clearAll(){
-  sel.meal = sel.type = sel.tag = null; terms = []; q.value = "";
-  syncChips(); render();
+  GROUPS.forEach(g=>{ sel[g] = null; }); terms = []; q.value = "";
+  render();
 }
-q.addEventListener("input", ()=>{
-  terms = q.value.toLowerCase().split(/\s+/).filter(Boolean);
-  render(); showResults();
-});
+q.addEventListener("input", ()=>{ terms = parseTerms(q.value); render(); showResults(); });
 
-document.getElementById("results").addEventListener("click", e=>{
-  if(e.target.closest("#clear")){ clearAll(); return; }
-  const xref = e.target.closest(".xref");
+const results = document.getElementById("results");
+function toggleTick(li){
+  const id = li.closest(".recipe").id, set = (done[id] ||= new Set()), key = li.dataset.k;
+  set.has(key) ? set.delete(key) : set.add(key);
+  li.setAttribute("aria-checked", set.has(key));
+}
+results.addEventListener("click", e=>{
+  const t = e.target;
+  if(t.closest("#clear")){ clearAll(); q.focus(); return; }
+  const pill = t.closest(".pill");
+  if(pill){
+    const g = pill.dataset.clear;
+    if(g==="q"){ q.value = ""; terms = []; } else sel[g] = null;
+    render(); (document.querySelector("#status:not([hidden]) .pill") || q).focus({preventScroll:true}); return;
+  }
+  const xref = t.closest(".xref");
   if(xref){
-    // the linked card may be hidden by the current filters
-    const id = xref.hash.slice(1);
-    if(!document.getElementById(id)) clearAll();
     e.preventDefault();
-    document.getElementById(id).scrollIntoView({block:"start"});
-    history.replaceState(null, "", "#"+id);
+    const from = xref.closest(".recipe").id, to = xref.hash.slice(1);
+    history.replaceState({y: scrollY}, "", url(from));   // Back returns to this spot
+    history.pushState(null, "", url(to));
+    reveal(to);
     return;
   }
-  const tag = e.target.closest(".tg");
-  if(tag){ sel.tag = tag.dataset.tag; syncChips(); render(); showResults(); return; }
-  const step = e.target.closest(".stepper button");
-  if(step){
-    const card = step.closest(".recipe"), r = R.find(x=>x.id===card.id);
-    servings[r.id] = Math.min(MAX_SERVES, Math.max(1, servings[r.id] + +step.dataset.d));
-    card.querySelector(".ing").innerHTML = ingHTML(r);
-    card.querySelector(".serves").outerHTML = stepperHTML(r);
+  const tag = t.closest(".tg");
+  if(tag){
+    sel.tag = tag.dataset.tag; render(); showResults();
+    centerChip(chips.querySelector(`.chip[data-v="${tag.dataset.tag}"]`));
+    results.querySelector(".pill[data-clear='tag']").focus({preventScroll:true});
+    return;
   }
+  const step = t.closest(".stepper button");
+  if(step){
+    const card = step.closest(".recipe"), r = byId[card.id];
+    const s = servings[r.id] = Math.min(MAX_SERVES, Math.max(1, servings[r.id] + +step.dataset.d));
+    card.querySelector(".ing").innerHTML = ingHTML(r);
+    card.querySelector(".stepper output").textContent = s;
+    const [minus, plus] = card.querySelectorAll(".stepper button");
+    minus.disabled = s<=1; plus.disabled = s>=MAX_SERVES;
+    return;
+  }
+  if(t.closest(".wake")){ setAwake(!wantAwake); return; }
+  const li = t.closest('[role="checkbox"]');
+  if(li) toggleTick(li);
+});
+results.addEventListener("keydown", e=>{
+  const li = e.target.closest?.('[role="checkbox"]');
+  if(li && (e.key===" " || e.key==="Enter")){ e.preventDefault(); toggleTick(li); }
+});
+// toggle doesn't bubble, so listen in the capture phase. Build the full card on first open.
+results.addEventListener("toggle", e=>{
+  const d = e.target; if(!d.classList?.contains("recipe")) return;
+  if(!d.open){ open.delete(d.id); return; }
+  open.add(d.id);
+  if(!d.querySelector(".r-full")) d.insertAdjacentHTML("beforeend", fullHTML(byId[d.id]));
+}, true);
+
+history.scrollRestoration = "manual";
+addEventListener("popstate", e=>{
+  fromURL(); render();
+  if(e.state?.y != null) scrollTo(0, e.state.y);
+  else if(byId[location.hash.slice(1)]) reveal(location.hash.slice(1));
 });
 
-const rail = document.querySelector(".rail");
 new ResizeObserver(()=>document.documentElement.style.setProperty("--rail", rail.offsetHeight+"px")).observe(rail);
-const tocwrap = document.getElementById("tocwrap");
-tocwrap.open = matchMedia("(min-width:761px)").matches;
-document.getElementById("toc-count").textContent = `· ${R.length} recipes`;
+document.documentElement.style.setProperty("--rail", rail.offsetHeight+"px");
 const n = m => R.filter(r=>r.meal===m).length;
 const telugu = R.filter(r=>/Andhra|Telangana/.test(r.region)).length;
 document.getElementById("stats").innerHTML =
-  `<span><b>${R.length}</b>recipes</span><span><b>${telugu}</b>Andhra &amp; Telangana</span><span><b>${n("breakfast")}</b>breakfast</span><span><b>${n("lunch")}</b>lunch box</span><span><b>${n("dinner")}</b>dinner</span><span><b>${n("sides")}</b>sides</span>`;
-render();
+  `<span><b>${R.length}</b>recipes</span><span><b>${telugu}</b>Andhra &amp; Telangana</span>` + MEALS.map(m=>`<span><b>${n(m.id)}</b>${m.name.toLowerCase()}</span>`).join("");
+
+fromURL(); render();
+if(byId[location.hash.slice(1)]) reveal(location.hash.slice(1));
+if("serviceWorker" in navigator && isSecureContext) navigator.serviceWorker.register("sw.js").catch(err=>console.warn("Offline cache not installed:", err.message));
 </script>
