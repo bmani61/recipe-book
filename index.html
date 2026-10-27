@@ -4,32 +4,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#2E6A3A" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1F4A28" media="(prefers-color-scheme: dark)">
-<meta name="description" content="Everyday South Indian recipes for breakfast, lunch and dinner, with servings scaling.">
+<meta name="description" content="Andhra and Telangana home recipes for a healthy breakfast, an office lunch box and dinner, each linked to its source.">
 <title>Banana Leaf Kitchen</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Mukta:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: leaf-green masthead, sticky filter rail, then three meal chapters of full recipe cards (ingredients beside method). */
+/* Layout: leaf-green masthead, sticky search + filter chips, collapsible contents, then three meal chapters of recipe cards (ingredients beside method). */
 :root{
   --bg:#F5F7F1; --paper:#FFFFFF; --ink:#1C2A21; --muted:#5A6A5E; --line:#DCE3D6;
-  --leaf:#2E6A3A; --leaf-ink:#F3F8EF; --leaf-soft:#E5EFE1;
+  --leaf:#2E6A3A; --leaf-ink:#F3F8EF; --leaf-soft:#E5EFE1; --leaf-text:#2E6A3A;
   --turmeric:#D99A16; --turmeric-ink:#8A5A00; --chilli:#B4362B;
-  --veg:#2E8A3E; --egg:#C98A0A; --chicken:#C4552B; --mutton:#9C2F3A; --prawn:#D0644F;
+  --veg:#2E8A3E; --egg:#C98A0A; --chicken:#C4552B; --mutton:#9C2F3A; --fish:#2F6F8F; --prawn:#D0644F;
   --display:"Young Serif",Georgia,"Times New Roman",serif;
   --body:"Mukta","Segoe UI",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#111813; --paper:#18221B; --ink:#E6ECE2; --muted:#9BAA9E; --line:#2A3830;
-  --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A;
+  --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A; --leaf-text:#6CC27A;
   --turmeric:#E8B443; --turmeric-ink:#E8B443; --chilli:#E06A5E;
-  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --prawn:#F08F7A;
+  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --fish:#7FB6D4; --prawn:#F08F7A;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111813; --paper:#18221B; --ink:#E6ECE2; --muted:#9BAA9E; --line:#2A3830;
-  --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A;
+  --leaf:#1F4A28; --leaf-ink:#EAF3E6; --leaf-soft:#20322A; --leaf-text:#6CC27A;
   --turmeric:#E8B443; --turmeric-ink:#E8B443; --chilli:#E06A5E;
-  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --prawn:#F08F7A;
+  --veg:#6CC27A; --egg:#E8B443; --chicken:#E5845C; --mutton:#E07784; --fish:#7FB6D4; --prawn:#F08F7A;
   color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -40,395 +40,662 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.15}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--turmeric-ink);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
 
 /* Masthead */
 .mast{background:var(--leaf);color:var(--leaf-ink);position:relative;overflow:hidden}
 .mast .wrap{padding-block:44px 36px;display:grid;gap:14px;position:relative}
 .mast h1{font-size:clamp(2.2rem,6vw,3.6rem)}
-.mast p{margin:0;max-width:58ch;opacity:.88;font-size:1.05rem}
+.mast p{margin:0;max-width:60ch;opacity:.88;font-size:1.05rem}
 .mast .rib{position:absolute;right:-60px;top:-40px;width:320px;height:320px;opacity:.14;pointer-events:none}
 .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:600;opacity:.8}
 .stats{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.92rem;opacity:.9}
 .stats b{font-family:var(--display);font-weight:400;font-size:1.25rem;margin-right:4px}
 
-/* Sticky rail */
+/* Sticky rail: search, then filter chips */
 .rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.rail .wrap{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding-block:10px}
-.jump{display:flex;gap:4px}
-.jump a{text-decoration:none;font-weight:600;font-size:.92rem;padding:4px 10px;border-radius:999px}
-.jump a:hover{background:var(--leaf-soft)}
-.chips{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
-.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:3px 11px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.rail .wrap{display:grid;gap:8px;padding-block:10px}
+.search{display:flex;align-items:center;gap:8px;max-width:560px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:0 14px}
+.search:focus-within{border-color:var(--leaf-text);box-shadow:0 0 0 3px color-mix(in srgb,var(--leaf-text) 22%,transparent)}
+.search svg{flex:none;color:var(--muted)}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:inherit;font-size:16px;padding:8px 0;outline:none}
+.search input::placeholder{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:3px 11px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sep{width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
-.serves{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted)}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
-.seg button{font:inherit;font-size:.85rem;border:0;background:transparent;color:var(--ink);padding:3px 11px;cursor:pointer;font-variant-numeric:tabular-nums}
-.seg button[aria-pressed="true"]{background:var(--turmeric);color:#1C1608;font-weight:700}
-/* Phones: two rows, jump links + servings on top, chips swipe sideways below */
 @media (max-width:600px){
-  .rail .wrap{gap:8px 10px;padding-block:8px}
-  .jump,.chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
-  .jump::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}
-  .jump{flex:1;min-width:0;gap:2px}
-  .jump a{padding:4px 6px;flex:none}
-  .chips{order:3;flex:0 0 calc(100% + 32px);margin-inline:-16px;padding-inline:16px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+  .chips::-webkit-scrollbar{display:none}
   .chip{flex:none}
 }
 
-/* Contents */
-.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;padding-block:36px 8px}
-.toc h2{font-size:1.25rem;margin-bottom:8px}
-.toc h2 span{display:block;font-family:var(--body);font-size:.8rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+/* Status + contents */
+.status{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:20px 0 0;color:var(--muted);font-size:.95rem}
+.status b{color:var(--ink)}
+.linkbtn{font:inherit;color:var(--leaf-text);background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;font-weight:600}
+.toc-wrap{margin-top:28px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.toc-wrap>summary{cursor:pointer;padding:12px 16px;font-weight:600}
+.toc-wrap>summary span{color:var(--muted);font-weight:400}
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px 24px;padding:0 16px 16px}
+.toc h2{font-size:1.2rem;margin-bottom:8px}
 .toc ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .toc li{border-bottom:1px solid var(--line)}
-.toc li[hidden]{display:none}
 .toc a{display:flex;align-items:center;gap:10px;padding:7px 2px;text-decoration:none}
 .toc a:hover .n{text-decoration:underline}
-.toc .t{margin-left:auto;color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums;text-align:right}
+.toc .t{margin-left:auto;color:var(--muted);font-size:.82rem;font-variant-numeric:tabular-nums;text-align:right}
 
 /* Chapters */
-.chapter{padding-block:40px 8px;scroll-margin-top:70px}
+.chapter,.recipe,main{scroll-margin-top:calc(var(--rail,110px) + 12px)}
+.chapter{padding-block:40px 8px}
 .chap-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-bottom:20px;border-bottom:3px solid var(--leaf);padding-bottom:10px}
 .chap-head h2{font-size:clamp(1.8rem,4.5vw,2.5rem)}
-.chap-head p{margin:0;color:var(--muted);flex-basis:100%;max-width:62ch}
+.chap-head p{margin:0;color:var(--muted);flex-basis:100%;max-width:64ch}
 .chap-head .local{font-family:var(--display);color:var(--turmeric-ink);font-size:1.2rem}
 .list{display:grid;gap:22px}
-.empty{color:var(--muted);font-style:italic;padding:10px 0}
 
-.recipe{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px clamp(16px,3vw,28px);scroll-margin-top:70px}
+.recipe{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px clamp(16px,3vw,28px)}
 .r-head{display:grid;gap:6px;margin-bottom:16px}
 .r-meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.85rem;color:var(--muted);align-items:center}
-.r-meta .tag{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
+.r-meta .kind{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink)}
 .r-head h3{font-size:clamp(1.4rem,3.4vw,1.75rem)}
 .r-head .alt{font-family:var(--display);color:var(--muted);font-size:1rem}
 .r-head .with{font-size:.92rem;margin:0}
 .r-head .with b{font-weight:600}
+.r-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tg{font:inherit;font-size:.78rem;font-weight:600;color:var(--leaf-text);background:var(--leaf-soft);border:0;border-radius:999px;padding:2px 10px;cursor:pointer}
+.tg:hover{text-decoration:underline}
 .r-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);gap:28px}
 @media (max-width:760px){.r-body{grid-template-columns:minmax(0,1fr);gap:18px}}
 .label{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--muted);margin:0 0 8px}
+.ing-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.ing-head .label{margin:0}
+.serves{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.stepper button{font:inherit;font-size:1.15rem;line-height:1;width:32px;height:32px;border:0;background:transparent;color:var(--ink);cursor:pointer;border-radius:999px}
+.stepper button:disabled{opacity:.35;cursor:default}
+.stepper output{min-width:1.6em;text-align:center;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 .ing{list-style:none;margin:0;padding:0}
 .ing li{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:8px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:.95rem}
-.ing li.grp{display:block;border:0;padding:12px 0 2px;font-weight:700;font-size:.82rem;color:var(--leaf);text-transform:uppercase;letter-spacing:.08em}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ing li.grp{color:var(--veg)}}
-:root[data-theme="dark"] .ing li.grp{color:var(--veg)}
+.ing li.grp{display:block;border:0;padding:12px 0 2px;font-weight:700;font-size:.82rem;color:var(--leaf-text);text-transform:uppercase;letter-spacing:.08em}
 .q{font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
 .q.tt{font-weight:400;color:var(--muted);font-size:.85rem}
 .steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px}
 .steps li{counter-increment:s;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px}
 .steps li::before{content:counter(s);font-family:var(--display);color:var(--leaf-ink);background:var(--leaf);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;margin-top:2px}
-.steps b{font-weight:600}
 .tip{margin-top:18px;padding:10px 14px;border-left:3px solid var(--turmeric);background:color-mix(in srgb,var(--turmeric) 10%,var(--paper));font-size:.93rem;border-radius:0 6px 6px 0}
 .tip b{font-weight:700}
+.src{margin:12px 0 0;font-size:.85rem;color:var(--muted)}
+.src a{color:var(--leaf-text);font-weight:600}
 
-footer{padding-block:40px 56px;color:var(--muted);font-size:.88rem}
-@media (max-width:600px){.chapter,.recipe{scroll-margin-top:100px}}
+footer{padding-block:40px 56px;color:var(--muted);font-size:.88rem;display:grid;gap:8px}
+footer p{margin:0;max-width:72ch}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
 
 <header class="mast">
   <svg class="rib" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 180 Q100 100 180 20"/><path d="M40 160 Q60 120 30 90"/><path d="M60 140 Q90 110 70 60"/><path d="M80 120 Q120 95 110 40"/><path d="M100 100 Q150 80 150 20"/><path d="M60 140 Q100 150 130 120"/><path d="M80 120 Q120 140 160 100"/><path d="M100 100 Q140 120 180 80"/></g></svg>
   <div class="wrap">
-    <span class="eyebrow">A South Indian recipe book</span>
+    <span class="eyebrow">An Andhra &amp; Telangana recipe book</span>
     <h1>Banana Leaf Kitchen</h1>
-    <p>Everyday dishes from Tamil Nadu, Andhra, Karnataka and Kerala, arranged as a day of eating: tiffin in the morning, a full meals plate at lunch, and something lighter at night.</p>
+    <p>Everyday Telugu home cooking arranged around a working day: a healthy tiffin before you leave, a lunch box that travels well, and a lighter dinner. Every recipe links to the trusted source it is adapted from.</p>
     <div class="stats" id="stats"></div>
   </div>
 </header>
 
-<nav class="rail" aria-label="Filters">
+<nav class="rail" aria-label="Search and filters">
   <div class="wrap">
-    <div class="jump"><a href="#breakfast">Breakfast</a><a href="#lunch">Lunch</a><a href="#dinner">Dinner</a></div>
-    <div class="chips" id="chips" role="group" aria-label="Filter by type"></div>
-    <div class="serves"><span>Serves</span><div class="seg" id="seg" role="group" aria-label="Servings"></div></div>
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search dishes, ingredients or tags" aria-label="Search recipes" autocomplete="off" enterkeyhint="search">
+    </label>
+    <div class="chips" id="chips" role="group" aria-label="Filters"></div>
   </div>
 </nav>
 
-<main class="wrap">
-  <section class="toc" id="toc" aria-label="Contents"></section>
+<main class="wrap" id="results">
+  <p class="status" id="status" aria-live="polite" hidden></p>
+  <details class="toc-wrap" id="tocwrap"><summary>Contents <span id="toc-count"></span></summary><section class="toc" id="toc" aria-label="Contents"></section></details>
   <div id="chapters"></div>
-  <footer>Quantities use standard measuring cups (240 ml) and spoons. Base recipes serve 4; the servings switch scales every ingredient. "Whistles" refer to a standard 3–5 litre pressure cooker on medium heat.</footer>
+  <footer>
+    <p>Each recipe is adapted from the linked page, mostly <a href="https://www.indianhealthyrecipes.com/">Swasthi's Recipes</a> (Swasthi Shreekanth's Andhra-rooted, tested recipes), plus <a href="https://vismaifood.com/en">Vismai Food</a> and <a href="https://hebbarskitchen.com/">Hebbar's Kitchen</a>. Ingredients and servings follow the source; the method is shortened. Open the source for photos, variations and full notes.</p>
+    <p>Quantities use standard cups (240 ml) and spoons. Each card opens at the servings its source was written for; use − and + to scale. "Whistles" assume a 3–5 litre pressure cooker on medium heat.</p>
+  </footer>
 </main>
 
 <script>
 const MEALS = [
-  {id:"breakfast", name:"Breakfast", local:"Tiffin", intro:"Steamed, griddled and fermented: the morning plates that come with chutney and a ladle of sambar."},
-  {id:"lunch", name:"Lunch", local:"Meals · Saapadu", intro:"Build a full banana-leaf meal by mixing a dal dish, a tangy rasam, a curry and a vegetable side with rice."},
-  {id:"dinner", name:"Dinner", local:"Iravu", intro:"Lighter grains, quick dry fries and gravies, and curd rice to settle the day."}
+  {id:"breakfast", name:"Breakfast", local:"Tiffin", intro:"Steamed, griddled and millet-based plates that keep you going until lunch. Pesarattu, the upmas and ragi dosa are the lighter picks."},
+  {id:"lunch", name:"Lunch box", local:"Office carrier", intro:"Dishes that survive a morning in a lunch bag: variety rices that taste better at room temperature, pappus, dry vepudus and curd rice. Pack one rice or pappu with one fry."},
+  {id:"dinner", name:"Dinner", local:"Raatri bhojanam", intro:"Lighter grains like jonna rotte and ragi sankati, tangy charu and pulusu, and a few non-veg curries for the weekend."}
 ];
-const TYPES = {veg:"Veg", egg:"Egg", chicken:"Chicken", mutton:"Mutton", prawn:"Prawn"};
+const TYPES = {veg:"Veg", egg:"Egg", chicken:"Chicken", mutton:"Mutton", fish:"Fish", prawn:"Prawn"};
+const TAGS = {quick:"Quick", healthy:"Healthy", "high-protein":"High protein", millet:"Millet", "plan-ahead":"Plan ahead"};
 
-// ingredient: [qty|null, unit, name]  ·  "# Heading" starts a group
+// ingredient: [qty|null, unit, name]  ·  "# Heading" starts a group  ·  serves: what the source recipe is written for
 const R = [
 /* ---------- BREAKFAST ---------- */
-{id:"idli", meal:"breakfast", name:"Idli with Coconut Chutney", alt:"Idli · Thengai chutney", region:"Tamil Nadu", type:"veg", time:"30 min + soak & ferment",
- with:"Sambar, gunpowder (idli podi) with sesame oil",
- ing:["# Batter",[2,"cup","idli rice (parboiled)"],[0.5,"cup","whole urad dal"],[0.5,"tsp","fenugreek seeds"],[1.5,"tsp","salt"],
-      "# Chutney",[1,"cup","fresh grated coconut"],[2,"tbsp","roasted chana dal (pottukadalai)"],[2,"","green chillies"],[1,"inch","ginger"],[1,"tsp","mustard seeds"],[1,"sprig","curry leaves"],[1,"tsp","oil"],[null,"","salt to taste"]],
- steps:["Soak rice and urad dal separately for 5–6 hours, adding the fenugreek to the dal.",
-  "Grind the urad dal with ice-cold water until light and fluffy (about 15 min in a wet grinder). Grind the rice to a slightly coarse, semolina-like texture.",
-  "Mix both batters with the salt by hand, cover and ferment 8–12 hours until doubled. In Hyderabad's warmth, 8 hours is usually enough.",
-  "Grease idli plates, fill each mould three-quarters full and steam for 10–12 minutes. Rest 2 minutes before unmoulding with a wet spoon.",
-  "For the chutney, grind coconut, roasted chana dal, chillies, ginger and salt with a little water. Temper mustard and curry leaves in oil and pour over."],
- tip:"Keep extra batter in the fridge for 3–4 days; it turns sour and becomes the dosa batter for the egg dosa below."},
+{id:"idli", meal:"breakfast", name:"Idli with Coconut Chutney", alt:"Idli · Kobbari pachadi", region:"South Indian", type:"veg", time:"30 min + soak & ferment", serves:4,
+ tags:["plan-ahead","healthy"], with:"Sambar, karam podi with ghee or sesame oil",
+ ing:["# Batter",[0.5,"cup","urad dal (skinned)"],[1.5,"cup","idli rice (parboiled)"],[0.5,"tsp","fenugreek seeds"],[2,"tbsp","thick poha"],[0.5,"tsp","non-iodized salt"],[0.5,"cup","chilled water (for the dal)"],[0.75,"cup","water (for the rice)"],
+      "# Chutney",[1,"cup","fresh grated coconut"],[1.5,"tbsp","chana dal"],[0.5,"tbsp","urad dal"],[3,"","green chillies"],[1,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[3,"clove","garlic, small"],[1,"tbsp","oil"],[null,"","salt to taste"]],
+ steps:["Wash the rice and dal separately and soak each for at least 6 hours. Soak the poha in a little water for 30 minutes.",
+  "Grind the dal with the fenugreek, poha, salt and chilled water into a thick, frothy batter. Don't let it warm up.",
+  "Grind the rice with its water to a slightly coarse, semolina-like texture and mix both batters by hand.",
+  "Ferment in a warm spot for 8–14 hours (longer in cool weather) until doubled and bubbly.",
+  "Steam on greased plates for 10 minutes on high once the water is boiling. Rest 2 minutes before unmoulding.",
+  "For the chutney, fry both dals in 2 tsp oil until golden, add curry leaves, garlic and chillies until blistered, then cumin, then the coconut for 2–3 minutes on low. Cool and grind with salt and water."],
+ tip:"Grind the dal with chilled water: warm batter gives hard idli. Leftover batter works for dosa and egg dosa. The chutney follows Swasthi's coconut chutney recipe.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/soft-idli-recipe-using-idli-rava/"]},
 
-{id:"pesarattu", meal:"breakfast", name:"Pesarattu with Ginger Chutney", alt:"Pesarattu · Allam pachadi", region:"Andhra Pradesh", type:"veg", time:"25 min + 6 hr soak",
- with:"Upma folded inside (MLA pesarattu), allam pachadi",
- ing:["# Dosa",[1,"cup","whole green moong"],[2,"tbsp","raw rice"],[3,"","green chillies"],[1,"inch","ginger"],[1,"tsp","cumin seeds"],[1,"tsp","salt"],[1,"","onion, finely chopped"],[2,"tbsp","oil"],
-      "# Allam pachadi",[0.25,"cup","ginger, peeled and chopped"],[10,"g","tamarind"],[1,"tbsp","jaggery"],[4,"","dry red chillies"],[1,"tbsp","urad dal"],[1,"tbsp","chana dal"],[1,"tsp","oil"],[null,"","salt to taste"]],
- steps:["Soak moong and rice together for 6 hours or overnight.",
-  "Grind with chillies, ginger, half the cumin and salt into a smooth, pourable batter. No fermentation needed.",
-  "Heat a cast-iron tawa, pour a ladle and spread thin in circles. Sprinkle onion and the remaining cumin, drizzle oil around the edges.",
-  "Cook on medium until the underside is crisp and golden, then fold. Flipping is optional.",
-  "For the chutney, fry the dals and red chillies in oil until golden, add ginger and sauté 2 minutes. Cool and grind with tamarind, jaggery and salt."],
- tip:"High in protein and filling. Use a non-stick pan and brush the oil instead of drizzling to make it lighter."},
+{id:"pesarattu", meal:"breakfast", name:"Pesarattu", alt:"Whole moong dosa", region:"Andhra Pradesh", type:"veg", time:"25 min + 4–6 hr soak", serves:4,
+ tags:["plan-ahead","healthy","high-protein"], with:"Allam pachadi (ginger chutney), or upma folded inside for MLA pesarattu",
+ ing:["# Batter",[1,"cup","whole green moong"],[1,"tbsp","raw rice (optional)"],[0.75,"inch","ginger"],[2,"","green chillies"],[0.75,"tsp","cumin seeds"],[0.25,"tsp","salt"],[2,"tbsp","ghee or oil, for cooking"],
+      "# Topping",[1,"tbsp","oil or ghee"],[0.5,"tsp","cumin seeds"],[2,"","onions, finely chopped"],[2,"","green chillies, chopped"]],
+ steps:["Rinse the moong (and rice, if using) well and soak for 4–6 hours. Drain and rinse again.",
+  "Grind with ginger, chillies, cumin and salt, adding only enough water for a thick, spreadable batter. A runny batter won't crisp.",
+  "For the topping, sauté cumin, onion and chillies in the oil until just translucent but still crunchy.",
+  "Heat a tawa on medium, then lower the heat. Pour a ladle of batter in the centre, spread it thin and drizzle ghee round the edge and over the top.",
+  "Cook until the edges lift and turn golden. Flip for a minute, flip back to crisp the base, scatter the onions, fold and serve."],
+ tip:"Don't over-soak the moong; a shorter soak gives a crisper pesarattu. Let the pan cool a little between dosas so they don't brown too fast.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/andhra-pesarattu-whole-moong-dosa/"]},
 
-{id:"pongal", meal:"breakfast", name:"Ven Pongal", alt:"Khara pongal", region:"Tamil Nadu", type:"veg", time:"30 min",
- with:"Sambar and coconut chutney, or gothsu",
- ing:[[1,"cup","raw rice"],[0.5,"cup","yellow moong dal"],[5,"cup","water"],[1.25,"tsp","salt"],
-      "# Tempering",[3,"tbsp","ghee"],[1,"tsp","whole black pepper"],[1,"tsp","cumin seeds"],[1,"tbsp","ginger, finely chopped"],[10,"","cashews"],[1,"sprig","curry leaves"],[0.25,"tsp","asafoetida"]],
- steps:["Dry-roast the moong dal on low heat for 3–4 minutes until it smells nutty.",
-  "Wash the dal with the rice, then pressure cook with the water and salt for 4–5 whistles.",
-  "Open once the pressure drops and mash well with a ladle. It should be soft and porridge-like.",
-  "Heat ghee, add pepper and cumin, then cashews, ginger, curry leaves and asafoetida. Fry until the cashews turn golden.",
-  "Pour the tempering into the pongal and mix. Loosen with hot water if it has thickened."],
- tip:"Pongal stiffens as it sits, so keep it a little looser than you want to eat it."},
+{id:"pongal", meal:"breakfast", name:"Ven Pongal", alt:"Ven pongali · Khara pongal", region:"South Indian", type:"veg", time:"30 min", serves:3,
+ tags:["quick"], with:"Coconut chutney and sambar",
+ ing:[[0.5,"cup","rice"],[0.5,"cup","yellow moong dal"],[3.25,"cup","water"],[0.5,"tsp","salt"],
+      "# Tempering",[2.5,"tbsp","ghee"],[10,"","cashews"],[0.75,"tsp","cumin seeds"],[0.5,"tsp","black pepper, lightly crushed"],[1,"inch","ginger, chopped"],[1,"","green chilli, slit"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"]],
+ steps:["Dry-roast the moong dal on low-medium until it smells nutty but isn't brown. Add the washed rice, water and salt.",
+  "Pressure cook on medium for 2–3 whistles and let the pressure drop on its own.",
+  "Mash lightly for a creamier texture; loosen with boiling water if it's thick.",
+  "Fry the cashews in the ghee until golden and lift out. Add cumin and pepper, then ginger and chilli for 30 seconds, then curry leaves until crisp, then the asafoetida.",
+  "Pour over the pongal, simmer 1–2 minutes and top with the cashews."],
+ tip:"Pongal stiffens as it sits, so keep it a little looser than you want to eat it.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/pongal-recipe-venn-pongal/"]},
 
-{id:"upma", meal:"breakfast", name:"Rava Upma", alt:"Uppittu", region:"Karnataka", type:"veg", time:"20 min",
- with:"Coconut chutney, a spoon of sugar on the side (Karnataka style)",
- ing:[[1,"cup","Bombay rava (sooji)"],[2.5,"cup","water"],[2,"tbsp","oil or ghee"],[1,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"tsp","chana dal"],[1,"","onion, chopped"],[2,"","green chillies, slit"],[1,"tsp","ginger, grated"],[0.5,"cup","carrot and peas"],[1,"sprig","curry leaves"],[1,"tsp","salt"],[0.5,"","lemon, juiced"],[2,"tbsp","coriander leaves"]],
- steps:["Dry-roast the rava on low heat until it smells toasty but stays pale. Set aside.",
-  "Heat oil, splutter mustard, then fry urad and chana dal until golden. Add curry leaves, chillies and ginger.",
-  "Sauté the onion until soft, add carrot and peas, and cook 2 minutes.",
-  "Pour in the water with salt and bring to a rolling boil.",
-  "Lower the heat and add the rava in a thin stream, stirring constantly so no lumps form. Cover and cook 2–3 minutes.",
-  "Finish with lemon juice and coriander."],
- tip:"Swap half the rava for broken wheat or oats for more fibre."},
+{id:"upma", meal:"breakfast", name:"Rava Upma", alt:"Upma", region:"South Indian", type:"veg", time:"20 min", serves:3,
+ tags:["quick"], with:"Coconut chutney, or inside pesarattu",
+ ing:[[1,"cup","Bombay rava (sooji)"],[2,"tbsp","oil or ghee"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"tsp","urad dal"],[1.5,"tsp","chana dal"],[2,"tbsp","peanuts"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"],[0.25,"cup","onion, chopped"],[2,"","green chillies, slit"],[0.5,"inch","ginger, grated"],[0.5,"cup","carrot, beans and peas, finely chopped"],[3,"cup","water"],[0.5,"tsp","salt"],[2,"tsp","ghee, to finish"],[null,"","lemon juice to serve"]],
+ steps:["Dry-roast the rava on medium, stirring, until crunchy and toasty but still pale. Set aside. Fry the peanuts in a little oil and set aside.",
+  "Heat the oil and splutter mustard and cumin. Fry urad and chana dal until light golden.",
+  "Add asafoetida, chillies, ginger and curry leaves, then the onion for 3–4 minutes. Add the vegetables, cover and cook until slightly tender.",
+  "Pour in the water with the salt, bring to a rolling boil, then lower the heat.",
+  "Add the rava in a slow stream, stirring constantly. Cover and cook on the lowest heat for 2–4 minutes until the water is absorbed.",
+  "Stir in the ghee, rest covered 5 minutes, then add the peanuts and lemon juice."],
+ tip:"Use 2¾ cups water instead of 3 if you like it drier for packing.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/upma-recipe-how-to-make-upma/"]},
 
-{id:"muttai-dosa", meal:"breakfast", name:"Muttai Dosa", alt:"Egg dosa", region:"Tamil Nadu street", type:"egg", time:"15 min",
- with:"Kara chutney or a bowl of salna",
- ing:[[2,"cup","fermented dosa batter"],[4,"","eggs"],[1,"","small onion, finely chopped"],[1,"","green chilli, finely chopped"],[0.5,"tsp","black pepper, crushed"],[2,"tbsp","coriander leaves"],[4,"tsp","oil"],[null,"","salt to taste"],[null,"","idli podi (optional)"]],
- steps:["Heat a tawa until a sprinkle of water sizzles. Spread a ladle of batter into a medium-thick dosa.",
-  "Crack an egg onto the centre and spread it over the dosa with the back of the ladle.",
-  "Scatter onion, chilli, pepper, salt and coriander. Dust with idli podi if you like.",
-  "Drizzle oil around the edge, cover and cook 1 minute until the egg sets.",
-  "Flip for 20 seconds to sear the top, then fold and serve hot."],
- tip:"One of the most protein-dense tiffins here. Use egg whites only on some dosas if you're keeping it lean."},
+{id:"egg-dosa", meal:"breakfast", name:"Egg Dosa", alt:"Guddu dosa · Muttai dosa", region:"South Indian street", type:"egg", time:"15 min", serves:2,
+ tags:["quick","high-protein"], with:"Coconut chutney or a spoon of karam podi",
+ ing:[[1,"cup","dosa batter, at room temperature"],[2,"","eggs"],[1,"","small onion, finely chopped"],[2,"","green chillies, chopped"],[2,"tbsp","coriander leaves"],[2,"tbsp","carrot, grated (optional)"],[1.5,"tbsp","chutney or podi"],[1.5,"tbsp","oil or butter"],[null,"","salt to taste"]],
+ steps:["Mix the onion, chillies and coriander. Thin the batter with a little water if it's very thick.",
+  "Heat a lightly greased tawa to medium. Spread a ladle of batter, keeping the edges thick so the egg stays in.",
+  "After about 2 minutes, spread a little chutney, slide an egg into the centre, break the yolk and spread it over the dosa.",
+  "Scatter the onion mix, drizzle oil round the edge and a little over the egg.",
+  "Cook until the base is firm, flip and press gently to cook the egg, then flip back and serve hot."],
+ tip:"One egg per dosa. For a leaner version, use one whole egg and one white across two dosas.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/egg-dosa-recipe/"]},
 
-/* ---------- LUNCH ---------- */
-{id:"sambar", meal:"lunch", name:"Tamil Nadu Sambar", alt:"Arachuvitta sambar", region:"Tamil Nadu", type:"veg", time:"45 min",
- with:"Rice and ghee, idli, dosa, vada",
- ing:[[0.5,"cup","toor dal"],[0.25,"tsp","turmeric"],[15,"g","tamarind"],[12,"","small onions (shallots)"],[1,"","drumstick, cut in pieces"],[1,"cup","brinjal or pumpkin, cubed"],[1,"","tomato, chopped"],[1.5,"tsp","salt"],[1.5,"cup","water (for the dal)"],[1,"cup","hot water (for the tamarind)"],[1,"cup","water (for the vegetables)"],
-      "# Fresh masala",[1.5,"tbsp","coriander seeds"],[1,"tbsp","chana dal"],[5,"","dry red chillies"],[0.25,"tsp","fenugreek seeds"],[3,"tbsp","grated coconut"],
-      "# Tempering",[1,"tbsp","gingelly (sesame) oil"],[1,"tsp","mustard seeds"],[0.25,"tsp","asafoetida"],[2,"sprig","curry leaves"],[2,"tbsp","coriander leaves"]],
- steps:["Pressure cook the toor dal with turmeric and its water for 4–5 whistles. Mash well.",
-  "Soak tamarind in the hot water for 10 minutes and squeeze out the pulp.",
-  "Roast the masala spices in a little oil until the chana dal is golden, add coconut for 1 minute, then grind to a smooth paste.",
-  "Sauté shallots, add drumstick, brinjal, tomato, salt and the vegetable water. Cook until the vegetables are almost tender.",
-  "Add tamarind water and boil until the raw smell goes. Stir in the masala paste and dal, and simmer gently until frothy.",
-  "Temper mustard, curry leaves and asafoetida in sesame oil, pour over and finish with coriander."],
- tip:"For a quicker version, replace the fresh masala with 2 tbsp good sambar powder."},
+{id:"atukula-upma", meal:"breakfast", name:"Atukula Upma", alt:"Poha upma · Aval upma", region:"Andhra Pradesh", type:"veg", time:"25 min", serves:3,
+ tags:["quick","healthy"], with:"A cup of filter coffee or buttermilk",
+ ing:[[2,"cup","medium poha"],[1,"","onion, sliced"],[2,"","green chillies, slit"],[1,"","tomato, deseeded and chopped"],[1,"tsp","ginger, grated"],[0.5,"tsp","salt"],[1.5,"tbsp","lemon juice"],
+      "# Tempering",[1.5,"tbsp","oil"],[3,"tbsp","peanuts"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"tsp","urad dal"],[1,"tsp","chana dal"],[1,"sprig","curry leaves"],[0.25,"tsp","turmeric"],[null,"","asafoetida, a pinch"],
+      "# Garnish",[2,"tbsp","coriander leaves"],[2,"tbsp","fresh grated coconut"]],
+ steps:["Rinse the poha twice, drain fully and leave covered to soften. If the grains don't mash easily, sprinkle a little water.",
+  "Fry the peanuts in the oil until golden and lift out. Fry both dals with mustard and cumin until golden, then add asafoetida, onion, chillies, curry leaves and ginger.",
+  "Sauté until the onion is translucent. Add tomato, turmeric and salt and cook until the tomato breaks down.",
+  "Fold in the poha gently, cover and steam on low until hot.",
+  "Off the heat, add the lemon juice, peanuts, coconut and coriander."],
+ tip:"Use medium or thick poha. Thin poha turns mushy as soon as it's rinsed.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/aval-upma-poha-upma/"]},
 
-{id:"rasam", meal:"lunch", name:"Milagu Rasam", alt:"Pepper-garlic rasam", region:"Tamil Nadu", type:"veg", time:"20 min",
- with:"Hot rice and a poriyal, or drunk from a tumbler",
- ing:[[15,"g","tamarind"],[2,"","tomatoes, crushed"],[1,"tsp","black pepper"],[1,"tsp","cumin seeds"],[4,"clove","garlic"],[0.25,"tsp","turmeric"],[2,"tbsp","cooked toor dal (optional)"],[1,"cup","warm water (for the tamarind)"],[2,"cup","water"],[1,"tsp","salt"],
-      "# Tempering",[1,"tsp","ghee"],[0.5,"tsp","mustard seeds"],[0.25,"tsp","asafoetida"],[1,"sprig","curry leaves"],[2,"tbsp","coriander leaves"]],
- steps:["Coarsely crush pepper, cumin and garlic in a mortar.",
-  "Extract the tamarind in the warm water. Add the crushed tomatoes, turmeric and salt.",
-  "Boil 8 minutes until the raw tamarind smell is gone.",
-  "Add the rest of the water, the crushed spices and the dal. Heat until it rises and froths, then switch off. Do not let it boil hard.",
-  "Temper mustard, asafoetida and curry leaves in ghee, pour over and add coriander."],
- tip:"Boiling after the spices go in makes rasam bitter. Take it off the heat as soon as the froth rises."},
+{id:"uggani", meal:"breakfast", name:"Uggani", alt:"Borugula upma · Puffed rice upma", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:3,
+ tags:["quick"], with:"Mirchi bajji, or a bowl of curd",
+ ing:[[250,"g","puffed rice (borugulu)"],[1,"","large onion, chopped"],[1,"","large tomato, chopped"],[3,"tbsp","fried gram (putnalu)"],[2,"tbsp","lemon juice"],[2,"tbsp","coriander leaves"],[null,"","salt to taste"],
+      "# Tempering",[2.5,"tbsp","oil"],[3,"","green chillies, slit"],[1,"sprig","curry leaves"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[3,"tbsp","peanuts"],[1,"tbsp","chana dal"],[1,"tbsp","urad dal"],[null,"","turmeric, a pinch"]],
+ steps:["Grind the fried gram to a fine powder. Rinse the puffed rice in plenty of water (drain at once if it's the light, airy kind) and squeeze gently.",
+  "Heat the oil and fry mustard, cumin, dals and peanuts until the peanuts are golden. Add chillies and curry leaves for a minute.",
+  "Add the onion for 2–3 minutes, then tomato, turmeric and salt. Cook until mushy and the oil separates.",
+  "On the lowest heat, mix in the puffed rice, cover and warm through without overcooking.",
+  "Off the heat, stir in 2 tbsp of the fried gram powder and the coriander, then the lemon juice. Add more powder to taste."],
+ tip:"The fried gram powder soaks up excess moisture and keeps uggani from turning soggy.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/puffed-rice-upma-uggani-recipe/"]},
 
-{id:"kodi-kura", meal:"lunch", name:"Andhra Chicken Curry", alt:"Kodi kura", region:"Andhra Pradesh", type:"chicken", time:"50 min + 30 min marinate",
- with:"Rice, jonna rotte or chapati",
- ing:[[750,"g","bone-in chicken"],[3,"tbsp","curd"],[0.5,"tsp","turmeric"],[2,"tsp","red chilli powder"],[1.5,"tsp","salt"],
-      "# Gravy",[3,"tbsp","oil"],[2,"","onions, finely sliced"],[3,"","green chillies, slit"],[1,"sprig","curry leaves"],[1.5,"tbsp","ginger-garlic paste"],[2,"","tomatoes, chopped"],[2,"tsp","coriander powder"],[1,"tsp","garam masala"],[0.75,"cup","water"],[3,"tbsp","coriander leaves"]],
- steps:["Marinate the chicken with curd, turmeric, chilli powder and salt for at least 30 minutes.",
-  "Heat oil and fry onions with green chillies and curry leaves until deep golden.",
-  "Add ginger-garlic paste and cook 1 minute, then tomatoes. Cook until they break down and oil separates.",
-  "Add coriander powder, then the chicken. Sear on high for 5 minutes.",
-  "Add water, cover and cook on low for 20–25 minutes until tender.",
-  "Stir in garam masala and coriander, and simmer uncovered to the thickness you like."],
- tip:"Use skinless chicken and cut the oil to 2 tbsp for a lighter curry; the marinade carries most of the flavour."},
+{id:"godhuma-upma", meal:"breakfast", name:"Godhuma Rava Upma", alt:"Broken wheat upma · Dalia", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:2,
+ tags:["quick","healthy"], with:"Coconut chutney or curd",
+ ing:[[1,"cup","broken wheat (godhuma rava)"],[3,"cup","water"],[1,"","small onion, chopped"],[1,"","carrot, chopped"],[1,"","potato, small cubes"],[0.25,"cup","green peas"],[2,"","green chillies, slit"],[2,"tbsp","oil"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"],[null,"","turmeric, a pinch"],[null,"","salt to taste"]],
+ steps:["Dry-roast the broken wheat on medium until fragrant and set aside.",
+  "Heat the oil and splutter mustard, cumin and curry leaves. Add asafoetida, onion, potato, carrot and peas and fry 3–4 minutes.",
+  "Add the water, turmeric and salt and bring to a rapid boil, then lower to medium.",
+  "Add the wheat slowly while stirring. Cover and cook until the water is absorbed and the vegetables are tender, or pressure cook 1–2 whistles on low.",
+  "Let the pressure drop, fluff and serve."],
+ tip:"More fibre and a slower energy release than rava upma, so it keeps you full until lunch.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/broken-wheat-upma-veg-dalia-in-pressure-cooker/"]},
 
-{id:"mutton-kuzhambu", meal:"lunch", name:"Chettinad Mutton Kuzhambu", alt:"Kari kuzhambu", region:"Chettinad", type:"mutton", time:"1 hr 15 min",
- with:"Rice, idiyappam or dosa",
- ing:[[500,"g","mutton, curry cut"],[0.5,"tsp","turmeric"],[1,"tbsp","ginger-garlic paste"],[1,"tsp","salt"],[1.5,"cup","water"],
-      "# Chettinad masala",[6,"","dry red chillies"],[2,"tbsp","coriander seeds"],[1,"tsp","black pepper"],[1,"tsp","fennel seeds"],[1,"tsp","cumin seeds"],[1,"inch","cinnamon"],[3,"","cloves"],[1,"","star anise"],[1,"tsp","poppy seeds"],[0.25,"cup","grated coconut"],
-      "# Kuzhambu",[3,"tbsp","gingelly (sesame) oil"],[15,"","small onions, sliced"],[2,"","tomatoes, chopped"],[2,"sprig","curry leaves"],[2,"tbsp","coriander leaves"]],
- steps:["Pressure cook mutton with turmeric, ginger-garlic paste, salt and water for 5–6 whistles until tender. Keep the stock.",
-  "Dry-roast the masala spices on low heat until fragrant, add coconut and roast 2 minutes more. Cool and grind to a fine paste.",
-  "Heat sesame oil, add curry leaves and shallots, and fry until golden. Add tomatoes and cook until mushy.",
-  "Add the masala paste and fry 5 minutes, stirring, until oil separates.",
-  "Add the mutton with its stock and simmer 10–15 minutes until the gravy coats a spoon. Finish with coriander."],
- tip:"The kuzhambu tastes better the next day. Skim the fat off the chilled gravy before reheating."},
+{id:"ragi-dosa", meal:"breakfast", name:"Instant Ragi Dosa", alt:"Ragi attu · Finger millet dosa", region:"South Indian", type:"veg", time:"25 min", serves:2,
+ tags:["quick","healthy","millet"], with:"Peanut or tomato chutney",
+ ing:[[0.5,"cup","ragi flour"],[0.25,"cup","rice flour"],[2,"tbsp","fine rava"],[2,"cup","water"],[0.25,"tsp","salt"],[0.5,"tsp","cumin seeds, crushed"],[1,"","green chilli, minced"],[1,"tsp","ginger, grated"],[6,"","curry leaves, chopped"],[2,"tbsp","onion, very finely chopped"],[2,"tbsp","coriander leaves"],[2,"tbsp","ghee or oil, for cooking"]],
+ steps:["Mix the flours, rava, aromatics and salt. Add half the water, then the rest gradually, to a thin, smooth batter. Rest 10–15 minutes.",
+  "Heat a greased pan on medium-high until water drops sizzle away. Stir the batter well.",
+  "Pour from the edges inward in a circle, then fill the gaps. Don't spread it.",
+  "Drizzle ghee over the edges and dry patches and cook about 3 minutes until the edges lift.",
+  "Flip for a minute, flip back for another minute until crisp. Re-stir the batter before every dosa."],
+ tip:"The flour settles fast, so always stir before pouring.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/ragi-dosa-recipe/"]},
+/* ---------- LUNCH BOX ---------- */
+{id:"pulihora", meal:"lunch", name:"Pulihora", alt:"Chintapandu pulihora · Tamarind rice", region:"Andhra Pradesh", type:"veg", time:"30 min + cooling", serves:3,
+ tags:[], with:"Curd, appadam or a vepudu",
+ ing:[[1.5,"cup","aged rice"],[1,"tbsp","sesame oil"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[4,"tbsp","thick tamarind pulp"],[0.75,"tsp","jaggery (optional)"],[0.5,"tsp","roasted mustard powder (optional)"],
+      "# Tempering",[2,"tbsp","oil"],[0.5,"tsp","mustard seeds"],[1,"tbsp","urad dal"],[1,"tbsp","chana dal"],[0.25,"cup","peanuts"],[2,"","dry red chillies, broken"],[2,"","green chillies, slit"],[0.5,"tsp","ginger, finely chopped"],[2,"sprig","curry leaves"],[null,"","asafoetida, a pinch"]],
+ steps:["Wash the rice and pressure cook with 3 cups water for 2–3 whistles on medium. Spread on a wide plate without mashing.",
+  "Sprinkle salt and turmeric over the rice, drizzle the sesame oil and mix gently. Let it cool completely.",
+  "Fry mustard, peanuts and both dals in the oil until the peanuts turn golden. Add curry leaves, both chillies and ginger until the red chillies crisp, then the asafoetida.",
+  "Add the tamarind pulp, jaggery and a little salt. Cook until thick and the oil separates at the edges.",
+  "Sprinkle the mustard powder over the cooled rice, add about three-quarters of the tamarind mix and fold gently. Add more to taste."],
+ tip:"Pulihora tastes better after a few hours, so it's ideal to make in the morning for lunch. Use either mustard or sesame powder, not both; together they turn bitter.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/pulihora-recipe-andhra-pulihora/"]},
 
-{id:"lemon-rice", meal:"lunch", name:"Lemon Rice", alt:"Elumichai sadam · Pulihora style", region:"Tamil Nadu", type:"veg", time:"15 min",
- with:"Potato fry, appalam, or carried in a tiffin box",
- ing:[[3,"cup","cooked rice, cooled"],[1.5,"","lemons, juiced"],[0.5,"tsp","turmeric"],[2,"tbsp","oil"],[1,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"tbsp","chana dal"],[3,"tbsp","peanuts"],[2,"","green chillies, slit"],[1,"tsp","ginger, chopped"],[0.25,"tsp","asafoetida"],[1,"sprig","curry leaves"],[1,"tsp","salt"]],
- steps:["Spread the rice on a plate so the grains stay separate and cool.",
-  "Heat oil, fry peanuts until crunchy, then add mustard, urad dal and chana dal.",
-  "Add chillies, ginger, curry leaves and asafoetida. Switch off the heat and stir in turmeric.",
-  "Add lemon juice and salt to the pan, then fold in the rice gently with a fork."],
- tip:"Add the lemon juice off the heat. Cooking it makes it bitter."},
+{id:"lemon-rice", meal:"lunch", name:"Nimmakaya Pulihora", alt:"Lemon rice · Chitranna", region:"Andhra Pradesh", type:"veg", time:"25 min", serves:3,
+ tags:["quick"], with:"Bendakaya vepudu, appadam or curd",
+ ing:[[1.5,"cup","raw rice (about 4 cups cooked)"],[2,"tbsp","oil"],[0.25,"cup","peanuts or cashews"],[0.75,"tsp","mustard seeds"],[1.5,"tsp","chana dal"],[1,"tsp","urad dal"],[2,"","green chillies, slit"],[0.5,"tbsp","ginger, finely chopped"],[1,"sprig","curry leaves"],[0.5,"tsp","turmeric"],[0.5,"tsp","salt"],[null,"","asafoetida, a pinch"],[2.5,"tbsp","lemon juice"]],
+ steps:["Cook the rice until just done, cool completely and fluff with a fork.",
+  "Fry the nuts in a little of the oil until golden and set aside.",
+  "Heat the rest of the oil and fry mustard and both dals for 2–3 minutes until golden. Add ginger, chillies and curry leaves for 30 seconds.",
+  "Stir in asafoetida, turmeric and salt, then immediately add 3 tbsp water. Cook until it evaporates and the dals soften. Switch off the heat.",
+  "Add the cooled rice and lemon juice, mix well, adjust salt and lemon, and top with the nuts."],
+ tip:"Add the lemon juice off the heat. Cooking it makes it bitter.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/lemon-rice-recipe/"]},
 
-{id:"avial", meal:"lunch", name:"Avial", alt:"Mixed vegetables in coconut and curd", region:"Kerala", type:"veg", time:"35 min",
- with:"Rice with sambar, or adai",
- ing:[[4,"cup","mixed vegetables in batons (drumstick, raw banana, carrot, beans, yam, ash gourd)"],[0.25,"tsp","turmeric"],[0.5,"cup","water"],[1,"tsp","salt"],
-      "# Paste",[1,"cup","grated coconut"],[3,"","green chillies"],[1,"tsp","cumin seeds"],
-      "# Finish",[0.5,"cup","thick curd, whisked"],[2,"tbsp","coconut oil"],[2,"sprig","curry leaves"]],
- steps:["Cook the vegetables with turmeric, salt and water, covered, until just tender. Add soft ones like ash gourd later.",
-  "Coarsely grind coconut, chillies and cumin with a splash of water. It should not be smooth.",
-  "Add the paste to the vegetables and cook 3–4 minutes, stirring gently.",
-  "Switch off the heat and fold in the curd.",
-  "Pour raw coconut oil over the top, add curry leaves, and cover for 5 minutes so the aroma sets in."],
- tip:"No tempering here. The raw coconut oil and curry leaves at the end are what make it avial."},
+{id:"tomato-rice", meal:"lunch", name:"Tomato Rice", alt:"Tomato annam · Tomato bath", region:"South Indian", type:"veg", time:"45 min", serves:3,
+ tags:[], with:"Raita, plain curd or an egg fry",
+ ing:[[1.5,"cup","aged basmati or other non-sticky rice"],[2,"tbsp","oil or ghee"],[12,"","cashews, split (optional)"],[1,"","onion, sliced"],[1,"","green chilli, slit"],[1,"tbsp","ginger-garlic paste"],[1,"cup","tomatoes, chopped"],[0.75,"tsp","salt"],[0.25,"tsp","turmeric"],[0.75,"tsp","red chilli powder"],[0.75,"tsp","garam masala"],[2.5,"cup","water"],[3,"tbsp","coriander leaves"],[1,"tbsp","lemon juice (optional)"],
+      "# Whole spices",[1,"","bay leaf"],[0.75,"tsp","cumin seeds"],[1,"inch","cinnamon"],[3,"","green cardamoms"],[3,"","cloves"]],
+ steps:["Rinse the rice until the water runs clear, soak 30 minutes and drain.",
+  "Fry the cashews in the oil and set aside. Crackle the whole spices, then sauté onion and chilli until golden. Add the ginger-garlic paste for 30 seconds.",
+  "Add tomatoes, salt and turmeric, sauté 2–3 minutes, then cover until mushy. Stir in chilli powder and garam masala and cook until the masala leaves the sides.",
+  "Pour in the water, bring to a rolling boil, add the rice and pressure cook on medium for 1 whistle.",
+  "Let the pressure drop, rest 5 minutes, fluff and finish with coriander, lemon and cashews."],
+ tip:"Soaking and rinsing the rice keeps the grains separate, which matters once it sits in a lunch box.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/tomato-rice-recipe/"]},
 
-{id:"poriyal", meal:"lunch", name:"Beans Poriyal", alt:"Beans thoran style", region:"Tamil Nadu", type:"veg", time:"20 min",
- with:"Any rice-and-kuzhambu meal",
- ing:[[300,"g","french beans, finely chopped"],[1,"tbsp","oil"],[1,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"","dry red chilli"],[1,"sprig","curry leaves"],[0.25,"tsp","asafoetida"],[0.75,"tsp","salt"],[3,"tbsp","grated coconut"]],
- steps:["Heat oil and splutter mustard. Add urad dal, red chilli, curry leaves and asafoetida.",
-  "Add beans and salt with a sprinkle of water. Cover and cook on low for 8–10 minutes until tender with a bite.",
-  "Uncover, stir in coconut and cook 1 minute."],
- tip:"Works the same way with cabbage, carrot or cluster beans."},
+{id:"bagara-rice", meal:"lunch", name:"Bagara Rice", alt:"Bagara annam · Bagara khana", region:"Telangana", type:"veg", time:"45 min", serves:2,
+ tags:[], with:"Kodi kura, gutti vankaya or an egg curry",
+ ing:[[1,"cup","basmati rice"],[2,"tbsp","ghee"],[1,"","small onion, thinly sliced"],[2,"","green chillies, slit"],[1,"tsp","ginger-garlic paste"],[3,"tbsp","mint leaves, chopped"],[3,"tbsp","coriander leaves, chopped"],[0.5,"tsp","salt"],[1.75,"cup","water (pressure cooker; 2 cups in a pot)"],
+      "# Whole spices",[1,"","bay leaf"],[1,"inch","cinnamon"],[0.5,"tsp","shahi jeera"],[3,"","cloves"],[3,"","green cardamoms"],[1,"","black cardamom"],
+      "# Ground spice",[0.5,"inch","cinnamon"],[2,"","cloves"],[3,"","green cardamoms (seeds only)"]],
+ steps:["Rinse the rice at least three times and soak for 30 minutes. Drain completely. Grind the ground-spice ingredients to a powder.",
+  "Heat the ghee, let the whole spices sizzle, then sauté the onion and chillies until lightly golden. Add the ginger-garlic paste until fragrant.",
+  "Add the rice, mint and coriander and fry on fairly high heat for 2 minutes.",
+  "Add salt, the spice powder and the water and stir.",
+  "Pressure cook on medium-high for 1 whistle and let the pressure drop on its own, or simmer covered on low in a pot until the water is absorbed. Fluff with a fork."],
+ tip:"Fresh mint and coriander are what make bagara rice. Dried herbs don't work here.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/bagara-rice/"]},
 
+{id:"tomato-pappu", meal:"lunch", name:"Tomato Pappu", alt:"Andhra tomato dal", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:2,
+ tags:["quick","healthy","high-protein"], with:"Hot rice, ghee and avakaya",
+ ing:[[0.5,"cup","toor dal (kandi pappu)"],[2,"","tomatoes, chopped"],[2,"","green chillies, slit"],[1,"cup","water"],[0.75,"tbsp","tamarind"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"],
+      "# Tempering",[1.5,"tbsp","ghee or oil"],[0.25,"tsp","cumin seeds"],[0.25,"tsp","mustard seeds"],[3,"clove","garlic, crushed"],[1,"","dry red chilli, broken"],[1,"sprig","curry leaves"],[0.5,"tsp","red chilli powder"],[null,"","asafoetida, a pinch"]],
+ steps:["Rinse the dal three times. Pressure cook with the water, tomatoes, tamarind, chillies and turmeric on medium for 3 whistles.",
+  "When the pressure drops, add salt and mash to the texture you like. Thin with hot water if needed.",
+  "Heat the ghee, splutter cumin and mustard, then fry the red chilli, garlic and curry leaves until crisp. Stir in chilli powder and asafoetida.",
+  "Pour the dal into the tempering, mix and switch off the heat."],
+ tip:"Dal thickens as it cools, so pack it a little thinner than you'd eat it hot.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/tomato-pappu-recipe/"]},
+
+{id:"palakura-pappu", meal:"lunch", name:"Palakura Pappu", alt:"Spinach dal", region:"Andhra & Telangana", type:"veg", time:"20 min", serves:3,
+ tags:["quick","healthy","high-protein"], with:"Rice and ghee, or chapati",
+ ing:[[0.5,"cup","toor or moong dal"],[1.25,"cup","water"],[100,"g","spinach, chopped"],[2,"","green chillies, slit"],[2,"tbsp","onion, chopped (optional)"],[0.25,"cup","tomato, chopped (optional)"],[1,"clove","garlic"],[2,"tsp","tamarind, soaked in ¼ cup hot water"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"],
+      "# Tempering",[1.5,"tbsp","oil or ghee"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"","dry red chilli, broken"],[1,"clove","garlic, crushed"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"]],
+ steps:["Rinse the dal well. Put it in the cooker with the water, onion, tomato, chillies, garlic, tamarind water, salt, turmeric and spinach.",
+  "Pressure cook for 4 whistles. When the pressure drops, mash lightly and adjust salt and sourness.",
+  "Heat the oil and add mustard, cumin, red chilli and garlic. When they splutter, add curry leaves and asafoetida and switch off.",
+  "Pour the tempering over the dal, mix and rest 5 minutes before serving."],
+ tip:"Swap spinach for gongura or menthi (fenugreek) leaves for other classic Andhra pappus.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/palakura-pesarapappu-spinach-moong-dal-curry/"]},
+
+{id:"dosakaya-pappu", meal:"lunch", name:"Dosakaya Pappu", alt:"Yellow cucumber dal", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:4,
+ tags:["quick","healthy","high-protein"], with:"Rice and ghee, or chapati",
+ ing:[[0.75,"cup","toor or moong dal"],[2.25,"cup","water"],[1.75,"cup","dosakaya (yellow cucumber), peeled and chopped"],[1,"","small onion, sliced (optional)"],[1,"","tomato, chopped (optional)"],[2,"","green chillies"],[null,"","salt to taste"],
+      "# Tempering",[1.5,"tbsp","ghee or oil"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"","dry red chilli, broken"],[2,"clove","garlic, crushed"],[1,"sprig","curry leaves"],[0.5,"tsp","red chilli powder (optional)"],[null,"","turmeric, a pinch"],[null,"","asafoetida, a pinch"]],
+ steps:["Rinse the dal until the water runs clear. Peel and deseed the cucumber and chop it.",
+  "Pressure cook the dal, water, cucumber, onion, tomato and chillies for 1–3 whistles, depending on your cooker.",
+  "When the pressure drops, add salt and mash.",
+  "Heat the ghee, crackle red chilli, mustard and cumin, then fry garlic and curry leaves until crisp. Lower the heat and add asafoetida, chilli powder and turmeric.",
+  "Pour the tempering into the dal and simmer briefly until the raw chilli smell goes."],
+ tip:"Taste a slice of the cucumber first. A bitter one will spoil the whole pot.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/dosakaya-pappu-recipe-dosakaya-tomato-pappu/"]},
+
+{id:"bendakaya-vepudu", meal:"lunch", name:"Bendakaya Vepudu", alt:"Okra fry with peanuts", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:3,
+ tags:["quick","healthy"], with:"Pappu and rice, or chapati",
+ ing:[[250,"g","okra (bendakaya), dried and cut in ½-inch rounds"],[2,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"tsp","urad dal"],[1,"tsp","chana dal"],[2,"clove","garlic, crushed (optional)"],[1,"sprig","curry leaves"],[1,"","green chilli, slit"],[1,"","onion, sliced (optional)"],[1,"tbsp","lemon juice"],[0.25,"cup","fresh grated coconut"],[0.25,"cup","roasted peanuts (optional)"],[0.25,"tsp","red chilli powder"],[0.5,"tsp","coriander powder"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"]],
+ steps:["Wash the okra and dry it completely before cutting into thin rounds.",
+  "Heat the oil and fry mustard, cumin and both dals until golden. Add garlic, curry leaves and chilli until the leaves crisp, then the onion until translucent.",
+  "Add the okra and lemon juice and fry uncovered for 5–7 minutes until no longer slimy. Then cover and cook until just tender.",
+  "Stir in coconut, chilli powder, turmeric, coriander powder, salt and peanuts and fry 2–3 minutes until fragrant."],
+ tip:"Keep the pan uncovered until the slime is gone. Covering too early traps steam and makes it sticky.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/bendakaya-palli-vepudu-ladies-finger-stir-fry/"]},
+
+{id:"dondakaya-vepudu", meal:"lunch", name:"Dondakaya Vepudu", alt:"Ivy gourd fry · Tindora fry", region:"Andhra Pradesh", type:"veg", time:"20 min", serves:3,
+ tags:["quick","healthy"], with:"Rice with ghee, or as a side to pappu",
+ ing:[[250,"g","ivy gourd (dondakaya), thinly sliced"],[2,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"tsp","chana dal"],[1,"tsp","urad dal"],[2,"clove","garlic, crushed"],[1,"","dry red chilli, broken"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"],[0.25,"tsp","red chilli powder"],[3,"tbsp","fresh grated coconut"],[2,"tbsp","roasted peanuts (optional)"]],
+ steps:["Rinse and dry the gourd, trim both ends and slice thinly (a few pulses in a food processor works too).",
+  "Heat the oil and temper mustard, cumin, both dals, garlic, red chilli and curry leaves until the dals are golden. Add asafoetida.",
+  "Add the gourd, salt and turmeric and stir-fry on medium-high for 3 minutes. Cover and cook on low until tender, stirring now and then.",
+  "Stir in the coconut for 2 minutes, then the chilli powder and peanuts for 2 more."],
+ tip:"The source also gives a roasted dal-sesame podi to use in place of coconut. It keeps longer in a lunch box.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/dondakaya-vepudu-recipe/"]},
+
+{id:"beans-poriyal", meal:"lunch", name:"Beans Poriyal", alt:"Beans kura · Green beans stir-fry", region:"South Indian", type:"veg", time:"25 min", serves:3,
+ tags:["quick","healthy"], with:"Any pappu or rasam with rice",
+ ing:[[250,"g","green beans, chopped in ¼-inch pieces"],[1,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"tsp","chana dal"],[1,"","dry red chilli, broken"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"],[null,"","turmeric, a pinch"],[0.33,"tsp","salt"],[0.5,"tsp","red chilli powder"],[3,"tbsp","grated coconut"]],
+ steps:["Heat the oil and fry mustard, both dals and the red chilli until the dals turn golden.",
+  "Add asafoetida and curry leaves and fry until the leaves crisp.",
+  "Add the beans, turmeric and salt and stir-fry 2 minutes. Cover and cook on low until tender, sprinkling 1–2 tbsp water only if needed.",
+  "Mix in the chilli powder and coconut, sauté 1 minute and switch off."],
+ tip:"Works the same way with cabbage, carrot or cluster beans (goru chikkudu).",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/beans-poriyal-recipe-beans-stir-fry/"]},
+
+{id:"gutti-vankaya", meal:"lunch", name:"Gutti Vankaya Kura", alt:"Stuffed brinjal curry", region:"Andhra & Telangana", type:"veg", time:"40 min", serves:2,
+ tags:[], with:"Rice, bagara rice or jonna rotte",
+ ing:[[5,"","small brinjals"],[2.5,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"","small onion, sliced"],[2,"","green chillies, slit"],[1,"tsp","ginger-garlic paste"],[1,"","small tomato, chopped"],[null,"","turmeric, a pinch"],[0.25,"tsp","salt"],[0.75,"cup","water"],[1,"tbsp","lemon juice or tamarind paste"],[2,"tbsp","coriander leaves"],
+      "# Stuffing masala",[5,"","dry red chillies"],[0.25,"cup","peanuts"],[2,"tbsp","grated coconut"],[1.5,"tbsp","white sesame seeds"],[1,"tbsp","coriander seeds"],[0.75,"tsp","cumin seeds"],[1,"inch","cinnamon"],[3,"","cloves"],[2,"","green cardamoms"],[0.5,"tsp","salt"]],
+ steps:["Dry-roast peanuts and red chillies until crunchy. Toast coriander, cumin, cloves, cardamom and cinnamon until fragrant, then the coconut for 2 minutes and the sesame until it splutters. Cool and grind with the salt.",
+  "Slit the brinjals into quarters, keeping the stalk on, and soak in salted water. Stuff each with as much masala as it holds.",
+  "Heat the oil and temper mustard, cumin and curry leaves. Sauté onion and chillies until golden, add ginger-garlic paste for a minute, then tomato, turmeric and salt until mushy.",
+  "Add the brinjals and sauté 2–3 minutes. Add the water and leftover masala, cover and cook on low-medium until tender.",
+  "Adjust salt, add lemon or tamarind and finish with coriander."],
+ tip:"Use small, glossy, light brinjals. Heavy ones are seedy and can taste bitter.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/gutti-vankaya-kura-enne-badanekai-recipe/"]},
+
+{id:"kodi-vepudu", meal:"lunch", name:"Kodi Vepudu", alt:"Andhra chicken fry", region:"Andhra Pradesh", type:"chicken", time:"40 min", serves:4,
+ tags:["high-protein"], with:"Rice and rasam, or chapati",
+ ing:[[500,"g","chicken, bone-in or boneless"],[1,"","large onion, coarsely ground"],[1,"tbsp","ginger-garlic paste"],[1,"tbsp","red chilli powder"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[1,"tbsp","ghee"],[1.5,"tbsp","lemon juice"],
+      "# Fry masala (roast & grind)",[2,"tbsp","coriander seeds"],[2,"inch","cinnamon"],[6,"","cloves"],[4,"","green cardamoms"],[0.5,"tsp","cumin seeds"],[0.5,"tsp","fennel seeds (optional)"],
+      "# To finish",[1.5,"tbsp","oil or ghee"],[2,"sprig","curry leaves"],[3,"","green chillies, slit"],[12,"","cashews, finely powdered"],[0.5,"tsp","black pepper powder"],[1,"tbsp","coriander leaves"]],
+ steps:["Dry-roast the fry-masala spices on medium until fragrant and grind to a fine powder.",
+  "In a heavy pot, combine the chicken with 2 tbsp water, onion, ginger-garlic paste, the masala, chilli powder, turmeric, salt, ghee and lemon juice.",
+  "Cook on medium until the chicken is tender, adding a splash of water if it dries out.",
+  "Heat the oil and fry curry leaves and green chillies until crisp.",
+  "Add the chicken with its masala, then the cashew and pepper powders. Fry on medium-high for 3–4 minutes until dry and coated. Finish with coriander."],
+ tip:"Dry fries like this travel better than gravies and don't leak in a lunch bag.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/chicken-fry/"]},
+
+{id:"kodi-kura", meal:"lunch", name:"Kodi Kura", alt:"Andhra chicken curry", region:"Andhra Pradesh", type:"chicken", time:"45 min", serves:3,
+ tags:["high-protein"], with:"Rice, bagara rice or chapati",
+ ing:["# Marinade",[500,"g","chicken"],[2,"tbsp","lemon juice or curd"],[1,"tsp","ginger-garlic paste"],[null,"","turmeric, a pinch"],[0.75,"tbsp","red chilli powder"],[0.33,"tsp","salt"],
+      "# Curry",[3.5,"tbsp","oil"],[1,"","bay leaf"],[3,"","cloves"],[2,"","green cardamoms"],[1,"inch","cinnamon"],[3,"","onions, finely chopped"],[2,"","green chillies, slit"],[1,"sprig","curry leaves"],[1,"tsp","ginger-garlic paste"],[0.25,"tbsp","red chilli powder"],[1,"","small tomato, chopped (optional)"],[0.25,"cup","mint leaves, chopped"],[1.25,"tsp","garam masala"],[0.75,"cup","hot water"],
+      "# Paste",[3,"tbsp","white poppy seeds (or 10 cashews)"],[2,"tbsp","fresh coconut (optional)"]],
+ steps:["Marinate the chicken with the marinade ingredients and refrigerate while you prep.",
+  "Dry-roast the poppy seeds until crunchy, powder, and grind with the coconut and a little water to a smooth paste.",
+  "Heat the oil, add the whole spices, then the chillies, onions, curry leaves and a pinch of salt. Sauté on medium-low for about 10 minutes until deep golden.",
+  "Add the ginger-garlic paste for a minute, then the chicken on high for 3–4 minutes. Stir in mint, chilli powder and garam masala for 2–3 minutes.",
+  "Add hot water just to cover, bring to a boil, cover and cook on low until tender.",
+  "Stir in the poppy seed paste and cook 3–5 minutes, stirring, to the consistency you like."],
+ tip:"Browning the onions slowly is what gives Andhra kodi kura its deep colour. Don't rush it on high heat.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/andhra-chicken-curry-recipe-kodi-kura-with-step-by-step-pictures/"]},
+
+{id:"daddojanam", meal:"lunch", name:"Daddojanam", alt:"Curd rice", region:"Andhra Pradesh", type:"veg", time:"40 min", serves:2,
+ tags:["healthy"], with:"Avakaya or any pickle",
+ ing:[[0.5,"cup","rice"],[1.5,"cup","water"],[1.5,"cup","curd"],[0.5,"cup","full-fat milk, boiled"],[null,"","salt to taste"],
+      "# Tempering",[1.5,"tsp","oil"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[0.75,"tbsp","chana dal"],[0.5,"tbsp","urad dal"],[1,"sprig","curry leaves"],[0.5,"tsp","black pepper, coarsely crushed"],[null,"","asafoetida, a pinch"]],
+ steps:["Soak the rice 20 minutes, then pressure cook with the water for 2 whistles on medium until soft.",
+  "Mash the hot rice until smooth, stir in the boiled milk and let it cool completely.",
+  "Once cool, mix in the curd and salt.",
+  "Heat the oil, splutter mustard and cumin, fry both dals until lightly golden, then add curry leaves, pepper and asafoetida.",
+  "Pour the tempering over the rice and mix."],
+ tip:"Mixing milk into the hot rice keeps it from turning sour by lunchtime, so it's a reliable lunch box dish even in summer.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/daddojanam/"]},
 /* ---------- DINNER ---------- */
-{id:"ragi-dosa", meal:"dinner", name:"Instant Ragi Dosa", alt:"Ragi dose", region:"Karnataka", type:"veg", time:"25 min",
- with:"Peanut or tomato chutney",
- ing:[[1,"cup","ragi (finger millet) flour"],[0.25,"cup","rice flour"],[0.25,"cup","fine rava"],[0.25,"cup","curd"],[2,"cup","water"],[1,"","onion, finely chopped"],[2,"","green chillies, chopped"],[1,"tsp","cumin seeds"],[1,"sprig","curry leaves, chopped"],[1,"tsp","salt"],[1,"tbsp","oil"]],
- steps:["Whisk flours, rava, curd, salt and water into a thin, watery batter. Rest 15 minutes.",
-  "Stir in onion, chillies, cumin and curry leaves.",
-  "Heat the tawa well. Pour batter from a height starting at the edges, filling gaps. Do not spread it.",
-  "Drizzle a few drops of oil, cook on medium until crisp, and serve without flipping."],
- tip:"A filling, high-fibre dinner. Stir the batter before every dosa because the flour settles."},
+{id:"jonna-rotte", meal:"dinner", name:"Jonna Rotte", alt:"Jowar roti · Jolada rotti", region:"Telangana & North Karnataka", type:"veg", time:"30 min", serves:3,
+ tags:["quick","healthy","millet"], with:"Gongura pachadi, gutti vankaya or any kura",
+ ing:[[1,"cup","jowar (jonna) flour"],[0.75,"cup","hot water, as needed"],[0.5,"cup","jowar flour, for dusting"]],
+ steps:["Make a well in the flour, pour in the hot water and knead to a smooth, soft dough.",
+  "Divide into small balls. Keep them covered so they don't dry out.",
+  "Dust the board with flour. Flatten a ball with your palm, then pat it thin and round with both hands.",
+  "Lay it on a hot tawa and wipe the top with a wet hand or cloth.",
+  "When the water dries, flip, press gently and cook until spotted on both sides."],
+ tip:"Makes about 6 rotte. Use fresh flour (under 2 months old) and keep the dough soft, or the rotte crack while patting.",
+ src:["Hebbar's Kitchen","https://hebbarskitchen.com/jowar-roti-recipe-jowar-bhakri-jolada/"]},
 
-{id:"egg-curry", meal:"dinner", name:"Andhra Egg Curry", alt:"Kodiguddu kura", region:"Andhra Pradesh", type:"egg", time:"30 min",
- with:"Rice, chapati or ragi dosa",
- ing:[[6,"","eggs, boiled and peeled"],[2,"tbsp","oil"],[0.5,"tsp","turmeric"],[1.5,"tsp","red chilli powder"],[2,"","onions, finely chopped"],[1,"sprig","curry leaves"],[1,"tbsp","ginger-garlic paste"],[2,"","tomatoes, puréed"],[1.5,"tsp","coriander powder"],[0.5,"tsp","garam masala"],[1,"cup","water"],[1,"tsp","salt"],[2,"tbsp","coriander leaves"]],
- steps:["Make shallow slits on the eggs. Fry them in the oil with a pinch of turmeric and chilli powder until the skin blisters. Lift out.",
-  "In the same oil fry onions and curry leaves until golden, add ginger-garlic paste.",
-  "Add tomato purée, the rest of the turmeric and chilli, coriander powder and salt. Cook until oil separates.",
-  "Add water, bring to a simmer and slide in the eggs. Cook 8 minutes.",
-  "Finish with garam masala and coriander."],
- tip:"Halve some eggs and drop the yolks if you want more protein with less fat."},
+{id:"ragi-sankati", meal:"dinner", name:"Ragi Sankati", alt:"Ragi sangati · Ragi mudde", region:"Andhra & Telangana", type:"veg", time:"25 min", serves:2,
+ tags:["quick","healthy","millet"], with:"Natu kodi pulusu, pappu or gongura pachadi",
+ ing:[[1,"cup","ragi flour"],[2,"cup","water"],[0.33,"tsp","salt (optional)"],[1.5,"tsp","ghee"],
+      "# Slurry",[1,"tbsp","ragi flour"],[3,"tbsp","water"]],
+ steps:["Whisk the slurry flour and water until smooth.",
+  "Boil the 2 cups water with salt and ghee, stir in the slurry and bring back to a boil on medium.",
+  "Turn the heat to the lowest, add the remaining flour in one go and stir with a wooden stick until no lumps remain.",
+  "Cover and cook on the lowest heat for 5 minutes, stir, then switch off and leave covered 5 more minutes.",
+  "Turn onto a greased or wet plate, knead briefly and shape into 2–3 balls with wet hands."],
+ tip:"Pinch off small pieces and swallow them with the curry rather than chewing. That's how sankati is eaten.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/ragi-mudde-ragi-sankati/"]},
 
-{id:"royyala-iguru", meal:"dinner", name:"Prawn Iguru", alt:"Royyala iguru", region:"Andhra coast", type:"prawn", time:"30 min",
- with:"Rice and rasam, or as a side with dosa",
- ing:[[500,"g","prawns, cleaned and deveined"],[0.5,"tsp","turmeric"],[1,"tsp","salt"],[1,"tsp","red chilli powder"],
-      "# Masala",[2,"tbsp","oil"],[2,"","onions, finely chopped"],[2,"","green chillies, slit"],[1,"sprig","curry leaves"],[1,"tbsp","ginger-garlic paste"],[1,"","tomato, chopped"],[1,"tsp","red chilli powder"],[1,"tsp","coriander powder"],[0.5,"tsp","garam masala"],[2,"tbsp","coriander leaves"]],
- steps:["Toss prawns with turmeric, salt and chilli powder. Rest 15 minutes.",
-  "Fry onions, chillies and curry leaves in oil until golden brown.",
-  "Add ginger-garlic paste, then tomato. Cook until soft and the oil starts to separate.",
-  "Add chilli and coriander powders with a splash of water and cook 2 minutes.",
-  "Add prawns and cook on medium-high for 5–6 minutes, stirring, until they curl and the masala clings. Do not overcook.",
-  "Sprinkle garam masala and coriander."],
- tip:"Prawns turn rubbery fast. Pull them off the heat as soon as they form a loose C shape."},
+{id:"pappu-charu", meal:"dinner", name:"Pappu Charu", alt:"Andhra dal rasam", region:"Andhra Pradesh", type:"veg", time:"35 min", serves:4,
+ tags:["healthy","high-protein"], with:"Hot rice, ghee and appadam, with a vepudu on the side",
+ ing:[[0.5,"cup","toor or moong dal"],[1.25,"cup","water, to cook the dal"],[1.5,"tsp","tamarind"],[1,"","onion, thinly sliced"],[1,"","large tomato, chopped"],[1,"","green chilli, slit"],[0.5,"tsp","red chilli powder"],[0.25,"tsp","salt"],[1,"cup","water, for the charu"],[2,"sprig","coriander leaves"],
+      "# Talimpu",[1,"tbsp","ghee"],[1,"","dry red chilli, broken"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[null,"","fenugreek seeds, a pinch"],[2,"clove","garlic, crushed"],[1,"sprig","curry leaves"],[null,"","turmeric, a pinch"],[null,"","asafoetida, a pinch"]],
+ steps:["Pressure cook the dal with its water on medium for 2 whistles. Mash well. Soak the tamarind in a little water.",
+  "Heat the ghee and splutter the red chilli, mustard, cumin and fenugreek. Add garlic, curry leaves and asafoetida.",
+  "Sauté the onion about a minute so it stays crunchy, then add tomato, green chilli, salt and turmeric and cook until mushy.",
+  "Stir in the chilli powder for a minute, strain in the tamarind water, add the charu water and bring to a boil.",
+  "Add the mashed dal, adjust salt, simmer 1 minute and stir in the coriander."],
+ tip:"Strain the mashed dal through a colander if you like a smooth, restaurant-style charu.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/pesara-pappu-chaaru-recipe-andhra-moong-dal-rasam/"]},
 
-{id:"pepper-chicken", meal:"dinner", name:"Chettinad Pepper Chicken", alt:"Milagu kozhi varuval", region:"Chettinad", type:"chicken", time:"40 min",
- with:"Rasam rice, or on its own as a high-protein plate",
- ing:[[500,"g","chicken, small pieces"],[0.5,"tsp","turmeric"],[1,"tsp","salt"],
-      "# Pepper masala",[1.5,"tbsp","black pepper"],[1,"tsp","fennel seeds"],[1,"tsp","cumin seeds"],
-      "# Fry",[2,"tbsp","gingelly (sesame) oil"],[15,"","small onions, sliced"],[2,"sprig","curry leaves"],[1,"tbsp","ginger-garlic paste"],[1,"","tomato, chopped"],[0.5,"","lemon, juiced"]],
- steps:["Dry-roast pepper, fennel and cumin for 1 minute and grind coarsely.",
-  "Heat oil, add curry leaves and shallots and fry until golden.",
-  "Add ginger-garlic paste, then tomato, and cook until soft.",
-  "Add chicken, turmeric and salt. Cover and cook in its own juices on low for 15 minutes.",
-  "Uncover, add the pepper masala and fry on high, stirring, until dry and dark. Finish with lemon juice."],
- tip:"Grind the pepper fresh just before cooking. Pre-ground pepper loses the sharp heat this dish depends on."},
+{id:"sambar", meal:"dinner", name:"Andhra Sambar", alt:"Sambar with drumstick", region:"Andhra Pradesh", type:"veg", time:"50 min", serves:4,
+ tags:["healthy","high-protein"], with:"Rice, idli, dosa or garelu",
+ ing:[[0.75,"cup","toor dal"],[2,"cup","water, to cook the dal"],[1.5,"tbsp","tamarind"],[1,"tbsp","jaggery (optional)"],[2,"tbsp","sambar powder"],[0.75,"tbsp","salt"],[0.25,"tsp","turmeric"],[0.5,"tsp","red chilli powder (optional)"],[1,"","onion, diced (or 12 shallots)"],[1,"","large tomato, chopped"],[1,"","carrot, diced (optional)"],[1,"","drumstick, in pieces"],[3,"","okra (optional)"],[1,"","green chilli, slit"],[4,"cup","water, for the vegetables"],[0.25,"cup","coriander leaves"],
+      "# Tempering",[1,"tbsp","ghee or oil"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[null,"","fenugreek seeds, a pinch"],[1,"","dry red chilli"],[1,"sprig","curry leaves"],[null,"","asafoetida, a pinch"]],
+ steps:["Pressure cook the dal with its water on medium for 2–4 whistles and mash until smooth.",
+  "Sauté the onion in a teaspoon of oil for a minute, add the other vegetables for 2 minutes, then the chilli powder and the vegetable water.",
+  "Once hot, take out ¼ cup of the water and soak the tamarind and jaggery in it.",
+  "When the vegetables are just tender, add turmeric, sambar powder and salt and cook 3–5 minutes. Strain in the tamarind water and stir in the dal. Bring to a gentle boil and add coriander.",
+  "Heat the ghee, pop the mustard, cumin, fenugreek and red chilli, then crisp the curry leaves, add asafoetida and pour over the sambar."],
+ tip:"No sambar powder? Use the same amount of rasam powder. The spices are nearly the same.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/andhra-sambar-recipe-how-to-make-south-indian-sambar/"]},
 
-{id:"curd-rice", meal:"dinner", name:"Curd Rice", alt:"Thayir sadam", region:"Tamil Nadu", type:"veg", time:"15 min",
- with:"Mango pickle, or after any spicy curry",
- ing:[[2,"cup","cooked rice, soft"],[1.5,"cup","curd"],[0.25,"cup","milk"],[1,"tsp","salt"],[0.5,"","cucumber, grated"],[1,"tsp","oil"],[0.5,"tsp","mustard seeds"],[1,"tsp","urad dal"],[1,"","green chilli, chopped"],[1,"tsp","ginger, grated"],[1,"sprig","curry leaves"],[0.25,"tsp","asafoetida"],[2,"tbsp","coriander leaves"]],
- steps:["Mash the warm rice lightly and let it cool to room temperature.",
-  "Mix in curd, milk and salt, then the cucumber.",
-  "Temper mustard, urad dal, chilli, ginger, curry leaves and asafoetida in oil and pour over.",
-  "Stir and add coriander. Serve at room temperature."],
- tip:"The milk keeps it from turning sour if you pack it or eat it a few hours later."}
+{id:"sorakaya-pulusu", meal:"dinner", name:"Sorakaya Pulusu", alt:"Bottle gourd in tamarind gravy", region:"Andhra Pradesh", type:"veg", time:"30 min", serves:3,
+ tags:["quick","healthy"], with:"Rice, or ragi sankati",
+ ing:[[2,"cup","bottle gourd (sorakaya), in 1½-inch pieces"],[1,"","potato, cubed (optional)"],[1,"cup","onions, finely chopped"],[1,"","green chilli, slit"],[2,"tbsp","tamarind, soaked in ⅓ cup hot water"],[0.75,"tbsp","jaggery (optional)"],[1,"tsp","red chilli powder"],[0.25,"tsp","turmeric"],[0.5,"tsp","salt"],[1.75,"cup","water"],[2,"tbsp","coriander leaves"],
+      "# Tempering",[2,"tbsp","oil"],[0.5,"tsp","mustard seeds"],[0.5,"tsp","cumin seeds"],[null,"","fenugreek seeds, a pinch"],[1,"sprig","curry leaves"],[1,"tsp","coriander powder (optional)"]],
+ steps:["Peel the gourd and cut into chunks. Squeeze and strain the soaked tamarind.",
+  "Heat the oil and splutter mustard, cumin and fenugreek. Add curry leaves, then onions, chilli and a little salt for 3–4 minutes until pink.",
+  "Add the gourd and potato and fry 3–4 minutes. Stir in chilli powder, turmeric and coriander powder for a minute.",
+  "Add the water, bring to a rapid boil, then simmer until the vegetables are soft.",
+  "Stir in the tamarind and jaggery, cover and cook to the thickness you like. Adjust and add coriander."],
+ tip:"Bottle gourd is mostly water and very light on the stomach, which makes this a good late-dinner curry.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/sorakaya-pulusu-recipe-andhra-bottle-gourd-stew-recipe/"]},
+
+{id:"gongura-pachadi", meal:"dinner", name:"Gongura Pachadi", alt:"Red sorrel chutney", region:"Andhra & Telangana", type:"veg", time:"30 min", serves:3,
+ tags:[], with:"Hot rice with ghee, or jonna rotte",
+ ing:[[2,"cup","gongura leaves, tightly packed"],[1,"","large onion, quartered"],[4,"","green chillies"],[null,"","salt to taste"],
+      "# Tempering",[2,"tbsp","oil"],[2,"clove","garlic, crushed"],[0.25,"tsp","mustard seeds"],[0.25,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"","dry red chilli"],[6,"","majjiga mirapakayalu (curd chillies, optional)"],[null,"","vadiyalu (optional)"]],
+ steps:["Pick the leaves off the stalks, wash 3–4 times and drain for at least 10 minutes.",
+  "Cook the leaves with the onion, chillies and 3 tbsp water until fully soft. Cook off any extra liquid.",
+  "Cool completely and grind with salt to a slightly coarse chutney.",
+  "Fry the curd chillies and vadiyalu in the oil until crisp and set aside.",
+  "Leave about a teaspoon of oil in the pan, crackle red chilli, mustard, cumin, garlic and curry leaves, and mix everything into the chutney."],
+ tip:"Red-stemmed gongura is more sour than the green kind. Use it if you want the classic sharp taste.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/gongura-pachadi-red-sorrel-leaves-chutney/"]},
+
+{id:"egg-curry", meal:"dinner", name:"Kodiguddu Kura", alt:"Andhra egg curry", region:"Andhra Pradesh", type:"egg", time:"40 min", serves:2,
+ tags:["high-protein"], with:"Rice, chapati or dosa",
+ ing:[[4,"","eggs, hard-boiled and peeled"],[2,"tbsp","oil"],[0.25,"tsp","mustard seeds"],[0.75,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"cup","onions, finely chopped"],[1,"","green chilli, chopped"],[1.25,"tsp","ginger-garlic paste"],[2,"","tomatoes, finely chopped or puréed"],[8,"","cashews (optional)"],[null,"","turmeric, a pinch"],[0.75,"tsp","red chilli powder"],[0.75,"tsp","garam masala"],[1,"tsp","coriander powder"],[0.5,"tsp","salt"],[0.75,"cup","water"],[3,"tbsp","coriander leaves"]],
+ steps:["Make 3–4 shallow slits in each egg. Blend the tomatoes with the cashews if using.",
+  "Heat the oil and splutter cumin, mustard and curry leaves. Sauté onions and chilli until golden, add ginger-garlic paste for a minute, then the tomatoes until they break down.",
+  "Stir in chilli powder, turmeric, salt, garam masala and coriander powder and sauté until aromatic. Add the eggs for 2 minutes.",
+  "Pour in the water, bring to a rolling boil, then cover and cook on medium until thick and the oil shows on top.",
+  "Finish with coriander."],
+ tip:"Slitting the eggs lets the masala soak into the whites.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/spicy-andhra-egg-curry-south-indian-egg-recipes/"]},
+
+{id:"chepala-pulusu", meal:"dinner", name:"Chepala Pulusu", alt:"Andhra fish curry", region:"Andhra Pradesh", type:"fish", time:"40 min", serves:4,
+ tags:["high-protein"], with:"Hot rice",
+ ing:["# Marinade",[1000,"g","firm fish, thick pieces"],[0.5,"tsp","red chilli powder"],[0.25,"tsp","turmeric"],[0.33,"tsp","salt"],[1,"tbsp","lemon juice"],
+      "# Pulusu",[4.5,"tbsp","oil"],[1,"","bay leaf"],[4,"","cloves"],[1,"inch","cinnamon"],[0.5,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"cup","onions, finely chopped"],[3,"","green chillies, slit"],[1,"tbsp","ginger-garlic paste"],[0.75,"tsp","red chilli powder"],[2,"tsp","garam masala"],[0.5,"tsp","salt"],[2.5,"tbsp","tamarind, soaked in ¾ cup hot water"],[10,"","cashews, ground to a paste"],[8,"","coriander stalks with leaves"]],
+ steps:["Marinate the fish with lemon juice, salt, turmeric and chilli powder for up to 15 minutes. Squeeze and strain the tamarind.",
+  "Heat the oil in a wide, heavy pan, add the whole spices, then curry leaves, chillies and onions until golden. Add the ginger-garlic paste for a minute.",
+  "Lay in the fish and fry on medium-high for 3 minutes per side. Turn gently; don't stir.",
+  "Sprinkle garam masala, salt and chilli powder, pour in the tamarind juice, cover and simmer 2–3 minutes.",
+  "Add water to partly cover the fish, bring to a boil, then simmer covered on medium for 4–5 minutes until cooked.",
+  "Swirl in the cashew paste until it bubbles, add the coriander, cover and switch off."],
+ tip:"Pulusu tastes better the next day once the tamarind soaks into the fish. Shake the pan instead of stirring so the pieces stay whole.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/fish-pulusu-south-indian-fish-curry-recipe/"]},
+
+{id:"gongura-mamsam", meal:"dinner", name:"Gongura Mamsam", alt:"Gongura mutton", region:"Andhra & Telangana", type:"mutton", time:"1 hr 35 min", serves:5,
+ tags:["high-protein"], with:"Hot rice or jonna rotte",
+ ing:[[500,"g","mutton, bone-in, medium pieces"],[250,"g","gongura leaves, picked and washed"],[0.5,"cup","oil, divided"],[1,"cup","onion, chopped"],[2,"tbsp","ginger-garlic paste"],[0.25,"tsp","turmeric"],[2,"tsp","red chilli powder"],[1,"sprig","curry leaves"],[4,"cup","water (3 cups in a pressure cooker)"],[null,"","salt to taste"],[3,"tbsp","garlic, grated, to finish"],
+      "# Masala powder",[2,"tbsp","coriander seeds"],[1,"tsp","cumin seeds"],[2,"inch","cinnamon"],[5,"","cloves"],[1,"tbsp","black peppercorns"],[5,"","dry red chillies"],[12,"clove","small garlic"]],
+ steps:["Heat half the oil and add onion, ginger-garlic paste, turmeric, mutton, chilli powder, salt and the water. Cover and cook on medium for about an hour until tender, topping up water as needed. In a pressure cooker use less water.",
+  "Meanwhile, dry-roast the masala-powder spices on low until fragrant, add the garlic at the end and grind to a fine powder.",
+  "Once the mutton is tender, add the rest of the oil and the gongura. Cook until the leaves break down into the gravy.",
+  "Stir in the grated garlic and the masala powder. Cover and cook on medium until oil rises to the top."],
+ tip:"Use bone-in, medium pieces; small pieces turn stringy over the long cook. Use only the leaves, not the stems.",
+ src:["Vismai Food","https://vismaifood.com/en/andhra-style-gongura-mutton-mutton-curry-how-to-make-gongura-mutton"]},
+
+{id:"royyala-iguru", meal:"dinner", name:"Royyala Iguru", alt:"Andhra prawn fry-curry", region:"Andhra coast", type:"prawn", time:"20 min", serves:3,
+ tags:["quick","high-protein"], with:"Rice and pappu charu, or chapati",
+ ing:["# Marinade",[250,"g","prawns, cleaned"],[0.5,"tsp","ginger-garlic paste"],[0.25,"tsp","red chilli powder"],[1,"tbsp","lemon juice"],[null,"","salt, a pinch"],
+      "# Iguru",[1.5,"tbsp","oil"],[0.25,"tsp","cumin seeds"],[1,"sprig","curry leaves"],[1,"","green chilli, slit"],[2,"","onions, finely chopped"],[0.5,"tsp","ginger-garlic paste"],[0.25,"tsp","red chilli powder"],[null,"","turmeric, a pinch"],[1,"tsp","garam masala"],[null,"","salt to taste"],[1,"tbsp","coriander leaves"]],
+ steps:["Marinate the prawns with ginger-garlic paste, chilli powder, lemon juice and a pinch of salt.",
+  "Heat the oil and fry cumin, curry leaves and chilli until the leaves crisp.",
+  "Add the onions with a pinch of salt and fry until golden, then lower the heat and let them caramelise without burning.",
+  "Stir in the ginger-garlic paste, then the prawns for 2–3 minutes. Add chilli powder, turmeric and garam masala for a minute.",
+  "Sprinkle about 90 ml water, cover and cook on medium until the prawns curl and turn pink. Uncover to dry off extra liquid and add coriander."],
+ tip:"Prawns turn rubbery fast. Take them off as soon as they form a loose C shape.",
+ src:["Swasthi's Recipes","https://www.indianhealthyrecipes.com/royyala-iguru-easy-andhra-prawns-curry/"]},
 ];
 
-/* ---------- rendering ---------- */
-let filter = "all", serves = 4;
+/* ---------- quantities ---------- */
 const FR = {0.25:"¼",0.5:"½",0.75:"¾"};
-// Scaled quantity with its unit: "1½ cups", "1.1 kg", "pinch".
-function qty(q, unit){
-  if(unit==="g"){ const g = Math.round(q/5)*5; return g>=1000 ? +(g/1000).toFixed(1)+" kg" : g+" g"; }
-  if(unit==="tsp" && q<0.25) return "pinch";
-  const step = (unit===""||unit==="clove"||unit==="sprig") ? 0.5 : 0.25;
-  const r = Math.max(step, Math.round(q/step)*step);
-  const w = Math.floor(r), n = (w||"") + (FR[r-w]||"");
-  return unit ? n+" "+unitLabel(unit,r) : n;
-}
 function unitLabel(u,q){
-  if(!u) return "";
   if(u==="cup"||u==="clove"||u==="sprig") return q>1 ? u+"s" : u;
   if(u==="inch") return q>1 ? "inches" : "inch";
   return u;
 }
+// Scaled quantity with its unit: "1½ cups", "1.1 kg", "pinch", "13".
+function qty(q, unit){
+  if(unit==="g"){ const g = Math.round(q/5)*5; return g>=1000 ? +(g/1000).toFixed(1)+" kg" : g+" g"; }
+  if(unit==="tsp" && q<0.25) return "pinch";
+  const count = unit===""||unit==="clove"||unit==="sprig";
+  const step = count ? (q>=3 ? 1 : 0.5) : 0.25;
+  const r = Math.max(step, Math.round(q/step)*step);
+  const w = Math.floor(r), n = (w||"") + (FR[r-w]||"");
+  return unit ? n+" "+unitLabel(unit,r) : n;
+}
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 
-function recipeHTML(r){
-  const k = serves/4;
-  const ing = r.ing.map(i=>{
+/* ---------- state ---------- */
+const sel = {meal:null, type:null, tag:null};
+let terms = [];
+const servings = Object.fromEntries(R.map(r=>[r.id, r.serves]));
+const MAX_SERVES = 12;
+const mealName = id => MEALS.find(m=>m.id===id).name;
+const HAY = Object.fromEntries(R.map(r=>[r.id,
+  [r.name, r.alt, r.region, TYPES[r.type], mealName(r.meal), ...r.tags.map(t=>TAGS[t]), ...r.ing.filter(Array.isArray).map(i=>i[2])].join(" ").toLowerCase()]));
+const match = r => (!sel.meal || r.meal===sel.meal) && (!sel.type || r.type===sel.type) && (!sel.tag || r.tags.includes(sel.tag)) && terms.every(t=>HAY[r.id].includes(t));
+const isFiltered = () => terms.length || sel.meal || sel.type || sel.tag;
+
+/* ---------- rendering ---------- */
+function ingHTML(r){
+  const k = servings[r.id]/r.serves;
+  return r.ing.map(i=>{
     if(typeof i==="string") return `<li class="grp">${esc(i.slice(2))}</li>`;
     const [q,u,n]=i;
     if(q===null) return `<li><span class="q tt">—</span><span>${esc(n)}</span></li>`;
     return `<li><span class="q">${qty(q*k,u)}</span><span>${esc(n)}</span></li>`;
   }).join("");
-  const steps = r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("");
-  return `<article class="recipe" id="${r.id}" data-type="${r.type}">
+}
+function stepperHTML(r){
+  const s = servings[r.id];
+  return `<span class="serves">Serves <span class="stepper" role="group" aria-label="Servings for ${esc(r.name)}"><button type="button" data-d="-1" aria-label="Fewer servings"${s<=1?" disabled":""}>−</button><output aria-live="polite">${s}</output><button type="button" data-d="1" aria-label="More servings"${s>=MAX_SERVES?" disabled":""}>+</button></span></span>`;
+}
+function recipeHTML(r){
+  const tags = r.tags.map(t=>`<button type="button" class="tg" data-tag="${t}">${TAGS[t]}</button>`).join("");
+  return `<article class="recipe" id="${r.id}">
     <div class="r-head">
-      <div class="r-meta"><span class="tag"><span class="dot" style="background:var(--${r.type})"></span>${TYPES[r.type]}</span><span>${esc(r.region)}</span><span>${esc(r.time)}</span></div>
+      <div class="r-meta"><span class="kind"><span class="dot" style="background:var(--${r.type})"></span>${TYPES[r.type]}</span><span>${esc(r.region)}</span><span>${esc(r.time)}</span></div>
       <h3>${esc(r.name)}</h3>
       <div class="alt">${esc(r.alt)}</div>
       <p class="with"><b>Serve with:</b> ${esc(r.with)}</p>
+      ${tags?`<div class="r-tags">${tags}</div>`:""}
     </div>
     <div class="r-body">
-      <div><p class="label">Ingredients · serves ${serves}</p><ul class="ing">${ing}</ul></div>
-      <div><p class="label">Method</p><ol class="steps">${steps}</ol></div>
+      <div><div class="ing-head"><p class="label">Ingredients</p>${stepperHTML(r)}</div><ul class="ing">${ingHTML(r)}</ul></div>
+      <div><p class="label">Method</p><ol class="steps">${r.steps.map(s=>`<li><span>${esc(s)}</span></li>`).join("")}</ol></div>
     </div>
     <div class="tip"><b>Tip.</b> ${esc(r.tip)}</div>
+    <p class="src">Adapted from <a href="${r.src[1]}" target="_blank" rel="noopener">${esc(r.src[0])} ↗</a></p>
   </article>`;
 }
 
 function render(){
-  const show = r => filter==="all" || r.type===filter;
-  document.getElementById("toc").innerHTML = MEALS.map(m=>{
-    const items = R.filter(r=>r.meal===m.id).map(r=>`<li ${show(r)?"":"hidden"}><a href="#${r.id}"><span class="dot" style="background:var(--${r.type})"></span><span class="n">${esc(r.name)}</span><span class="t">${esc(r.time)}</span></a></li>`).join("");
-    return `<div><h2>${m.name}<span>${m.local}</span></h2><ol>${items}</ol></div>`;
-  }).join("");
+  const list = R.filter(match), filtered = isFiltered();
+  const byMeal = m => list.filter(r=>r.meal===m.id);
+  const status = document.getElementById("status");
+  status.hidden = !filtered;
+  status.innerHTML = (list.length ? `<span><b>${list.length}</b> of ${R.length} recipes</span>` : `<span>No recipes match. Try a shorter search or fewer filters.</span>`) + `<button type="button" class="linkbtn" id="clear">Clear all</button>`;
+  document.getElementById("tocwrap").hidden = filtered;
+  document.getElementById("toc").innerHTML = MEALS.map(m=>`<div><h2>${m.name}</h2><ol>${byMeal(m).map(r=>`<li><a href="#${r.id}"><span class="dot" style="background:var(--${r.type})"></span><span class="n">${esc(r.name)}</span><span class="t">${esc(r.time)}</span></a></li>`).join("")}</ol></div>`).join("");
   document.getElementById("chapters").innerHTML = MEALS.map(m=>{
-    const list = R.filter(r=>r.meal===m.id && show(r));
-    return `<section class="chapter" id="${m.id}">
+    const items = byMeal(m);
+    return items.length ? `<section class="chapter" id="${m.id}">
       <div class="chap-head"><h2>${m.name}</h2><span class="local">${m.local}</span><p>${m.intro}</p></div>
-      <div class="list">${list.length ? list.map(recipeHTML).join("") : `<p class="empty">No ${TYPES[filter].toLowerCase()} dishes in this chapter.</p>`}</div>
-    </section>`;
+      <div class="list">${items.map(recipeHTML).join("")}</div>
+    </section>` : "";
   }).join("");
 }
 
-function buildControls(){
-  const counts = {}; R.forEach(r=>counts[r.type]=(counts[r.type]||0)+1);
-  const chips = document.getElementById("chips");
-  const opts = [["all","All"]].concat(Object.entries(TYPES));
-  chips.innerHTML = opts.map(([k,v])=>`<button class="chip" id="f-${k}" data-f="${k}" aria-pressed="${k==="all"}">${k!=="all"?`<span class="dot" style="background:var(--${k})"></span>`:""}${v}</button>`).join("");
-  chips.addEventListener("click",e=>{
-    const b=e.target.closest("button"); if(!b) return;
-    filter=b.dataset.f;
-    chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    render();
-  });
-  const seg=document.getElementById("seg");
-  seg.innerHTML=[2,4,6].map(n=>`<button id="s-${n}" data-s="${n}" aria-pressed="${n===4}">${n}</button>`).join("");
-  seg.addEventListener("click",e=>{
-    const b=e.target.closest("button"); if(!b) return;
-    serves=+b.dataset.s;
-    seg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
-    render();
-  });
-  const n = m => R.filter(r=>r.meal===m).length;
-  const nonveg = R.filter(r=>r.type!=="veg").length;
-  document.getElementById("stats").innerHTML =
-    `<span><b>${R.length}</b>recipes</span><span><b>${n("breakfast")}</b>breakfast</span><span><b>${n("lunch")}</b>lunch</span><span><b>${n("dinner")}</b>dinner</span><span><b>${nonveg}</b>with egg, chicken, mutton or prawn</span>`;
+// Keep the top of the results in view after a filter change, below the sticky rail.
+function showResults(){
+  const main = document.getElementById("results");
+  if(main.getBoundingClientRect().top < document.querySelector(".rail").offsetHeight) main.scrollIntoView({block:"start"});
 }
-buildControls(); render();
+function syncChips(){
+  document.querySelectorAll("#chips .chip").forEach(b=>b.setAttribute("aria-pressed", sel[b.dataset.g]===b.dataset.v));
+}
+
+/* ---------- controls ---------- */
+const group = (g, obj) => Object.entries(obj).map(([v,l])=>`<button type="button" class="chip" data-g="${g}" data-v="${v}" aria-pressed="false">${g==="type"?`<span class="dot" style="background:var(--${v})"></span>`:""}${l}</button>`).join("");
+const SEP = `<span class="sep" aria-hidden="true"></span>`;
+const chips = document.getElementById("chips");
+chips.innerHTML = group("meal", Object.fromEntries(MEALS.map(m=>[m.id,m.name]))) + SEP + group("type", TYPES) + SEP + group("tag", TAGS);
+chips.addEventListener("click", e=>{
+  const b = e.target.closest(".chip"); if(!b) return;
+  const {g, v} = b.dataset;
+  sel[g] = sel[g]===v ? null : v;
+  syncChips(); render(); showResults();
+});
+
+const q = document.getElementById("q");
+q.addEventListener("input", ()=>{
+  terms = q.value.toLowerCase().split(/\s+/).filter(Boolean);
+  render(); showResults();
+});
+
+document.getElementById("results").addEventListener("click", e=>{
+  if(e.target.closest("#clear")){
+    sel.meal = sel.type = sel.tag = null; terms = []; q.value = "";
+    syncChips(); render(); return;
+  }
+  const tag = e.target.closest(".tg");
+  if(tag){ sel.tag = tag.dataset.tag; syncChips(); render(); showResults(); return; }
+  const step = e.target.closest(".stepper button");
+  if(step){
+    const card = step.closest(".recipe"), r = R.find(x=>x.id===card.id);
+    servings[r.id] = Math.min(MAX_SERVES, Math.max(1, servings[r.id] + +step.dataset.d));
+    card.querySelector(".ing").innerHTML = ingHTML(r);
+    card.querySelector(".serves").outerHTML = stepperHTML(r);
+  }
+});
+
+const rail = document.querySelector(".rail");
+new ResizeObserver(()=>document.documentElement.style.setProperty("--rail", rail.offsetHeight+"px")).observe(rail);
+const tocwrap = document.getElementById("tocwrap");
+tocwrap.open = matchMedia("(min-width:761px)").matches;
+document.getElementById("toc-count").textContent = `· ${R.length} recipes`;
+const n = m => R.filter(r=>r.meal===m).length;
+const telugu = R.filter(r=>/Andhra|Telangana/.test(r.region)).length;
+document.getElementById("stats").innerHTML =
+  `<span><b>${R.length}</b>recipes</span><span><b>${telugu}</b>Andhra &amp; Telangana</span><span><b>${n("breakfast")}</b>breakfast</span><span><b>${n("lunch")}</b>lunch box</span><span><b>${n("dinner")}</b>dinner</span>`;
+render();
 </script>
